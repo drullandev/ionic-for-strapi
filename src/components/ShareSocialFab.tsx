@@ -1,3 +1,4 @@
+import * as MyConst from '../static/constants'
 import { IonLoading, IonFab, IonFabButton, IonIcon, IonFabList } from "@ionic/react"
 import { shareSocial, logoVimeo, logoInstagram, logoTwitter, logoFacebook } from "ionicons/icons"
 import React, { useState } from "react"

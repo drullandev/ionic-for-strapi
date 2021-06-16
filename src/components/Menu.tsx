@@ -1,3 +1,4 @@
+import * as MyConst from '../static/constants'
 import React from 'react';
 import { RouteComponentProps, withRouter, useLocation } from 'react-router';
 
@@ -80,9 +81,7 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
         </IonList>
         <IonList lines="none">
           <IonListHeader>Tutorial</IonListHeader>
-          <IonItem button onClick={() => {
-            history.push('/tutorial');
-          }}>
+          <IonItem button onClick={() => {            history.push('/tutorial') }}>
             <IonIcon slot="start" icon={hammer} />
             Show Tutorial
           </IonItem>

@@ -1,3 +1,4 @@
+import * as MyConst from '../static/constants'
 import React from 'react';
 import { Session } from '../models/Schedule';
 import { Speaker } from '../models/Speaker';

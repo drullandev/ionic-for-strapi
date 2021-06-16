@@ -1,3 +1,4 @@
+import * as MyConst from '../static/constants'
 import React from 'react';
 import { IonList, IonItem, IonLabel } from '@ionic/react';
 

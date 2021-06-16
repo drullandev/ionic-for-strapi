@@ -1,3 +1,4 @@
+import * as MyConst from '../static/constants'
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react';
 import React, { useState, useCallback } from 'react';
 import { Schedule, Session } from '../models/Schedule';

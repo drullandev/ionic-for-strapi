@@ -1,9 +1,10 @@
 import React from 'react';
-import Map from '../components/Map';
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonPage } from '@ionic/react';
-import { Location } from '../models/Location';
-import { connect } from '../data/connect';
-import * as selectors from '../data/selectors';
+
+import Map from '../../components/Map';
+import { Location } from '../../models/Location';
+import { connect } from '../../data/connect';
+import * as selectors from '../../data/selectors';
 import './MapView.scss';
 
 interface OwnProps { }

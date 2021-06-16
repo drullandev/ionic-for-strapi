@@ -1,5 +1,5 @@
+import * as MyConst from '../static/constants'
 import React from 'react';
-
 import { getMode } from '@ionic/core';
 import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon } from '@ionic/react';
 import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorPalette, construct, compass } from 'ionicons/icons';

@@ -2,12 +2,12 @@ import React  from 'react';
 import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
 import { Route, Redirect } from 'react-router';
 import { calendar, location, informationCircle, people } from 'ionicons/icons';
-import SchedulePage from './SchedulePage';
-import SpeakerList from './SpeakerList';
-import SpeakerDetail from './SpeakerDetail';
-import SessionDetail from './SessionDetail';
-import MapView from './MapView';
-import About from './About';
+import SchedulePage from '../SchedulePage/SchedulePage';
+import SpeakerList from '../SpeakerList/SpeakerList';
+import SpeakerDetail from '../SpeakerDetail/SpeakerDetail';
+import SessionDetail from '../SessionDetail/SessionDetail';
+import MapView from '../MapView/MapView';
+import About from '../About/About';
 
 interface MainTabsProps { }
 

@@ -1,60 +1,78 @@
-import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-
-import Menu from './components/Menu';
+import * as MyConst from './static/constants'
+import React, { useEffect } from 'react'
+import { Route } from 'react-router-dom'
+import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
+import { IonReactRouter } from '@ionic/react-router'
 
 /* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import '@ionic/react/css/core.css'
 
 /* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import '@ionic/react/css/normalize.css'
+import '@ionic/react/css/structure.css'
+import '@ionic/react/css/typography.css'
 
 /* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+import '@ionic/react/css/padding.css'
+import '@ionic/react/css/float-elements.css'
+import '@ionic/react/css/text-alignment.css'
+import '@ionic/react/css/text-transformation.css'
+import '@ionic/react/css/flex-utils.css'
+import '@ionic/react/css/display.css'
 
 /* Theme variables */
-import './theme/variables.css';
-import MainTabs from './pages/MainTabs';
-import { connect } from './data/connect';
-import { AppContextProvider } from './data/AppContext';
-import { loadConfData } from './data/sessions/sessions.actions';
-import { setIsLoggedIn, setUsername, loadUserData } from './data/user/user.actions';
-import Account from './pages/Account';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Support from './pages/Support';
-import Tutorial from './pages/Tutorial';
-import HomeOrTutorial from './components/HomeOrTutorial';
-import { Schedule } from "./models/Schedule";
-import RedirectToLogin from './components/RedirectToLogin';
+import './theme/variables.css'
+
+/* Data variables */
+import { connect } from './data/connect'
+import { AppContextProvider } from './data/AppContext'
+import { loadConfData } from './data/sessions/sessions.actions'
+import { setIsLoggedIn, setUsername, loadUserData } from './data/user/user.actions'
+
+/* Pages */
+import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup'
+import Account from './pages/Account/Account'
+import Support from './pages/Support/Support'
+import Tutorial from './pages/Tutorial/Tutorial'
+import MainTabs from './pages/MainTabs/MainTabs'
+
+/* Pages models */
+import { Schedule } from './models/Schedule'
+
+/* Pages components */
+import Menu from './components/Menu'
+import HomeOrTutorial from './components/HomeOrTutorial'
+import RedirectToLogin from './components/RedirectToLogin'
+
+/* Page Routes : default : priorized! */
+const routes = [
+  { path:'/account',  component: Account },
+  { path:'/login',    component: Login },
+  { path:'/signup',   component: Signup },
+  { path:'/support',  component: Support },
+  { path:'/tutorial', component: Tutorial },
+  { path:'/',         component: HomeOrTutorial }
+]
 
 const App: React.FC = () => {
   return (
     <AppContextProvider>
       <IonicAppConnected />
     </AppContextProvider>
-  );
-};
+  )
+}
 
 interface StateProps {
-  darkMode: boolean;
-  schedule: Schedule;
+  darkMode: boolean
+  schedule: Schedule
 }
 
 interface DispatchProps {
-  loadConfData: typeof loadConfData;
-  loadUserData: typeof loadUserData;
-  setIsLoggedIn: typeof setIsLoggedIn;
-  setUsername: typeof setUsername;
+  setIsLoggedIn:  typeof setIsLoggedIn
+  setUsername:    typeof setUsername
+  loadConfData:   typeof loadConfData
+  loadUserData:   typeof loadUserData
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -62,37 +80,33 @@ interface IonicAppProps extends StateProps, DispatchProps { }
 const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, setUsername, loadConfData, loadUserData }) => {
 
   useEffect(() => {
-    loadUserData();
-    loadConfData();
+    loadUserData()
+    loadConfData()
     // eslint-disable-next-line
-  }, []);
+  }, [])
+
+  function setMode(){
+    return darkMode ? 'dark-theme' : ''
+  }
 
   return (
     schedule.groups.length === 0 ? (
       <div></div>
     ) : (
-        <IonApp className={`${darkMode ? 'dark-theme' : ''}`}>
+        <IonApp className={setMode()}>
           <IonReactRouter>
-            <IonSplitPane contentId="main">
+            <IonSplitPane contentId='main'>
               <Menu />
-              <IonRouterOutlet id="main">
-                {/*
-                We use IonRoute here to keep the tabs state intact,
-                which makes transitions between tabs and non tab pages smooth
-                */}
-                <Route path="/tabs" render={() => <MainTabs />} />
-                <Route path="/account" component={Account} />
-                <Route path="/login" component={Login} />
-                <Route path="/signup" component={Signup} />
-                <Route path="/support" component={Support} />
-                <Route path="/tutorial" component={Tutorial} />
-                <Route path="/logout" render={() => {
-                  return <RedirectToLogin
-                    setIsLoggedIn={setIsLoggedIn}
-                    setUsername={setUsername}
-                  />;
-                }} />
-                <Route path="/" component={HomeOrTutorial} exact />
+              <IonRouterOutlet id='main'>
+                {/* We use IonRoute here to keep the tabs state intact,
+                which makes transitions between tabs and non tab pages smooth */}
+                <Route path='/tabs' render={() => <MainTabs />}/>
+                {routes.map((r) => {
+                  return <Route path={r.path} component={r.component} exact/>
+                })}
+                <Route path='/logout' render={() => {
+                  return <RedirectToLogin setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
+                }}/>
               </IonRouterOutlet>
             </IonSplitPane>
           </IonReactRouter>
@@ -101,7 +115,7 @@ const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, 
   )
 }
 
-export default App;
+export default App
 
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
@@ -110,4 +124,4 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   }),
   mapDispatchToProps: { loadConfData, loadUserData, setIsLoggedIn, setUsername },
   component: IonicApp
-});
+})

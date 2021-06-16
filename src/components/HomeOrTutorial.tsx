@@ -1,3 +1,4 @@
+import * as MyConst from '../static/constants'
 import React from 'react';
 import { connect } from '../data/connect';
 import { Redirect } from 'react-router';

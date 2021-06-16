@@ -1,3 +1,4 @@
+import * as MyConst from '../static/constants'
 import React, { useEffect, useContext } from 'react';
 import { IonRouterContext } from '@ionic/react';
 
