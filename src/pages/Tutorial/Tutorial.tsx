@@ -1,38 +1,38 @@
-import React, { useState, useRef } from 'react';
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonSlides, IonSlide, IonIcon, useIonViewWillEnter } from '@ionic/react';
-import { arrowForward } from 'ionicons/icons';
-import { setMenuEnabled } from '../../data/sessions/sessions.actions';
-import { setHasSeenTutorial } from '../../data/user/user.actions';
-import './Tutorial.scss';
-import { connect } from '../../data/connect';
-import { RouteComponentProps } from 'react-router';
+import React, { useState, useRef } from 'react'
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonSlides, IonSlide, IonIcon, useIonViewWillEnter } from '@ionic/react'
+import { arrowForward } from 'ionicons/icons'
+import { setMenuEnabled } from '../../data/sessions/sessions.actions'
+import { setHasSeenTutorial } from '../../data/user/user.actions'
+import './Tutorial.scss'
+import { connect } from '../../data/connect'
+import { RouteComponentProps } from 'react-router'
 
-interface OwnProps extends RouteComponentProps {};
+interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
-  setHasSeenTutorial: typeof setHasSeenTutorial;
-  setMenuEnabled: typeof setMenuEnabled;
+  setHasSeenTutorial: typeof setHasSeenTutorial
+  setMenuEnabled: typeof setMenuEnabled
 }
 
-interface TutorialProps extends OwnProps, DispatchProps { };
+interface TutorialProps extends OwnProps, DispatchProps { }
 
 const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMenuEnabled }) => {
-  const [showSkip, setShowSkip] = useState(true);
-  const slideRef = useRef<HTMLIonSlidesElement>(null);
+  const [showSkip, setShowSkip] = useState(true)
+  const slideRef = useRef<HTMLIonSlidesElement>(null)
 
   useIonViewWillEnter(() => {
-    setMenuEnabled(false);
-  });
+    setMenuEnabled(false)
+  })
   
   const startApp = async () => { 
-    await setHasSeenTutorial(true);
-    await setMenuEnabled(true);
-    history.push('/tabs/schedule', { direction: 'none' });
-  };
+    await setHasSeenTutorial(true)
+    await setMenuEnabled(true)
+    history.push('/tabs/schedule', { direction: 'none' })
+  }
 
   const handleSlideChangeStart = () => { 
-    slideRef.current!.isEnd().then(isEnd => setShowSkip(!isEnd));
-  };
+    slideRef.current!.isEnd().then(isEnd => setShowSkip(!isEnd))
+  }
 
   return (
     <IonPage id="tutorial-page">
@@ -46,6 +46,7 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
       <IonContent fullscreen>
 
         <IonSlides ref={slideRef} onIonSlideWillChange={handleSlideChangeStart} pager={false}>
+
           <IonSlide>
             <img src="assets/img/ica-slidebox-img-1.png" alt="" className="slide-image" />
             <h2 className="slide-title">
@@ -80,11 +81,12 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
               <IonIcon slot="end" icon={arrowForward} />
             </IonButton>
           </IonSlide>
+          
         </IonSlides>
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
 export default connect<OwnProps, {}, DispatchProps>({
   mapDispatchToProps: ({
@@ -92,4 +94,4 @@ export default connect<OwnProps, {}, DispatchProps>({
     setMenuEnabled
   }),
   component: Tutorial
-});
+})

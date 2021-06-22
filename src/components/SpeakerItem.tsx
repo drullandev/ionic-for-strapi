@@ -1,13 +1,13 @@
 import * as MyConst from '../static/constants'
-import React from 'react';
-import { Session } from '../models/Schedule';
-import { Speaker } from '../models/Speaker';
-import { IonCard, IonCardHeader, IonItem, IonLabel, IonAvatar, IonCardContent, IonList } from '@ionic/react';
+import React from 'react'
+import { Session } from '../models/Schedule'
+import { Speaker } from '../models/Speaker'
+import { IonCard, IonCardHeader, IonItem, IonLabel, IonAvatar, IonCardContent, IonList } from '@ionic/react'
 
 
 interface SpeakerItemProps {
-  speaker: Speaker;
-  sessions: Session[];
+  speaker: Speaker
+  sessions: Session[]
 }
 
 const SpeakerItem: React.FC<SpeakerItemProps> = ({ speaker, sessions }) => {
@@ -44,7 +44,7 @@ const SpeakerItem: React.FC<SpeakerItemProps> = ({ speaker, sessions }) => {
         </IonCardContent>
       </IonCard>
     </>
-  );
-};
+  )
+}
 
-export default SpeakerItem;
+export default SpeakerItem

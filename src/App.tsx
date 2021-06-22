@@ -1,4 +1,4 @@
-import * as MyConst from './static/constants'
+//import * as MyConst from './static/constants'
 import React, { useEffect } from 'react'
 import { Route } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
@@ -33,8 +33,8 @@ import { setIsLoggedIn, setUsername, loadUserData } from './data/user/user.actio
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import Account from './pages/Account/Account'
-import Support from './pages/Support/Support'
 import Tutorial from './pages/Tutorial/Tutorial'
+import Support from './pages/Support/Support'
 import MainTabs from './pages/MainTabs/MainTabs'
 
 /* Pages models */
@@ -47,12 +47,12 @@ import RedirectToLogin from './components/RedirectToLogin'
 
 /* Page Routes : default : priorized! */
 const routes = [
+  { path:'/',         component: HomeOrTutorial },
   { path:'/account',  component: Account },
   { path:'/login',    component: Login },
   { path:'/signup',   component: Signup },
   { path:'/support',  component: Support },
   { path:'/tutorial', component: Tutorial },
-  { path:'/',         component: HomeOrTutorial }
 ]
 
 const App: React.FC = () => {
@@ -77,7 +77,14 @@ interface DispatchProps {
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
-const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, setUsername, loadConfData, loadUserData }) => {
+const IonicApp: React.FC<IonicAppProps> = ({
+  darkMode,
+  //schedule,
+  setIsLoggedIn,
+  setUsername,
+  loadConfData,
+  loadUserData
+}) => {
 
   useEffect(() => {
     loadUserData()
@@ -85,33 +92,25 @@ const IonicApp: React.FC<IonicAppProps> = ({ darkMode, schedule, setIsLoggedIn, 
     // eslint-disable-next-line
   }, [])
 
-  function setMode(){
-    return darkMode ? 'dark-theme' : ''
-  }
-
   return (
-    schedule.groups.length === 0 ? (
-      <div></div>
-    ) : (
-        <IonApp className={setMode()}>
-          <IonReactRouter>
-            <IonSplitPane contentId='main'>
-              <Menu />
-              <IonRouterOutlet id='main'>
-                {/* We use IonRoute here to keep the tabs state intact,
-                which makes transitions between tabs and non tab pages smooth */}
-                <Route path='/tabs' render={() => <MainTabs />}/>
-                {routes.map((r) => {
-                  return <Route path={r.path} component={r.component} exact/>
-                })}
-                <Route path='/logout' render={() => {
-                  return <RedirectToLogin setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
-                }}/>
-              </IonRouterOutlet>
-            </IonSplitPane>
-          </IonReactRouter>
-        </IonApp>
-      )
+    <IonApp className={darkMode ? 'dark-theme' : ''}>
+      <IonReactRouter>
+        <IonSplitPane contentId='main'>
+          <Menu />
+          <IonRouterOutlet id='main'>
+            {/* We use IonRoute here to keep the tabs state intact,
+            which makes transitions between tabs and non tab pages smooth */}
+            <Route path='/tabs' render={() => <MainTabs />}/>
+            {routes.map((r) => {
+              return <Route path={r.path} component={r.component} exact/>
+            })}
+            <Route path='/logout' render={() => {
+              return <RedirectToLogin setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
+            }}/>
+          </IonRouterOutlet>
+        </IonSplitPane>
+      </IonReactRouter>
+    </IonApp>
   )
 }
 

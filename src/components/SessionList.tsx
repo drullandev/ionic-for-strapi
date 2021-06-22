@@ -1,39 +1,46 @@
 import * as MyConst from '../static/constants'
-import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react';
-import React, { useState, useCallback } from 'react';
-import { Schedule, Session } from '../models/Schedule';
-import SessionListItem from './SessionListItem';
-import { connect } from '../data/connect';
-import { addFavorite, removeFavorite } from '../data/sessions/sessions.actions';
+import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
+import React, { useState, useCallback } from 'react'
+import { Schedule, Session } from '../models/Schedule'
+import SessionListItem from './SessionListItem'
+import { connect } from '../data/connect'
+import { addFavorite, removeFavorite } from '../data/sessions/sessions.actions'
 
 interface OwnProps {
-  schedule: Schedule;
-  listType: 'all' | 'favorites';
-  hide: boolean;
+  schedule: Schedule
+  listType: 'all' | 'favorites'
+  hide: boolean
 }
 
 interface StateProps {
-  favoriteSessions: number[];
+  favoriteSessions: number[]
 }
 
 interface DispatchProps {
-  addFavorite: typeof addFavorite;
-  removeFavorite: typeof removeFavorite;
+  addFavorite: typeof addFavorite
+  removeFavorite: typeof removeFavorite
 }
 
-interface SessionListProps extends OwnProps, StateProps, DispatchProps { };
+interface SessionListProps extends OwnProps, StateProps, DispatchProps { }
 
-const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, favoriteSessions, hide, schedule, listType }) => {
+const SessionList: React.FC<SessionListProps> = ({
+  addFavorite,
+  removeFavorite,
+  favoriteSessions,
+  hide,
+  schedule,
+  listType
+}) => {
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertHeader, setAlertHeader] = useState('');
-  const [alertButtons, setAlertButtons] = useState<(AlertButton | string)[]>([]);
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertHeader, setAlertHeader] = useState('')
+  const [alertButtons, setAlertButtons] = useState<(AlertButton | string)[]>([])
 
   const handleShowAlert = useCallback((header: string, buttons: AlertButton[]) => {
-    setAlertHeader(header);
-    setAlertButtons(buttons);
-    setShowAlert(true);
-  }, []);
+    setAlertHeader(header)
+    setAlertButtons(buttons)
+    setShowAlert(true)
+  }, [])
 
   if (schedule.groups.length === 0 && !hide) {
     return (
@@ -42,7 +49,7 @@ const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, 
           No Sessions Found
         </IonListHeader>
       </IonList>
-    );
+    )
   }
 
   return (
@@ -76,8 +83,8 @@ const SessionList: React.FC<SessionListProps> = ({ addFavorite, removeFavorite, 
         onDidDismiss={() => setShowAlert(false)}
       ></IonAlert>
     </>
-  );
-};
+  )
+}
 
 export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
@@ -88,4 +95,4 @@ export default connect<OwnProps, StateProps, DispatchProps>({
     removeFavorite
   }),
   component: SessionList
-});
+})
