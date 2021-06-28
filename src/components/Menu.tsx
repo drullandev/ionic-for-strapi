@@ -67,6 +67,10 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
       ))
   }
 
+  function renderByPermission(){
+    
+  }
+
   return (
     <IonMenu type='overlay' disabled={!menuEnabled} contentId='main'>
 
@@ -87,16 +91,21 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
             : renderlistItems(routes.loggedOutPages)
           }
 
-          <IonItem>
+          {/*<IonItem>
             <IonIcon slot='start' icon={moonOutline}></IonIcon>
             <IonLabel>Dark Mode</IonLabel>
             <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
           </IonItem>
 
+          <IonItem>
+            <IonIcon slot='start' icon={personAdd}></IonIcon>
+            <IonLabel>Select language</IonLabel>
+          </IonItem>*/}
+
           {/*<IonItem button onClick={() => { history.push('/tutorial') }}>
             <IonIcon slot='start' icon={hammer} />
             Show Tutorial
-        </IonItem>*/}
+          </IonItem>*/}
           
         </IonList>
 

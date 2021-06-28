@@ -1,8 +1,11 @@
-//import * as MyConst from './static/constants'
-import React, { useEffect } from 'react'
+import * as MyConst from './static/constants'
+import * as MyUtils from './util/my-utils'
+
+import React, { useEffect, useState } from 'react'
 import { Route } from 'react-router-dom'
-import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
+import { IonApp, IonRouterOutlet, IonSplitPane, IonLoading, } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
+import axios from 'axios'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -27,7 +30,8 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setUsername, loadUserData } from './data/user/user.actions'
+import { setIsLoggedIn, setUsername, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
+import { getSettings } from './data/strapi/app.calls'
 
 /* Pages */
 import Login from './pages/Login/Login'
@@ -73,6 +77,8 @@ interface DispatchProps {
   setUsername:    typeof setUsername
   loadConfData:   typeof loadConfData
   loadUserData:   typeof loadUserData
+  setDarkMode:    typeof setDarkMode
+  setAppIcon:     typeof setAppIcon
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -83,14 +89,50 @@ const IonicApp: React.FC<IonicAppProps> = ({
   setIsLoggedIn,
   setUsername,
   loadConfData,
-  loadUserData
+  loadUserData,
+  setDarkMode,
+  setAppIcon
 }) => {
 
+  const [ showLoading,   setShowLoading] = useState(false)
+  //const [ settingsUpdate, setSettingsUpdate] = useState('')
+
   useEffect(() => {
+
+    setShowLoading(true)
+
     loadUserData()
-    loadConfData()
+
+    loadConfData()    
+
+    getSettings().then(res => {
+      console.log(res)
+      parseSettings(res)
+    })
+    //
+
+    setShowLoading(false)
+
     // eslint-disable-next-line
-  }, [])
+  },[])
+
+  function parseSettings(response: any){
+    response.data.status.forEach((elem:any) => {
+      switch(elem.key){
+        case 'Dark Mode - Default' : {
+          setDarkMode(elem.value)
+        }
+      }
+    })
+    response.data.app_images.forEach((elem:any) => {
+      switch(elem.name){
+        case 'app-icon' : {
+          console.log(elem)
+          setAppIcon(MyConst.RestAPI+elem.image.url)
+        }
+      }
+    })
+  }
 
   return (
     <IonApp className={darkMode ? 'dark-theme' : ''}>
@@ -110,6 +152,15 @@ const IonicApp: React.FC<IonicAppProps> = ({
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>
+
+      <IonLoading
+        cssClass='my-custom-class'
+        isOpen={showLoading}
+        onDidDismiss={() => setShowLoading(false)}
+        message='Loading settings...'
+        duration={5000}
+      />
+
     </IonApp>
   )
 }
@@ -121,6 +172,6 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
     darkMode: state.user.darkMode,
     schedule: state.data.schedule
   }),
-  mapDispatchToProps: { loadConfData, loadUserData, setIsLoggedIn, setUsername },
+  mapDispatchToProps: { loadConfData, loadUserData, setIsLoggedIn, setDarkMode, setUsername, setAppIcon },
   component: IonicApp
 })

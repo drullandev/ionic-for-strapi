@@ -1,18 +1,18 @@
-import { Plugins } from '@capacitor/core'
-
 import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 
+import { Plugins } from '@capacitor/core'
+import { SlowBuffer } from 'buffer'
 const { Storage } = Plugins
 
 const dataUrl = '/assets/data/data.json'
 const locationsUrl = '/assets/data/locations.json'
 
-
 export const getConfData = async () => {
 
   console.log('You are in dataApi.getConfData')
+
   const response = await Promise.all([
     fetch(dataUrl),
     fetch(locationsUrl)
@@ -25,15 +25,9 @@ export const getConfData = async () => {
   const locations = await response[1].json() as Location[]
   const allTracks = sessions
 
-
-  
-
     .reduce((all, session) => all.concat(session.tracks), [] as string[])
     .filter((trackName, index, array) => array.indexOf(trackName) === index)
     .sort()
-
-
-
 
   const data = {
     schedule,
@@ -44,10 +38,7 @@ export const getConfData = async () => {
     filteredTracks: [...allTracks]
   }
 
-
-
   return data
-
 
 }
 
@@ -71,39 +62,44 @@ export const getUserData = async () => {
     username
   }
 
+  console.log(data)
+
   return data
 
 }
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
+  console.log('You are in dataApi.setIsLoggedInData '+isLoggedIn)
   await Storage.set({ key: 'hasLoggedIn', value: JSON.stringify(isLoggedIn) })
 }
 
-export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  await Storage.set({ key: 'hasSeenTutorial', value: JSON.stringify(hasSeenTutorial) })
-}
-
 export const setUsernameData = async (username?: string) => {
-
-  if (!username) {
-    await Storage.remove({ key: 'username' })
-  } else {
-    await Storage.set({ key: 'username', value: username })
-  }
-
+  console.log('You are in dataApi.setUsernameData '+username)
+  switchStorage('username', username)
 }
 
 export const setEmailData = async (email?: string) => {
+  console.log('You are in dataApi.setEmailData '+email)
+  switchStorage('email', email)
+}
 
-  if (!email) {
-    await Storage.remove({ key: 'email' })
+export const switchStorage = async (key: string, value: any) => {
+  if (!value) {
+    await Storage.remove({ key: key })
   } else {
-    await Storage.set({ key: 'email', value: email })
-  }
-  
+    await Storage.set({ key: key, value: value })
+  }  
+}
+
+export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
+  console.log('You are in dataApi.setEmailData '+setHasSeenTutorialData)
+  await Storage.set({ key: 'hasSeenTutorial', value: JSON.stringify(hasSeenTutorial) })
 }
 
 function parseSessions(schedule: Schedule) {
+
+  console.log('You are in dataApi.parseSessions:: ')
+  console.log(schedule)
 
   const sessions: Session[] = []
 
