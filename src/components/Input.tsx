@@ -22,7 +22,7 @@ const Input: FC<InputProps> = ({
       <IonItem>
         {label && <IonLabel position='floating'>{label}</IonLabel>}
         <Controller
-          as={component ?? <IonInput />}
+          as={component}
           name={name}
           control={control}
           onChangeName='onIonChange'

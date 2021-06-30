@@ -55,8 +55,8 @@ const routes = [
   { path:'/login',    component: Login },
   { path:'/signup',   component: Signup },
   { path:'/recover',  component: Recover },
-  { path:'/support',  component: Support },
-  { path:'/tutorial', component: Tutorial },
+  { path:'/support',  component: Support },/**/
+  { path:'/tutorial', component: Tutorial },/**/
 ]
 
 const App: React.FC = () => {

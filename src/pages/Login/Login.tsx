@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { setIsLoggedIn, setUsername, setDarkMode } from '../../data/user/user.actions'
 import { loginUser } from '../../data/user/user.calls'
 import { connect } from '../../data/connect'
-import Input, { InputProps } from "../../components/Input"
+import Input, { InputProps } from '../../components/Input'
 
 import { Controller, useForm } from 'react-hook-form'
 import { object, string } from 'yup'
@@ -147,14 +147,19 @@ const Login: React.FC<LoginProps> = ({
 
   const formFields: InputProps[] = [
     {
-      label: "Email",
-      name: "email",
-      component: <IonInput type="email" />,
+      label: 'Email',
+      name: 'email',
+      component: <IonInput type='email' />,
     },
     {
-      label: "Password",
-      name: "password",
-      component: <IonInput type="password" clearOnEdit={false} />,
+      label: 'Password',
+      name: 'password',
+      component: <IonInput type='password' clearOnEdit={false} />,
+    },
+    {
+      label: 'I agree to the terms of service',
+      name: 'terms',
+      component: <IonCheckbox slot='start' />,
     }
   ]
 
@@ -169,6 +174,7 @@ const Login: React.FC<LoginProps> = ({
           <IonTitle>{t('Login')}</IonTitle>
         </IonToolbar>
       </IonHeader>
+      
       <IonContent>
 
         <IonItem className='login-logo'>
@@ -178,58 +184,19 @@ const Login: React.FC<LoginProps> = ({
         <form noValidate onSubmit={handleSubmit(submitLogin)}>
 
           <IonList>
-
             {formFields.map((field, index) => (
               <IonItem>
-                <IonLabel position='stacked' color='primary'>{t(field.label)}</IonLabel>
-                <IonInput
+                <IonLabel
+                  position='stacked'
+                  color='primary'>{t(field.label)}</IonLabel>
+                <Input
                   {...field}
-                  control={control}
                   key={index}
+                  control={control}
+                  slot='start'
                 />
               </IonItem>
             ))}
-
-            <IonItem>
-              <IonLabel>{t('I agree to the terms of service')}</IonLabel>
-              <IonCheckbox slot="start" />
-            </IonItem>
-
-            <IonItem>
-              <IonLabel position='stacked' color='primary'>{t('Email')}</IonLabel>
-              <IonInput
-                name='email'
-                type='email'
-                value={email}
-                spellCheck={false}
-                autocapitalize='off'
-                onIonChange={e => auditEmail(e.detail.value)}
-              >
-              </IonInput>              
-            </IonItem>
-
-            <IonText color='danger'>
-              <IonLabel className='ion-padding-start'>{emailError}</IonLabel>
-            </IonText>
-
-            <IonItem>
-              <IonLabel position='stacked' color='primary'>{t('Password')}</IonLabel>
-              <IonInput
-                name='password'
-                type='password'
-                value={password}
-                spellCheck={false}
-                autocapitalize='off'
-                onIonChange={e => auditPassword(e.detail.value!)}
-                required
-              >
-              </IonInput>
-            </IonItem>
-
-            <IonText color='danger'>
-              <IonLabel className='ion-padding-start'>{passwordError}</IonLabel>
-            </IonText>
-
           </IonList>
 
           <IonRow>
