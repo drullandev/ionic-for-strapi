@@ -1,13 +1,13 @@
-import React, { FC } from "react";
-import { IonItem, IonLabel, IonInput, IonText } from "@ionic/react";
-import { Controller, Control, NestDataObject, FieldError } from "react-hook-form";
+import React, { FC } from 'react'
+import { IonItem, IonLabel, IonInput, IonText } from '@ionic/react'
+import { Controller, Control, NestDataObject, FieldError } from 'react-hook-form'
 
 export interface InputProps {
-  name: string;
-  control?: Control;
-  label?: string;
-  component?: JSX.Element;
-  errors?: NestDataObject<Record<string, any>, FieldError>;
+  name: string
+  control?: Control
+  label?: string
+  component?: JSX.Element
+  errors?: NestDataObject<Record<string, any>, FieldError>
 }
 
 const Input: FC<InputProps> = ({
@@ -20,21 +20,21 @@ const Input: FC<InputProps> = ({
   return (
     <>
       <IonItem>
-        {label && <IonLabel position="floating">{label}</IonLabel>}
+        {label && <IonLabel position='floating'>{label}</IonLabel>}
         <Controller
           as={component ?? <IonInput />}
           name={name}
           control={control}
-          onChangeName="onIonChange"
+          onChangeName='onIonChange'
         />
       </IonItem>
       {errors && errors[name] && (
-        <IonText color="danger" className="ion-padding-start">
-          <small>{errors[name].message}</small>
+        <IonText color='danger' className='ion-padding-start'>
+          <IonLabel>{errors[name].message}</IonLabel>
         </IonText>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Input;
+export default Input
