@@ -21,12 +21,12 @@ const Input: FC<InputProps> = ({
     <>
       <IonItem>
         {label && <IonLabel position='floating'>{label}</IonLabel>}
-        <Controller
+        {/*<Controller
           as={component}
           name={name}
           control={control}
           onChangeName='onIonChange'
-        />
+        />*/}
       </IonItem>
       {errors && errors[name] && (
         <IonText color='danger' className='ion-padding-start'>

@@ -9,6 +9,7 @@ import { setIsLoggedIn, setUsername, setDarkMode } from '../../data/user/user.ac
 import { loginUser } from '../../data/user/user.calls'
 import { connect } from '../../data/connect'
 import Input, { InputProps } from '../../components/Input'
+import Header from '../../components/Header'
 
 import { Controller, useForm } from 'react-hook-form'
 import { object, string } from 'yup'
@@ -166,14 +167,7 @@ const Login: React.FC<LoginProps> = ({
   return (
     <IonPage id='login-page'>
 
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot='start'>
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-          <IonTitle>{t('Login')}</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <Header/>
       
       <IonContent>
 

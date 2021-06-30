@@ -5,6 +5,9 @@ import { Route } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane, IonLoading, } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 
+import { gql, useQuery } from '@apollo/client'
+
+
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
 
@@ -47,6 +50,25 @@ import RedirectToLogin from './components/RedirectToLogin'
 
 /* Pages models */
 import { Schedule } from './models/Schedule'
+
+/*
+const client = new ApolloClient({
+  uri: MyConst.RestAPI,
+  cache: new InMemoryCache()
+});
+
+client
+  .query({
+    query: gql`
+      query GetRates {
+        rates(currency: "USD") {
+          currency
+        }
+      }
+    `
+  })
+  .then(result => console.log(result));
+*/
 
 /* Page Routes : default : priorized! */
 const routes = [

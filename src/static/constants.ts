@@ -1,6 +1,6 @@
 
 // MAIN DEFAULTS !!
-import { logIn, logOut, person, personAdd } from 'ionicons/icons'
+import { logIn, logOut, person, personAdd, calendarOutline, peopleOutline, mapOutline, informationCircleOutline, help} from 'ionicons/icons'
 
     // The default language for the app
     export const DefaultLanguage = 'en'
@@ -29,11 +29,11 @@ export const TUTORIAL = '/tutorial'
 
 export const APP_ROUTES = {
     appPages: [
-        //{ title: 'Schedule', path: MyConst.HOME, icon: calendarOutline },
-        //{ title: 'Speakers', path: '/tabs/speakers', icon: peopleOutline },
-        //{ title: 'Map', path: '/tabs/map', icon: mapOutline },
-        //{ title: 'About', path: '/tabs/about', icon: informationCircleOutline },
-        //{ title: 'Support', path: '/support', icon: help },
+        { title: 'Schedule', path: HOME, icon: calendarOutline },
+        { title: 'Speakers', path: '/tabs/speakers', icon: peopleOutline },
+        { title: 'Map', path: '/tabs/map', icon: mapOutline },
+        { title: 'About', path: '/tabs/about', icon: informationCircleOutline },
+        { title: 'Support', path: '/support', icon: help },
     ],
     loggedInPages: [
         { title: 'Logout', path: '/logout', icon: logOut },
