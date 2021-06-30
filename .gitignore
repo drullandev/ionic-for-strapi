@@ -81,3 +81,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .stencil/
+
+package-lock.json
+
+yarn.lock
