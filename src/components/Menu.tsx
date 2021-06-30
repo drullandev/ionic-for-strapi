@@ -1,33 +1,25 @@
-import * as MyConst from '../static/constants'
 import React from 'react'
 import { RouteComponentProps, withRouter, useLocation } from 'react-router'
-import { useTranslation } from 'react-i18next'
 
-import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react'
-import { calendarOutline, hammer, moonOutline, help, informationCircleOutline, logIn, logOut, mapOutline, peopleOutline, person, personAdd } from 'ionicons/icons'
+import * as MyConst from '../static/constants'
+
+import { useTranslation } from 'react-i18next'
+import {
+  IonContent,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonMenu,
+  IonMenuToggle,
+  //IonToggle
+} from '@ionic/react'
 
 import { connect } from '../data/connect'
 import { setDarkMode } from '../data/user/user.actions'
 
 import './Menu.css'
-
-const routes = {
-  appPages: [
-    //{ title: 'Schedule', path: '/tabs/schedule', icon: calendarOutline },
-    //{ title: 'Speakers', path: '/tabs/speakers', icon: peopleOutline },
-    //{ title: 'Map', path: '/tabs/map', icon: mapOutline },
-    //{ title: 'About', path: '/tabs/about', icon: informationCircleOutline },
-    //{ title: 'Support', path: '/support', icon: help },
-  ],
-  loggedInPages: [
-    { title: 'Logout', path: '/logout', icon: logOut },
-    { title: 'Account', path: '/account', icon: person },
-  ],
-  loggedOutPages: [
-    { title: 'Login', path: '/login', icon: logIn },
-    { title: 'Signup', path: '/signup', icon: personAdd }
-  ]
-}
 
 interface Pages {
   title: string,
@@ -59,16 +51,17 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
       .filter(route => !!route.path)
       .map(p => (
         <IonMenuToggle key={p.title} auto-hide='false'>
-          <IonItem detail={false} routerLink={p.path} routerDirection='none' className={location.pathname.startsWith(p.path) ? 'selected' : undefined}>
+          <IonItem
+            detail={false}
+            routerLink={p.path}
+            routerDirection='none'
+            className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
+          >
             <IonIcon slot='start' icon={p.icon} />
-            <IonLabel>{p.title}</IonLabel>
+            <IonLabel>{t(p.title)}</IonLabel>
           </IonItem>
         </IonMenuToggle>
       ))
-  }
-
-  function renderByPermission(){
-    
   }
 
   return (
@@ -77,9 +70,9 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
       <IonContent forceOverscroll={false}>
 
         <IonList lines='none'>
-          {routes.appPages.length > 0 && <IonListHeader>{t('Main menu')}</IonListHeader>}
+          {MyConst.APP_ROUTES.appPages.length > 0 && <IonListHeader>{t('Main menu')}</IonListHeader>}
           {/*<IonLabel>{username}</IonLabel>*/}
-          {renderlistItems(routes.appPages)}
+          {renderlistItems(MyConst.APP_ROUTES.appPages)}
         </IonList>
 
         <IonList lines='none'>
@@ -87,8 +80,8 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
           <IonListHeader>Account</IonListHeader>
 
           {isAuthenticated 
-            ? renderlistItems(routes.loggedInPages) 
-            : renderlistItems(routes.loggedOutPages)
+            ? renderlistItems(MyConst.APP_ROUTES.loggedInPages) 
+            : renderlistItems(MyConst.APP_ROUTES.loggedOutPages)
           }
 
           {/*<IonItem>

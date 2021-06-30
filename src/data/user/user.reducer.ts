@@ -3,7 +3,8 @@ import { UserState } from './user.state'
 
 export function userReducer(state: UserState, action: UserActions): UserState {
 
-  console.log('settign reducer '+action.type)
+  console.log('reducer.'+action.type)
+  //console.log(action)
 
   switch (action.type) {
     case 'set-user-data':         return { ...state, ...action.data }    

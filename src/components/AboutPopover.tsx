@@ -1,17 +1,17 @@
 import * as MyConst from '../static/constants'
-import React from 'react';
-import { IonList, IonItem, IonLabel } from '@ionic/react';
+import React from 'react'
+import { IonList, IonItem, IonLabel } from '@ionic/react'
 
 interface AboutPopoverProps {
-  dismiss: () => void;
-};
+  dismiss: () => void
+}
 
 const AboutPopover: React.FC<AboutPopoverProps> = ({dismiss}) => {
 
   const close = (url: string) => {
-    window.open(url, '_blank');
-    dismiss();
-  };
+    window.open(url, '_blank')
+    dismiss()
+  }
 
   return (
     <IonList>
@@ -34,4 +34,4 @@ const AboutPopover: React.FC<AboutPopoverProps> = ({dismiss}) => {
   )
 }
 
-export default AboutPopover;
+export default AboutPopover

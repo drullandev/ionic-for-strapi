@@ -1,8 +1,8 @@
+import { Plugins } from '@capacitor/core'
 import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 
-import { Plugins } from '@capacitor/core'
 import { SlowBuffer } from 'buffer'
 const { Storage } = Plugins
 
@@ -11,7 +11,7 @@ const locationsUrl = '/assets/data/locations.json'
 
 export const getConfData = async () => {
 
-  console.log('You are in dataApi.getConfData')
+  console.log('dataApi.getConfData')
 
   const response = await Promise.all([
     fetch(dataUrl),
@@ -23,13 +23,13 @@ export const getConfData = async () => {
   const sessions = parseSessions(schedule)
   const speakers = responseData.speakers as Speaker[]
   const locations = await response[1].json() as Location[]
-  const allTracks = sessions
 
+  const allTracks = sessions
     .reduce((all, session) => all.concat(session.tracks), [] as string[])
     .filter((trackName, index, array) => array.indexOf(trackName) === index)
     .sort()
 
-  const data = {
+  return {
     schedule,
     sessions,
     locations,
@@ -38,18 +38,17 @@ export const getConfData = async () => {
     filteredTracks: [...allTracks]
   }
 
-  return data
-
 }
 
 export const getUserData = async () => {
 
-  console.log('You are in dataApi.getUserData')
+  console.log('dataApi.getUserData')
 
   const response = await Promise.all([
     Storage.get({ key: 'hasLoggedIn' }),
     Storage.get({ key: 'hasSeenTutorial' }),
-    Storage.get({ key: 'username' })
+    Storage.get({ key: 'username' }),
+    Storage.get({ key: 'email' }),
   ])
 
   const isLoggedin = await response[0].value === 'true'
@@ -69,17 +68,17 @@ export const getUserData = async () => {
 }
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  console.log('You are in dataApi.setIsLoggedInData '+isLoggedIn)
+  console.log('dataApi.setIsLoggedInData::'+isLoggedIn)
   await Storage.set({ key: 'hasLoggedIn', value: JSON.stringify(isLoggedIn) })
 }
 
 export const setUsernameData = async (username?: string) => {
-  console.log('You are in dataApi.setUsernameData '+username)
+  console.log('dataApi.setUsernameData::'+username)
   switchStorage('username', username)
 }
 
 export const setEmailData = async (email?: string) => {
-  console.log('You are in dataApi.setEmailData '+email)
+  console.log('dataApi.setEmailData::'+email)
   switchStorage('email', email)
 }
 
@@ -92,14 +91,14 @@ export const switchStorage = async (key: string, value: any) => {
 }
 
 export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  console.log('You are in dataApi.setEmailData '+setHasSeenTutorialData)
+  console.log('dataApi.setEmailData::'+setHasSeenTutorialData)
   await Storage.set({ key: 'hasSeenTutorial', value: JSON.stringify(hasSeenTutorial) })
 }
 
 function parseSessions(schedule: Schedule) {
 
-  console.log('You are in dataApi.parseSessions:: ')
-  console.log(schedule)
+  console.log('dataApi.parseSessions::')
+  //console.log(schedule)
 
   const sessions: Session[] = []
 

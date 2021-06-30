@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUs
 
       try {
 
-        const { data } = await axios.post(MyConst.RestAPI+'admin/login', {
+        const { data } = await axios.post(MyConst.RestAPI+'/admin/login', {
           email: 'obscure@doe.com',
           password: 'Qwer1234'
         })
@@ -72,7 +72,7 @@ const Login: React.FC<LoginProps> = ({setIsLoggedIn, history, setUsername: setUs
 
         console.log(data)
 
-        /*await axios.post(MyConst.RestAPI+'auth/local/register', {
+        /*await axios.post(MyConst.RestAPI+'/auth/local/register', {
           'username':         firstName,
           'email':            email,
           'confirmed':        false,

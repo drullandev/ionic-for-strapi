@@ -1,12 +1,13 @@
-import React, { FC } from "react"
-import { IonItem, IonLabel, IonInput } from "@ionic/react"
-import { Controller, Control } from "react-hook-form"
+import React, { FC } from "react";
+import { IonItem, IonLabel, IonInput, IonText } from "@ionic/react";
+import { Controller, Control, NestDataObject, FieldError } from "react-hook-form";
 
 export interface InputProps {
-  name: string
-  control?: Control
-  label?: string
-  component?: JSX.Element
+  name: string;
+  control?: Control;
+  label?: string;
+  component?: JSX.Element;
+  errors?: NestDataObject<Record<string, any>, FieldError>;
 }
 
 const Input: FC<InputProps> = ({
@@ -14,22 +15,26 @@ const Input: FC<InputProps> = ({
   control,
   component,
   label,
+  errors,
 }) => {
   return (
     <>
       <IonItem>
-        {label && (
-          <IonLabel position="floating">{label}</IonLabel>
-        )}
-        {/*<Controller
+        {label && <IonLabel position="floating">{label}</IonLabel>}
+        <Controller
           as={component ?? <IonInput />}
           name={name}
           control={control}
           onChangeName="onIonChange"
-        />*/}
+        />
       </IonItem>
+      {errors && errors[name] && (
+        <IonText color="danger" className="ion-padding-start">
+          <small>{errors[name].message}</small>
+        </IonText>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default Input
+export default Input;

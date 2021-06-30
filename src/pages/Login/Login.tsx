@@ -1,17 +1,17 @@
 import { validateEmail, catchIt } from '../../util/my-utils'
 
 import React, { useState } from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText, IonToast, IonLoading } from '@ionic/react'
+import { IonHeader, IonCheckbox, IonToolbar, IonTitle, IonContent, IonPage, IonImg, IonButtons, IonMenuButton, IonRow, IonCol, IonButton, IonList, IonItem, IonLabel, IonInput, IonText, IonToast, IonLoading } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import { useForm } from "react-hook-form"
-import axios from 'axios'
-
-//import Input, { InputProps } from "../../components/Input"
 
 import { setIsLoggedIn, setUsername, setDarkMode } from '../../data/user/user.actions'
 import { loginUser } from '../../data/user/user.calls'
 import { connect } from '../../data/connect'
+import Input, { InputProps } from "../../components/Input"
+
+import { Controller, useForm } from 'react-hook-form'
+import { object, string } from 'yup'
 
 import './Login.scss'
 
@@ -53,6 +53,15 @@ const Login: React.FC<LoginProps> = ({
   const [ passwordError, setPasswordError] = useState('')
   
   const [ formSubmitted, setFormSubmitted] = useState(false)
+
+  const validationSchema = object().shape({
+    email: string().required().email(),
+    password: string().required().min(6),
+  })
+
+  const { control, handleSubmit } = useForm({
+    validationSchema,
+  })
 
   // Toast stuff
   const [ showToast,     setShowToast]     = useState(false)
@@ -136,6 +145,19 @@ const Login: React.FC<LoginProps> = ({
     }, delay)
   }
 
+  const formFields: InputProps[] = [
+    {
+      label: "Email",
+      name: "email",
+      component: <IonInput type="email" />,
+    },
+    {
+      label: "Password",
+      name: "password",
+      component: <IonInput type="password" clearOnEdit={false} />,
+    }
+  ]
+
   return (
     <IonPage id='login-page'>
 
@@ -149,13 +171,29 @@ const Login: React.FC<LoginProps> = ({
       </IonHeader>
       <IonContent>
 
-        <div className='login-logo'>
-          <img src={appIcon} alt={appIconAlt} />
-        </div>
+        <IonItem className='login-logo'>
+          <IonImg src={appIcon} alt={appIconAlt} />
+        </IonItem>
 
-        <form noValidate onSubmit={(e)=>{submitLogin(e)}}>
+        <form noValidate onSubmit={handleSubmit(submitLogin)}>
 
           <IonList>
+
+            {formFields.map((field, index) => (
+              <IonItem>
+                <IonLabel position='stacked' color='primary'>{t(field.label)}</IonLabel>
+                <IonInput
+                  {...field}
+                  control={control}
+                  key={index}
+                />
+              </IonItem>
+            ))}
+
+            <IonItem>
+              <IonLabel>{t('I agree to the terms of service')}</IonLabel>
+              <IonCheckbox slot="start" />
+            </IonItem>
 
             <IonItem>
               <IonLabel position='stacked' color='primary'>{t('Email')}</IonLabel>
@@ -171,7 +209,7 @@ const Login: React.FC<LoginProps> = ({
             </IonItem>
 
             <IonText color='danger'>
-              <p className='ion-padding-start'>{emailError}</p>
+              <IonLabel className='ion-padding-start'>{emailError}</IonLabel>
             </IonText>
 
             <IonItem>
@@ -189,7 +227,7 @@ const Login: React.FC<LoginProps> = ({
             </IonItem>
 
             <IonText color='danger'>
-              <p className='ion-padding-start'>{passwordError}</p>
+              <IonLabel className='ion-padding-start'>{passwordError}</IonLabel>
             </IonText>
 
           </IonList>
