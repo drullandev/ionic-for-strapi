@@ -13,7 +13,9 @@ const getFavoriteIds = (state: AppState) => state.data.favorites;
 const getSearchText = (state: AppState) => state.data.searchText;
 
 export const getFilteredSchedule = createSelector(
+
   getSchedule, getFilteredTracks,
+
   (schedule, filteredTracks) => {
     const groups: ScheduleGroup[] = [];
     schedule.groups.forEach(group => {
@@ -39,6 +41,7 @@ export const getFilteredSchedule = createSelector(
       groups
     } as Schedule;
   }
+  
 );
 
 export const getSearchedSchedule = createSelector(

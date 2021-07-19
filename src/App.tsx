@@ -34,19 +34,19 @@ import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setUsername, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
 import { getSettings } from './data/strapi/app.calls'
 
-/* Pages */
-import Login from './pages/Login/Login'
-import Signup from './pages/Signup/Signup'
-import Recover from './pages/Recover/Recover'
-import Account from './pages/Account/Account'
-import Tutorial from './pages/Tutorial/Tutorial'
-import Support from './pages/Support/Support'
-import MainTabs from './pages/MainTabs/MainTabs'
+/* Core pages */
+import Login from './pages/core/Login'
+import Signup from './pages/core/Signup'
+import Recover from './pages/core/Recover'
+import Account from './pages/core/Account'
+import Tutorial from './pages/core/Tutorial'
+import Support from './pages/core/Support'
+import MainTabs from './pages/core/MainTabs'
 
 /* Pages components */
-import Menu from './components/Menu'
-import HomeOrTutorial from './components/HomeOrTutorial'
-import RedirectToLogin from './components/RedirectToLogin'
+import Menu from './components/core/Menu'
+import HomeOrTutorial from './components/core/HomeOrTutorial'
+import RedirectToLogin from './components/core/RedirectToLogin'
 
 /* Pages models */
 import { Schedule } from './models/Schedule'
@@ -183,11 +183,11 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <IonRouterOutlet id='main'>
             {/* We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth */}
-            <Route path='/tabs' render={() => <MainTabs />}/>
-            {routes.map((r) => {
-              return <Route path={r.path} component={r.component} exact/>
+            <Route key='main-route' path='/tabs' render={() => <MainTabs />}/>
+            {routes.map((r, index) => {
+              return <Route key={index} path={r.path} component={r.component} exact/>
             })}
-            <Route path='/logout' render={() => {
+            <Route key='main-logout' path='/logout' render={() => {
               return <RedirectToLogin setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
             }}/>
           </IonRouterOutlet>
