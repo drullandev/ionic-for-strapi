@@ -8,7 +8,7 @@ export interface CheckboxChangeEventDetail {
   checked: boolean
 }
 
-const Check: FC<CheckProps> = ({ field, errors, onChange }) => {
+const Check: FC<CheckProps> = ({ field, errors, onChange }: CheckProps) => {
   return (
     <>
       {field.label && <IonLabel slot='start'>{field.label}</IonLabel>}

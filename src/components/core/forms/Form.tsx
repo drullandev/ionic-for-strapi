@@ -3,7 +3,7 @@ import * as MyConst from '../../../static/constants'
 // THIRD PART
 import React, { FC, useState, useEffect } from 'react'
 import { IonList, IonItem, IonRow, IonCol } from '@ionic/react'
-import { useForm } from 'react-hook-form'
+import { useForm, Path, UseFormRegister, SubmitHandler } from "react-hook-form";
 
 // FORM COMPONENTS
 import Input from './Input'
@@ -17,10 +17,10 @@ import { CheckProps } from './interfaces/CheckProps'
 import { ButtonProps } from './interfaces/ButtonProps'
 
 // FORM RENDER
-const Form: FC<FormProps> = ({ slug, submit }) => {
+const Form: FC<FormProps> = ({ name, slug, onSubmit}) => {
 
   const formsOrigin = MyConst.RestAPI+'/forms?slug='
-  const { control, handleSubmit } = useForm()
+  const { register, control, handleSubmit, watch, formState: { errors } } = useForm()
 
   const [formFields, setFormFields] = useState([])
   const [formButtons, setFormButtons] = useState([])
@@ -35,8 +35,12 @@ const Form: FC<FormProps> = ({ slug, submit }) => {
       })
   },[slug])
 
-  function renderInput(settings: InputProps, index: any){     return ( <Input key={index} control={control} {...settings}/> ) }
-  function renderCheckbox(settings: CheckProps, index: any){  return ( <Check key={index} {...settings}/> ) }
+  function renderInput(settings: InputProps, index: any){
+    return ( <Input key={index} {...settings} register={register} /> ) }
+
+  function renderCheckbox(settings: CheckProps, index: any){
+    return ( <Check key={index} {...settings} register={register} control={control} /> ) }
+
   function renderField(settings: any, index: any){
     switch(settings.field.fieldType){
       case 'check': return renderCheckbox(settings, index+'_check')
@@ -57,13 +61,9 @@ const Form: FC<FormProps> = ({ slug, submit }) => {
   }
 
   return ( 
-    <form key={slug} onSubmit={handleSubmit(submit)}>
-      <IonList>
-        {renderFields(formFields)}
-      </IonList>
-      <IonRow> 
-        {renderButtons(formButtons)}
-      </IonRow>
+    <form key={slug} onSubmit={handleSubmit(onSubmit)}>
+      <IonList>{renderFields(formFields)}</IonList>
+      <IonRow>{renderButtons(formButtons)}</IonRow>
     </form>
   )
 

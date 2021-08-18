@@ -42,6 +42,7 @@ import Account from './pages/core/Account'
 import Tutorial from './pages/core/Tutorial'
 import Support from './pages/core/Support'
 import MainTabs from './pages/core/MainTabs'
+import FormTest from './pages/core/FormTest'
 
 /* Pages components */
 import Menu from './components/core/Menu'
@@ -79,6 +80,7 @@ const routes = [
   { path:'/recover',  component: Recover },
   { path:'/support',  component: Support },/**/
   { path:'/tutorial', component: Tutorial },/**/
+  { path:'/formtest', component: FormTest },/**/
 ]
 
 const App: React.FC = () => {

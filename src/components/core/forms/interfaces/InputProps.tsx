@@ -1,15 +1,19 @@
-import { Control, DeepMap, FieldError } from 'react-hook-form'
+import { Path, Control, DeepMap, FieldError, UseFormRegister } from "react-hook-form"
 export interface InputProps {
   field:  {
     fieldType: string,
     type: string,
-    slug:string
+    slug:string,
     name: string,
-    label?: string,
+    label: Path<FormValues>
   },
   rules:{
-    required: string,
-  },
+    id: number,
+    param: string,
+    value: string,
+    boolean?: boolean
+  }[],
+  register: UseFormRegister<FieldValues>,
   control?: Control,
   errors?: DeepMap<Record<string, any>, FieldError>,
 }

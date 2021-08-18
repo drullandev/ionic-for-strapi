@@ -1,5 +1,5 @@
-import { IonContent, IonPage, IonText, IonInput, IonButton, IonCheckbox, IonItem, IonLabel } from '@ionic/react'
-import React, { useState, useEffect } from 'react'
+import { IonContent, IonPage } from '@ionic/react'
+import React from 'react'
 import Form from '../../components/core/forms/Form'
 
 const Login: React.FC = () => {
@@ -11,10 +11,10 @@ const Login: React.FC = () => {
   return (    
     <IonPage>
       <IonContent>        
-        <Form slug='strapi-login-form' submit={submitForm}/>
+        <Form name='login' slug='strapi-login-form' onSubmit={(e: any)=>{submitForm(e)}}/>
       </IonContent>
     </IonPage>
   )
 }
 
-export default Login
+export default Login 

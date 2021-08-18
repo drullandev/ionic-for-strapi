@@ -1,16 +1,28 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { IonLabel, IonInput, IonItem, IonGrid, IonRow } from '@ionic/react'
-import { Controller } from 'react-hook-form'
 import { InputProps } from './interfaces/InputProps'
 import Error from './Error'
+import { Element } from '@stencil/core';
 
-const Input: FC<InputProps> = ({ field, control, errors }) => {
+const Input: FC<InputProps> = ({ field, control, register, errors }: InputProps) => {
+
+  const [ value, setValue ] = useState()
+
+  function handleChange(e:Element){
+    console.log([e, field, control, errors])
+  }  
+
   return (
     <IonGrid>
       {field.label && <IonLabel color="primary">{field.label}</IonLabel>}    
       <IonRow>
-        <IonInput name={field.slug} type={field.type}
-          onIonChange={(e: any) => { console.log(e) }}
+        <IonInput
+          {...register(field.label)}
+          type={field.type}
+          name={field.slug}
+          value={value}
+          register={register}
+          onIonChange={(e: any) => { handleChange(e) }}
         />
       </IonRow>
       <Error name={field.name+'_error'} errors={errors}/>
