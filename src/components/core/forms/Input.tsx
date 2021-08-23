@@ -1,32 +1,49 @@
-import React, { FC, useState } from 'react'
-import { IonLabel, IonInput, IonItem, IonGrid, IonRow } from '@ionic/react'
-import { InputProps } from './interfaces/InputProps'
-import Error from './Error'
-import { Element } from '@stencil/core';
+import React, { FC } from 'react'
+import { IonItem, IonLabel, IonInput, IonText } from '@ionic/react'
+import {
+  Controller,
+  Control,
+  NestDataObject,
+  FieldError,
+} from 'react-hook-form'
 
-const Input: FC<InputProps> = ({ field, control, register, errors }: InputProps) => {
+export interface InputProps {
+  name: string
+  control?: Control
+  label?: string
+  component?: JSX.Element
+  errors?: NestDataObject<Record<string, any>, FieldError>
+}
 
-  const [ value, setValue ] = useState()
-
-  function handleChange(e:Element){
-    console.log([e, field, control, errors])
-  }  
-
+const Input: FC<InputProps> = ({ name, control, component, label, errors }) => {
   return (
-    <IonGrid>
-      {field.label && <IonLabel color="primary">{field.label}</IonLabel>}    
-      <IonRow>
-        <IonInput
-          {...register(field.label)}
-          type={field.type}
-          name={field.slug}
-          value={value}
-          register={register}
-          onIonChange={(e: any) => { handleChange(e) }}
+    <>
+      <IonItem>
+        {label && <IonLabel position='floating'>{label}</IonLabel>}
+        <Controller
+          as={
+            component ? component : (
+              <IonInput
+                aria-invalid={errors && errors[name] ? 'true' : 'false'}
+                aria-describedby={`${name}Error`}
+              />
+            )
+          }
+          name={name}
+          control={control}
+          onChangeName='onIonChange'
         />
-      </IonRow>
-      <Error name={field.name+'_error'} errors={errors}/>
-    </IonGrid>
+      </IonItem>
+      {errors && errors[name] && (
+        <IonText color='danger' className='ion-padding-start'>
+          <small>
+            <span role='alert' id={`${name}Error`}>
+              {errors[name].message}
+            </span>
+          </small>
+        </IonText>
+      )}
+    </>
   )
 }
 
