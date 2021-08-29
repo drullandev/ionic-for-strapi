@@ -1,6 +1,6 @@
-import { combineReducers } from './combineReducers';
-import { sessionsReducer } from './sessions/sessions.reducer';
-import { userReducer } from './user/user.reducer';
+import { combineReducers } from './combineReducers'
+import { sessionsReducer } from './sessions/sessions.reducer'
+import { userReducer } from './user/user.reducer'
 
 export const initialState: AppState = {
   data: {
@@ -12,20 +12,21 @@ export const initialState: AppState = {
     allTracks: [],
     filteredTracks: [],
     mapCenterId: 0,
+    menuEnabled: true,
     loading: false,
-    menuEnabled: true
   },
   user: {
-    hasSeenTutorial: false,
+    email: '',
     darkMode: false,
     isLoggedin: false,
-    loading: false
+    hasSeenTutorial: false,
+    loading: false,
   }
-};
+}
 
 export const reducers = combineReducers({
   data: sessionsReducer,
   user: userReducer
-});
+})
 
-export type AppState = ReturnType<typeof reducers>;
+export type AppState = ReturnType<typeof reducers>

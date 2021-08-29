@@ -21,6 +21,8 @@ export const RestAPI = 'http://'+MyIP+':1337'
 export const RestStorage = RestAPI
 export const PHOTO_STORAGE = RestAPI + '/uploads'
 
+export const formsOrigin = RestAPI+'/forms?slug='
+
 
 // OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
 

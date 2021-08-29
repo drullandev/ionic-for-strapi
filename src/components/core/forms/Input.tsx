@@ -19,16 +19,12 @@ const Input: FC<InputProps> = ({ name, control, component, label, errors }) => {
   return (
     <>
       <IonItem>
-        {label && <IonLabel position='floating'>{label}</IonLabel>}
-        <Controller
-          as={
-            component ? component : (
-              <IonInput
-                aria-invalid={errors && errors[name] ? 'true' : 'false'}
-                aria-describedby={`${name}Error`}
-              />
-            )
-          }
+        <Controller as={ component ? component : (
+            <IonInput
+              aria-invalid={errors && errors[name] ? 'true' : 'false'}
+              aria-describedby={`${name}Error`}
+            />
+          )}
           name={name}
           control={control}
           onChangeName='onIonChange'

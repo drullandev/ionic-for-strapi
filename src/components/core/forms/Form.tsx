@@ -1,49 +1,47 @@
 import * as MyConst from '../../../static/constants'
-import {
-  IonContent,
-  IonPage,
-  IonText,
-  IonInput,
-  IonButton,
-  IonCheckbox,
-  IonItem,
-  IonLabel,
-} from '@ionic/react'
+import { IonContent, IonPage, IonText, IonInput, IonGrid, IonRow, IonButton, IonCheckbox, IonCol, IonLabel } from '@ionic/react'
 import React, { FC, useState, useEffect } from 'react'
 
+import '../styles/Form.css'
+
 // FORM COMPONENTS
-import Input from './Input'
-import Check from './Check'
+import Field from './Field'
 import Button from './Button'
 
 // FORM INTERFACES
 import { FormProps } from './interfaces/FormProps'
-import { InputProps } from './interfaces/InputProps'
-import { CheckProps } from './interfaces/CheckProps'
 import { ButtonProps } from './interfaces/ButtonProps'
+
+import { getForm } from '../../../data/strapi/app.calls'
 
 // ABOUT FORMS VALIDATION 
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-const formsOrigin = MyConst.RestAPI+'/forms?slug='
-
 const Form: FC<FormProps> = ({slug}) => {
 
+  //const [ form, setForm ] = useState({ fields: [], buttons: [], validation: {} })
+
+  // Form Components settings...
   const [ formFields, setFormFields ] = useState([])
-  const [ formValidation, setFormValidation ] = useState<ObjectShape>({})   
   const [ formButtons, setFormButtons ] = useState([])
+  
+  // Form validation conditions...
+  const [ formValidation, setFormValidation ] = useState<ObjectShape>({})   
   const validationSchema = yup.object().shape(formValidation)
-  const { control, handleSubmit, errors } = useForm({validationSchema})
+  const { register, control, handleSubmit, errors } = useForm({validationSchema})
+
+  console.log(getForm)
+
   // Recovering the form parameters...
   useEffect(() => {
-    fetch(formsOrigin+slug)
+    fetch(MyConst.formsOrigin+slug)
       .then(res=>res.json())
       .then(data=>{
         if(!data[0]) return 
         setFields(data[0].fields)
         getValidation(data[0].fields)
-        //setFormButtons(data[0].buttons)        
+        setButtons(data[0].buttons)
       })
       .catch(error=>console.log(error))
   },[slug])
@@ -55,21 +53,13 @@ const Form: FC<FormProps> = ({slug}) => {
   // SET EACH VALIDATION TO THE TIELD BY RULES
   function fieldValidation(rul:any, rule:any){
     switch(rule.param){
-
-      case 'required':
-        rul = rule.boolean === true 
+      case 'min': rul = rul.min(rule.number); break;
+      case 'max': rul = rul.max(rule.number); break;
+      case 'dfgh':
+          rul = rule.boolean === true 
           ? rul.required()               
           : rul.notRequired()
       break;
-
-      case 'min':
-        rul = rul.min(rule.number)
-      break;
-
-      case 'max':
-        rul = rul.max(rule.number)
-      break;
-
       default: break;
     }
     return rul
@@ -88,14 +78,34 @@ const Form: FC<FormProps> = ({slug}) => {
     setFormFields(f)
   }
 
+  //Preparing fields to buttons loaded propertly
+  function setButtons(buttons: any){
+    var f = []
+    for(let i = 0; i < buttons.length; i++ ){     
+      f.push({
+        button: {
+          name: buttons[i].button.fieldName,
+          label: buttons[i].button.label,
+          type: 'submit',
+          color: 'primary',
+          //label: buttons[i].button.label,
+          //routeLink: buttons[i].route
+        }
+      })
+    }
+    setFormButtons(f)
+  }
+
   function getValidation(fields: any){
+
     var rules = []
     for(let i = 0; i < fields.length; i++ ){
 
-      var type = fields[i].field.fieldType
+      var type = fields[i].field.type
       var rul = 
         type === 'text' ? yup.string() : 
-        type === 'check' ? yup.boolean().oneOf([true],'You must accept the '+fields[i].field.label) :
+        type === 'email' ? yup.string().email() : 
+        type === 'check' ? yup.string().oneOf(['on'],'You must accept the '+fields[i].field.label) :
         type === 'password' ? yup.string() :
         type === 'number' ? yup.number().positive().integer() : yup.string()
 
@@ -105,52 +115,61 @@ const Form: FC<FormProps> = ({slug}) => {
           rul = fieldValidation(rul, rule)        
         }
       }
+
       rules[fields[i].field.label] = rul
+
     }
-
-    var ru = Object.assign(formValidation, rules)    
-    console.log('therules',ru)
-    setFormValidation(ru)
-
+    setFormValidation(Object.assign(formValidation, rules))
   }
 
   function getComponent(field:any){
-    switch(field.field.fieldType){
+    switch(field.field.type){
       case 'check': return renderCheckbox(field)
-      case 'input': default: return renderInput(field)
+      case 'input':
+      default: return renderInput(field)
     }
   }
 
   function renderInput(field:any){
-    return <IonInput type={field.field.fieldType}/>
-  }
-
-  function renderCheckbox(field:any){
     return (
-      <>
-        <IonLabel slot='start'>I agree to the terms of service</IonLabel>
-        <IonCheckbox name={field.field.label} slot="end" />
-      </>
+      <IonInput
+        aria-invalid={errors && errors[field.field.name] ? 'true' : 'false'}
+        aria-describedby={`${field.field.name}Error`}
+        type={field.field.type}/>
     )
   }
 
+  function onChange(val:any){
+    setValue(val)
+  }
 
+  const [value, setValue ] = useState(false)
+  function renderCheckbox(field:any){
+    return <IonCheckbox name={field.field.label}
+      checked={value}
+      onIonChange={({ detail: { checked } }) => onChange(checked)}/>
+  }
 
   return (
     <IonPage>
       <IonContent>
         <div className='ion-padding'>
-          <IonText color='muted'>
-            <h2>Create Account</h2>
-          </IonText>
-
           <form onSubmit={handleSubmit(sendForm)}>
+            <IonText color='muted'>
+              <h2>Create Account</h2>
+            </IonText>
             {formFields.map((field, index) => (
-              <Input {...field} control={control} key={index} errors={errors} />
+              <Field key={index} {...field} control={control} errors={errors} />
             ))}
-            <IonButton expand='block' type='submit' className='ion-margin-top'>
-              Register
-            </IonButton>
+            <IonGrid>
+              <IonRow>
+                {formButtons.map((button:ButtonProps, index: any) => (
+                  <IonCol key={'col-'+index}>
+                    <Button key={'button-'+index} {...button}/>
+                  </IonCol>
+                ))}
+              </IonRow>
+            </IonGrid>
           </form>
         </div>
       </IonContent>

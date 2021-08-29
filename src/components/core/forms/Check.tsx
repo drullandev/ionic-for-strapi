@@ -17,7 +17,6 @@ const Check: FC<CheckProps> = ({ field, errors, onChange }: CheckProps) => {
           console.log(e)
         }}
       />
-      <Error name={field.name} errors={errors}/>
     </>
   )
 }

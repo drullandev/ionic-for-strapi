@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { IonLabel, IonText } from '@ionic/react'
+import { IonText } from '@ionic/react'
 import { ErrorProps } from './interfaces/ErrorProps'
 
 const Error: FC<ErrorProps> = ({ name, errors }) => {
@@ -7,7 +7,11 @@ const Error: FC<ErrorProps> = ({ name, errors }) => {
     <>
       {errors && errors[name] && (
         <IonText color='danger' className='ion-padding-start'>
-          <IonLabel>{errors[name].message}</IonLabel>
+          <small>
+            <span role='alert' id={`error-${name}`}>
+              {errors[name].message}
+            </span>
+          </small>
         </IonText>
       )}
     </>

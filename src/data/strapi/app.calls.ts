@@ -7,6 +7,17 @@ export const getSettings = async () => {
   return axios.get(MyConst.RestAPI+'/settings')  
 }
 
+// Recovering the form parameters...
+export const getForm = async (slug:string) => {
+  console.log('app.calls::getSettings')
+  return axios.get(MyConst.formsOrigin+slug)
+}
+
+
+
+
+
+
 /*export const getSomething = async () => {
 
   const { loading, error, data } = useQuery(gql`

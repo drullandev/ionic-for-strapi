@@ -6,6 +6,7 @@ const Button: FC<ButtonProps> = ({ button }) => {
   return (
     <IonButton
       name={button.name}
+      label={button.label}
       type={button.type ? button.type : 'submit'}
       color={button.color}
       expand='block'
