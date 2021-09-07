@@ -13,7 +13,7 @@ import '../../styles/Account.scss'
 interface OwnProps extends RouteComponentProps { }
 
 interface StateProps {
-  username?: string
+  nickname?: string
 }
 
 interface DispatchProps {
@@ -22,7 +22,7 @@ interface DispatchProps {
 
 interface AccountProps extends OwnProps, StateProps, DispatchProps { }
 
-const Account: React.FC<AccountProps> = ({ setUsername, username }) => {
+const Account: React.FC<AccountProps> = ({ setUsername, nickname }) => {
 
   const {t} = useTranslation()
   
@@ -35,21 +35,12 @@ const Account: React.FC<AccountProps> = ({ setUsername, username }) => {
   return (
     <IonPage id='account-page'>
       
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot='start'>
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-          <IonTitle>Account</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <Header label={''}/>
       
-      <IonContent>
-        
-        {username &&
-          (<div className='ion-padding-top ion-text-center'>
+      <IonContent>        
+        {(<div className='ion-padding-top ion-text-center'>
             <img src='https://www.gravatar.com/avatar?d=mm&s=140' alt='avatar' />
-            <h2>{ username }</h2>
+            <h2>{ nickname }</h2>
             <IonList inset>
               <IonItem onClick={() => clicked('Update Picture')}>Update Picture</IonItem>
               <IonItem onClick={() => setShowAlert(true)}>Change Username</IonItem>
@@ -57,9 +48,9 @@ const Account: React.FC<AccountProps> = ({ setUsername, username }) => {
               <IonItem routerLink='/support' routerDirection='none'>Support</IonItem>
               <IonItem routerLink='/logout' routerDirection='none'>Logout</IonItem>
             </IonList>
-          </div>)
-        }
+          </div>)}
       </IonContent>
+
       <IonAlert
         isOpen={showAlert}
         header='Change Username'
@@ -68,27 +59,28 @@ const Account: React.FC<AccountProps> = ({ setUsername, username }) => {
           {
             text: 'Ok',
             handler: (data) => {
-              setUsername(data.username)
+              setUsername(data.nickname)
             }
           }
         ]}
         inputs={[
           {
             type: 'text',
-            name: 'username',
-            value: username,
-            placeholder: 'username'
+            name: 'nickname',
+            value: nickname,
+            placeholder: 'nickname'
           }
         ]}
         onDidDismiss={() => setShowAlert(false)}
       />
+      
     </IonPage>
   )
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
-    username: state.user.username
+    nickname: state.user.nickname
   }),
   mapDispatchToProps: {
     setUsername,

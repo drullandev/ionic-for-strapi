@@ -1,7 +1,8 @@
 import * as MyConst from '../../../static/constants'
-import { IonContent, IonPage, IonText, IonInput, IonGrid, IonRow, IonButton, IonCheckbox, IonCol, IonLabel } from '@ionic/react'
+import { IonContent, IonPage, IonAlert, IonText, IonInput, IonGrid, IonRow, useIonLoading, useIonAlert, useIonToast, IonButton, IonCheckbox, IonCol, IonLabel } from '@ionic/react'
 import React, { FC, useState, useEffect } from 'react'
 
+// FORM STYLES
 import '../styles/Form.css'
 
 // FORM COMPONENTS
@@ -12,6 +13,7 @@ import Button from './Button'
 import { FormProps } from './interfaces/FormProps'
 import { ButtonProps } from './interfaces/ButtonProps'
 
+import * as StrapiUtils from '../../../data/strapi/strapi.utils'
 import { getForm } from '../../../data/strapi/app.calls'
 
 // ABOUT FORMS VALIDATION 
@@ -20,42 +22,44 @@ import * as yup from 'yup'
 
 const Form: FC<FormProps> = ({slug}) => {
 
-  //const [ form, setForm ] = useState({ fields: [], buttons: [], validation: {} })
-
   // Form Components settings...
-  const [ formFields, setFormFields ] = useState([])
+  const [ formHeader,  setFormHeader  ] = useState([])
+  const [ formFields,  setFormFields  ] = useState([])
   const [ formButtons, setFormButtons ] = useState([])
   
   // Form validation conditions...
   const [ formValidation, setFormValidation ] = useState<ObjectShape>({})   
-  const validationSchema = yup.object().shape(formValidation)
+  const validationSchema = yup.object().shape(formValidation)  
   const { register, control, handleSubmit, errors } = useForm({validationSchema})
 
-  console.log(getForm)
+  // ALERT
+  const [showAlert, setShowAlert] = useState(false)
 
-  // Recovering the form parameters...
+  // Form and window actions
+  const [ setLoading, dismissLoading ] = useIonLoading()
+  const [ setToast, dismissToast ] = useIonToast()
+  const [ setAlert, dismissAlert ] = useIonAlert()
+
   useEffect(() => {
-    fetch(MyConst.formsOrigin+slug)
-      .then(res=>res.json())
+    setLoading({ message: 'Loading form...', duration: 345 })
+    getForm(slug)
       .then(data=>{
-        if(!data[0]) return 
-        setFields(data[0].fields)
-        getValidation(data[0].fields)
-        setButtons(data[0].buttons)
+        if(!data.data[0]) return 
+        setFormHeader(data.data[0].label)
+        setFields(data.data[0].fields)
+        setButtons(data.data[0].buttons)
+        setValidations(data.data[0].fields)
       })
-      .catch(error=>console.log(error))
+      .catch(error=>console.error(error))
+    dismissLoading()
   },[slug])
-
-  const sendForm = (data: any) => {
-    console.log('creating a new user account with: ', data)
-  }
 
   // SET EACH VALIDATION TO THE TIELD BY RULES
   function fieldValidation(rul:any, rule:any){
     switch(rule.param){
       case 'min': rul = rul.min(rule.number); break;
       case 'max': rul = rul.max(rule.number); break;
-      case 'dfgh':
+      case 'required':
           rul = rule.boolean === true 
           ? rul.required()               
           : rul.notRequired()
@@ -67,11 +71,12 @@ const Form: FC<FormProps> = ({slug}) => {
 
   //Preparing fields to be loaded propertly
   function setFields(fields: any){
-    var f = []
+    const f = []
     for(let i = 0; i < fields.length; i++ ){
       f.push({
-        name: fields[i].field.label,
+        name: fields[i].field.fieldName,
         label: fields[i].field.label,
+        color: fields[i].field.label,
         component: getComponent(fields[i]),
       })
     }
@@ -80,23 +85,23 @@ const Form: FC<FormProps> = ({slug}) => {
 
   //Preparing fields to buttons loaded propertly
   function setButtons(buttons: any){
-    var f = []
+    const b = []
     for(let i = 0; i < buttons.length; i++ ){     
-      f.push({
+      b.push({
         button: {
           name: buttons[i].button.fieldName,
           label: buttons[i].button.label,
-          type: 'submit',
+          type: buttons[i].button.type,
           color: 'primary',
-          //label: buttons[i].button.label,
-          //routeLink: buttons[i].route
+          slug: buttons[i].button.slug,
+          routerLink: buttons[i].button.routerLink
         }
       })
     }
-    setFormButtons(f)
+    setFormButtons(b)
   }
 
-  function getValidation(fields: any){
+  function setValidations(fields: any){
 
     var rules = []
     for(let i = 0; i < fields.length; i++ ){
@@ -105,7 +110,7 @@ const Form: FC<FormProps> = ({slug}) => {
       var rul = 
         type === 'text' ? yup.string() : 
         type === 'email' ? yup.string().email() : 
-        type === 'check' ? yup.string().oneOf(['on'],'You must accept the '+fields[i].field.label) :
+        type === 'check' ? yup.boolean().oneOf([true],'You must accept the '+fields[i].name) :
         type === 'password' ? yup.string() :
         type === 'number' ? yup.number().positive().integer() : yup.string()
 
@@ -116,7 +121,7 @@ const Form: FC<FormProps> = ({slug}) => {
         }
       }
 
-      rules[fields[i].field.label] = rul
+      rules[fields[i].field.fieldName] = rul
 
     }
     setFormValidation(Object.assign(formValidation, rules))
@@ -139,24 +144,21 @@ const Form: FC<FormProps> = ({slug}) => {
     )
   }
 
-  function onChange(val:any){
-    setValue(val)
+  function renderCheckbox(field:any){
+    return <IonCheckbox slot='end' name={field.field.label}/>
   }
 
-  const [value, setValue ] = useState(false)
-  function renderCheckbox(field:any){
-    return <IonCheckbox name={field.field.label}
-      checked={value}
-      onIonChange={({ detail: { checked } }) => onChange(checked)}/>
+  const onSubmit: SubmitHandler<IFormValues> = form => {
+    return StrapiUtils.set(slug, form)
   }
 
   return (
     <IonPage>
       <IonContent>
         <div className='ion-padding'>
-          <form onSubmit={handleSubmit(sendForm)}>
-            <IonText color='muted'>
-              <h2>Create Account</h2>
+          <form name={slug} onSubmit={handleSubmit(onSubmit)}>
+            <IonText color='primary' style={{textAlign: 'center'}}>
+              <h2>{formHeader}</h2>
             </IonText>
             {formFields.map((field, index) => (
               <Field key={index} {...field} control={control} errors={errors} />
@@ -172,6 +174,14 @@ const Form: FC<FormProps> = ({slug}) => {
             </IonGrid>
           </form>
         </div>
+        <IonAlert
+          isOpen={showAlert}
+          cssClass='my-custom-class'
+          header={'Alert'}
+          subHeader={'Subtitle'}
+          message={'pinga'}
+          buttons={['OK']}
+        />
       </IonContent>
     </IonPage>
   )

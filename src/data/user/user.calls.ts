@@ -11,7 +11,7 @@ export const loginUser = async (email:any, password:any) => {
 
 export const registerUser = async (firstname: string, lastname: string, email: string, password: string) => {
   const { data } = await axios.post(MyConst.RestAPI+'/auth/local/register', {
-  'username':         firstname,
+  'nickname':         firstname,
   'email':            email,
   'confirmed':        false,
   'blocked':          false,

@@ -6,14 +6,11 @@ import { FieldProps } from './interfaces/FieldProps'
 
 import Error from './Error'
 
-//import { InputProps } from './interfaces/InputProps'
-//import { CheckProps } from './interfaces/CheckProps'
-
 const Field: FC<FieldProps> = ({ name, control, component, label, errors }) => {
   return (
     <>
       <IonItem>
-        {label && <IonLabel position='floating'>{label}</IonLabel>}
+        {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
         <Controller
           as={(component ? component : <></>)}
           name={name}
@@ -21,7 +18,7 @@ const Field: FC<FieldProps> = ({ name, control, component, label, errors }) => {
           onChangeName='onIonChange'
         />
       </IonItem>
-      <Error name={name} errors={errors}/>
+      <Error label={label} name={name} errors={errors}/>
     </>
   )
 }

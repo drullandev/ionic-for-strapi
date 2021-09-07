@@ -3,16 +3,10 @@ import { IonButton } from '@ionic/react'
 import { ButtonProps } from  './interfaces/ButtonProps'
 
 const Button: FC<ButtonProps> = ({ button }) => {
-  return (
-    <IonButton
-      name={button.name}
-      label={button.label}
-      type={button.type ? button.type : 'submit'}
-      color={button.color}
-      expand='block'
-      routerLink={button.route}>
-      {button.label}
-    </IonButton>
+  return button.routerLink ? (
+    <IonButton color={button.color} expand='block' routerLink={button.routerLink}>{button.label}</IonButton>
+  ) : (
+    <IonButton type={'submit'} color={button.color} expand='block'>{button.label}</IonButton>
   )
 }
 

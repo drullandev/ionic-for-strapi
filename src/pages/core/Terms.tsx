@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover } from '@ionic/react'
-import './About.scss'
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
-import AboutPopover from '../../components/core/AboutPopover'
+import { useTranslation } from 'react-i18next'
+
+import './About.scss'
+
+import Popover from '../../components/core/Popover'
 import Header from '../../components/core/Header'
 
 interface AboutProps { }
@@ -131,7 +134,7 @@ const About: React.FC<AboutProps> = () => {
         event={popoverEvent}
         onDidDismiss={() => setShowPopover(false)}
       >
-        <AboutPopover dismiss={() => setShowPopover(false)} />
+        <Popover dismiss={() => setShowPopover(false)} />
       </IonPopover>
     </IonPage>
   )

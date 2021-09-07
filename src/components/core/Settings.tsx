@@ -2,12 +2,12 @@ import * as MyConst from '../static/constants'
 import React from 'react'
 import { gql, useQuery } from '@apollo/client';
 
-interface AboutPopoverProps {
+interface PopoverProps {
   dismiss: () => void
 }
 
 
-const Settings: React.FC<AboutPopoverProps> = ({dismiss}) => {
+const Settings: React.FC<PopoverProps> = ({dismiss}) => {
 
   const close = (url: string) => {
     window.open(url, '_blank')

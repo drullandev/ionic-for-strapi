@@ -3,10 +3,10 @@ import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, 
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 
-import AboutPopover from '../../components/core/AboutPopover'
+import Popover from '../../components/core/Popover'
 import Header from '../../components/core/Header'
 
-import '../../styles/About.scss'
+import './About.scss'
 
 interface AboutProps { }
 
@@ -51,21 +51,20 @@ const About: React.FC<AboutProps> = () => {
   return (
     <IonPage id='about-page'>
 
-      <Header label={'About'}/>
+      <IonHeader className='ion-no-border'>
+        <IonToolbar>
+          <IonButtons slot='start'>
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonButtons slot='end'>
+            <IonButton onClick={presentPopover}>
+              <IonIcon slot='icon-only' ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
 
       <IonContent>
-        <IonHeader className='ion-no-border'>
-          <IonToolbar>
-            <IonButtons slot='start'>
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonButtons slot='end'>
-              <IonButton onClick={presentPopover}>
-                <IonIcon slot='icon-only' ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
 
         <div className='about-header'>
           {/* Instead of loading an image each time the select changes, use opacity to transition them */}
@@ -137,7 +136,7 @@ const About: React.FC<AboutProps> = () => {
         event={popoverEvent}
         onDidDismiss={() => setShowPopover(false)}
       >
-        <AboutPopover dismiss={() => setShowPopover(false)} />
+        <Popover dismiss={() => setShowPopover(false)} />
       </IonPopover>
     </IonPage>
   )

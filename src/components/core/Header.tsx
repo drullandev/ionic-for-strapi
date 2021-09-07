@@ -1,25 +1,17 @@
 import React from 'react'
-//import SearchBar from './SearchBar'
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle } from '@ionic/react'
+import { HeaderProps } from './interfaces/HeaderProps'
 
-interface StateProps {
-  label?: string
-}
-
-const Header: React.FC<StateProps> = ({label}) => {
-
+const Header: React.FC<HeaderProps> = ({label, slot}) => {
   return (
-    <>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>{'LOGO'}</IonTitle>
-          {/*<SearchBar/>*/}
-          <IonButtons slot='start'>
-            <IonMenuButton>{label && ''}</IonMenuButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-    </>
+    <IonHeader>
+      <IonToolbar>
+        <IonButtons slot={slot ? slot : 'start'}>
+          <IonMenuButton></IonMenuButton>
+        </IonButtons>
+        <IonTitle>{label}</IonTitle>
+      </IonToolbar>
+    </IonHeader>
   )
 }
 

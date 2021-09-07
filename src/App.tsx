@@ -35,18 +35,14 @@ import { setIsLoggedIn, setUsername, loadUserData, setDarkMode, setAppIcon } fro
 import { getSettings } from './data/strapi/app.calls'
 
 /* Core pages */
-import Login from './pages/core/Login'
-import Signup from './pages/core/Signup'
-import Recover from './pages/core/Recover'
 import Account from './pages/core/Account'
 import Tutorial from './pages/core/Tutorial'
-import Support from './pages/core/Support'
-import MainTabs from './pages/core/MainTabs'
-import FormTest from './pages/core/FormTest'
+import FormPage from './pages/core/FormPage'
+import HomeOrTutorial from './components/core/HomeOrTutorial'
 
 /* Pages components */
 import Menu from './components/core/Menu'
-import HomeOrTutorial from './components/core/HomeOrTutorial'
+import FooterTabs from './components/core/FooterTabs'
 import RedirectToLogin from './components/core/RedirectToLogin'
 
 /* Pages models */
@@ -71,16 +67,13 @@ client
   .then(result => console.log(result));
 */
 
-/* Page Routes : default : priorized! */
+// Page Routes : 
+//TODO: default : priorized!
 const routes = [
   { path:'/',         component: HomeOrTutorial },
   { path:'/account',  component: Account },
-  { path:'/login',    component: Login },
-  { path:'/signup',   component: Signup },
-  { path:'/recover',  component: Recover },
-  { path:'/support',  component: Support },/**/
-  { path:'/tutorial', component: Tutorial },/**/
-  { path:'/formtest', component: FormTest },/**/
+  { path:'/tutorial', component: Tutorial },
+  { path:'/form/:slug', component: FormPage },
 ]
 
 const App: React.FC = () => {
@@ -185,7 +178,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <IonRouterOutlet id='main'>
             {/* We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth */}
-            <Route key='main-route' path='/tabs' render={() => <MainTabs />}/>
+            <Route key='main-route' path='/tabs' render={() => <FooterTabs />}/>
             {routes.map((r, index) => {
               return <Route key={index} path={r.path} component={r.component} exact/>
             })}

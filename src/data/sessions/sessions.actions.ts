@@ -1,11 +1,11 @@
-import { getConfData } from '../dataApi'
+import { getUserConf } from '../dataApi'
 import { ActionType } from '../../util/types'
 import { ConfState } from './conf.state'
 
 export const loadConfData = () => async (dispatch: React.Dispatch<any>) => {
   console.log('session.actions.loadConfData')
   dispatch(setLoading(true))
-  const data = await getConfData()
+  const data = await getUserConf()
   dispatch(setData(data))
   dispatch(setLoading(false))
 }

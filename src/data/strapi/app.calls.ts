@@ -1,5 +1,6 @@
 import * as MyConst from '../../static/constants'
 import { gql, useQuery } from '@apollo/client'
+
 import axios from 'axios'
 
 export const getSettings = async () => {
@@ -10,29 +11,5 @@ export const getSettings = async () => {
 // Recovering the form parameters...
 export const getForm = async (slug:string) => {
   console.log('app.calls::getSettings')
-  return axios.get(MyConst.formsOrigin+slug)
+  return axios.get(MyConst.formsOrigin+slug)  
 }
-
-
-
-
-
-
-/*export const getSomething = async () => {
-
-  const { loading, error, data } = useQuery(gql`
-    query Settings {
-      settings {
-        id          
-      }
-    }
-  `)
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-
-  console.log(data)
-
-}
-
-export default getSomething
-*/

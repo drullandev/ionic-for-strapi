@@ -7,6 +7,7 @@ import { starOutline, star, share, cloudDownload } from 'ionicons/icons'
 import '../../styles/SessionDetail.scss'
 import { addFavorite, removeFavorite } from '../../data/sessions/sessions.actions'
 import { Session } from '../../models/Schedule'
+import { useTranslation } from 'react-i18next'
 
 interface OwnProps extends RouteComponentProps { }
 

@@ -1,6 +1,22 @@
 
 // MAIN DEFAULTS !!
-import { logIn, logOut, person, personAdd, calendarOutline, peopleOutline, mapOutline, informationCircleOutline, help} from 'ionicons/icons'
+import {
+    logIn,
+    logOut,
+    person,
+    personAdd,
+    calendarOutline,
+    peopleOutline,
+    mapOutline,
+    informationCircleOutline,
+    location,
+    calendar,
+    informationCircle,
+    people,
+    help,
+    keySharp,
+    home,
+} from 'ionicons/icons'
 
     // The default language for the app
     export const DefaultLanguage = 'en'
@@ -29,20 +45,155 @@ export const formsOrigin = RestAPI+'/forms?slug='
 export const HOME = '/tabs/schedule'
 export const TUTORIAL = '/tutorial'
 
-export const APP_ROUTES = {
-    appPages: [
-        { title: 'Schedule', path: HOME, icon: calendarOutline },
-        { title: 'Speakers', path: '/tabs/speakers', icon: peopleOutline },
-        { title: 'Map', path: '/tabs/map', icon: mapOutline },
-        { title: 'About', path: '/tabs/about', icon: informationCircleOutline },
-        { title: 'Support', path: '/support', icon: help },
+
+export const APP_ROUTES = [
+  {
+    title: 'Main Menu',
+    features: [
+      {
+          title: 'Schedule',
+          path: HOME,
+          icon: calendarOutline,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: true}
+          ]
+      },
+      {
+          title: 'Speakers',
+          path: '/tabs/speakers',
+          icon: peopleOutline,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: true}
+          ]
+      },
+      { 
+          title: 'Map',
+          path: '/tabs/map',
+          icon: mapOutline,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: true}
+          ]
+      },
+      { 
+          title: 'About',
+          path: '/tabs/about',
+          icon: informationCircleOutline,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: true}
+          ]
+      },
+      {   
+          title: 'Support',
+          path: '/form/support',
+          icon: help,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: true}
+          ]
+      },
     ],
-    loggedInPages: [
-        { title: 'Logout', path: '/logout', icon: logOut },
-        { title: 'Account', path: '/account', icon: person },
-    ],
-    loggedOutPages: [
-        { title: 'Login', path: '/login', icon: logIn },
-        { title: 'Signup', path: '/signup', icon: personAdd }
+  },
+  {
+    title: 'User Menu',
+    features: [
+      { 
+          title: 'Logout', 
+          path: '/logout', 
+          icon: logOut,
+          roles:[
+            {name:'Public' , allowed: false},
+            {name: 'Authenticated', allowed: true}
+          ]
+      },
+      { 
+          title: 'Account', 
+          path: '/account', 
+          icon: person,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: true}
+          ]
+      },
+      { 
+          title: 'Login', 
+          path: '/form/login', 
+          icon: logIn,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: false}
+          ]
+      },
+      { 
+          title: 'Signup', 
+          path: '/form/signup', 
+          icon: personAdd,
+          roles:[
+            {name:'Public' , allowed: true},
+            {name: 'Authenticated', allowed: false}
+          ]
+      }
     ]
-}
+  }
+]
+
+
+export const TABS =
+  [{
+      tab: 'schedule',
+      label: 'Schedule',
+      icon: calendar,
+      path: '/tabs/schedule',
+      endpoints:[{
+        component:  'SchedulePage',
+        path: '',
+        exact: true,
+        main: true,
+      },{
+        component:  'SessionDetail',
+        path: '/:id',
+        exact: false,
+        main: true,
+      }],
+    },
+    {
+      tab: 'speakers',
+      label: 'Speakers',
+      icon: people,
+      path: '/tabs/speakers',
+      endpoints:[{
+        component: 'SpeakerList',
+        path: '',
+        exact: true,
+        main: true,
+      },{
+        component: 'SpeakerDetail',
+        path: '/:id',
+        exact: true,
+        main: false,
+      },{
+        component: 'SessionDetail',
+        path: '/sessions/:id',
+        exact: false,
+        main: false,
+      }],
+    },
+    {
+      tab: 'map',
+      label: 'Map',
+      icon: location,
+      path: '/tabs/map', 
+      component: 'MapView',
+      exact: true,
+    },
+    {
+      tab: 'about',
+      label: 'About',
+      icon: informationCircle,
+      path: '/tabs/about', 
+      component: 'About',
+      exact: true,
+  }]

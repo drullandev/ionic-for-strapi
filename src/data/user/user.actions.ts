@@ -1,17 +1,17 @@
-import { getUserData, setIsLoggedInData, setUsernameData, setEmailData, setHasSeenTutorialData } from '../dataApi'
+import { getUserData, setIsLoggedInData, setUsernameData, setUserEmailData, setHasSeenTutorialData } from '../dataApi'
 import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 
-export const setEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.actions.setEmail::'+email)
-  await setEmailData(email)
+export const setUserEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
+  console.log('user.actions.setUserEmail::'+email)
+  await setUserEmailData(email)
   return ({ type: 'set-user-email', email } as const)
 }
 
-export const setUsername = (username?: string) => async (dispatch: React.Dispatch<any>) => {
-  console.log('user.actions.setUsername::'+username)
-  await setUsernameData(username)
-  return ({ type: 'set-username', username } as const)
+export const setUsername = (nickname?: string) => async (dispatch: React.Dispatch<any>) => {
+  console.log('user.actions.setUsername::'+nickname)
+  await setUsernameData(nickname)
+  return ({ type: 'set-nickname', nickname } as const)
 }
 
 export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
@@ -55,23 +55,29 @@ export const setDarkMode = (darkMode: boolean) => {
   return ({ type: 'set-user-dark-mode', darkMode } as const)
 }
 
-export const setJwt = (jwt: boolean) => {
-  console.log('user.actions.setJwt::'+jwt)
-  return ({ type: 'set-user-jwt', jwt } as const)
+export const setUserJwt = (userjwt: boolean) => {
+  console.log('user.actions.setJwt::'+userjwt)
+  return ({ type: 'set-user-jwt', userjwt } as const)
 }
 
+export const setUserId = (userjwt: boolean) => {
+  console.log('user.actions.setUserId::'+userjwt)
+  return ({ type: 'set-user-jwt', userjwt } as const)
+}
+
+// MOVE TO APP ACTIONS!!
 export const setAppIcon = (icon: string) => {
   console.log('user.actions.setAppIcon::'+icon)
   return ({ type: 'set-app-icon', icon } as const)
 }
 
 export type UserActions =
-  | ActionType<typeof setEmail>
+  | ActionType<typeof setUserEmail>
   | ActionType<typeof setUsername>
   | ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setHasSeenTutorial>
   | ActionType<typeof setLoading>
   | ActionType<typeof setData>
   | ActionType<typeof setDarkMode>
-  | ActionType<typeof setJwt>
+  | ActionType<typeof setUserJwt>
   | ActionType<typeof setAppIcon>

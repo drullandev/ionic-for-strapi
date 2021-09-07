@@ -1,6 +1,6 @@
 ion-menu ion-content {
-  --padding-top: 20px;
-  --padding-bottom: 20px;
+  --padding-top: 5px;
+  --padding-bottom: 5px;
 
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
 }
@@ -18,7 +18,7 @@ ion-item.selected {
  * Material Design Menu
 */
 ion-menu.md ion-list {
-  padding: 20px 0;
+  padding: 5px 0;
 }
 
 ion-menu.md ion-list-header {
@@ -69,7 +69,7 @@ ion-menu.ios ion-list-header {
 }
 
 ion-menu.ios ion-list {
-  padding: 20px 0 0;
+  padding: 5px 0 0;
 }
 
 ion-menu.ios ion-item {

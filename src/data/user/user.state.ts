@@ -1,5 +1,5 @@
 export interface UserState {
-  username?: string;
+  nickname?: string;
   email: string;
   jwt: boolean;
   darkMode: boolean;
