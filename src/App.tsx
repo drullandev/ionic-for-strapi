@@ -2,11 +2,8 @@ import * as MyConst from './static/constants'
 
 import React, { useEffect, useState } from 'react'
 import { Route } from 'react-router-dom'
-import { IonApp, IonRouterOutlet, IonSplitPane, IonLoading, } from '@ionic/react'
+import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-
-import { gql, useQuery } from '@apollo/client'
-
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -31,14 +28,15 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setUsername, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
-import { getSettings } from './data/strapi/app.calls'
+import { setIsLoggedIn, setUsername, loadUserData, setUserDarkMode, setAppIcon } from './data/user/user.actions'
+import { getSettings, getAreas } from './data/strapi/app.calls'
 
 /* Core pages */
 import Account from './pages/core/Account'
 import Tutorial from './pages/core/Tutorial'
-import FormPage from './pages/core/FormPage'
+import Page from './pages/core/Page'
 import HomeOrTutorial from './components/core/HomeOrTutorial'
+//import FormPage from './pages/core/FormPage'
 
 /* Pages components */
 import Menu from './components/core/Menu'
@@ -48,38 +46,19 @@ import RedirectToLogin from './components/core/RedirectToLogin'
 /* Pages models */
 import { Schedule } from './models/Schedule'
 
-/*
-const client = new ApolloClient({
-  uri: MyConst.RestAPI,
-  cache: new InMemoryCache()
-});
-
-client
-  .query({
-    query: gql`
-      query GetRates {
-        rates(currency: "USD") {
-          currency
-        }
-      }
-    `
-  })
-  .then(result => console.log(result));
-*/
-
-// Page Routes : 
-//TODO: default : priorized!
-const routes = [
-  { path:'/',         component: HomeOrTutorial },
-  { path:'/account',  component: Account },
-  { path:'/tutorial', component: Tutorial },
-  { path:'/form/:slug', component: FormPage },
-]
+function setAvailableComponent(comp:any, jsx:boolean = false){
+  switch(comp){
+    case 'HomeOrTutorial': return jsx ? <HomeOrTutorial/> : HomeOrTutorial
+    case 'Account': return Account
+    case 'Tutorial': return  Tutorial
+    default: return Account
+  }
+}
 
 const App: React.FC = () => {
   return (
     <AppContextProvider>
-      <IonicAppConnected />
+      <IonicAppConnected/>
     </AppContextProvider>
   )
 }
@@ -94,7 +73,7 @@ interface DispatchProps {
   setUsername:    typeof setUsername
   loadConfData:   typeof loadConfData
   loadUserData:   typeof loadUserData
-  setDarkMode:    typeof setDarkMode
+  setUserDarkMode:    typeof setUserDarkMode
   setAppIcon:     typeof setAppIcon
 }
 
@@ -107,7 +86,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   setUsername,
   loadConfData,
   loadUserData,
-  setDarkMode,
+  setUserDarkMode,
   setAppIcon
 }) => {
 
@@ -122,7 +101,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
     loadConfData()    
 
-    getSettings()
+    /*getSettings()
       .then(res => {        
         parseSettings(res)
       })
@@ -141,20 +120,23 @@ const IonicApp: React.FC<IonicAppProps> = ({
         }    
       })
 
+      */
+    getAreas()
+
     setShowLoading(false)
 
     // eslint-disable-next-line
   },[])
 
   /**
-   * Allows to get the 
+   * Allows to get the App Settings
    * @param response 
    */
   function parseSettings(response: any){
     response.data.status.forEach((elem:any) => {
       switch(elem.key){
         case 'Dark Mode - Default' : {
-          setDarkMode(elem.value)
+          setUserDarkMode(elem.value)
         }
       }
     })
@@ -173,29 +155,30 @@ const IonicApp: React.FC<IonicAppProps> = ({
     <IonApp className={darkMode ? 'dark-theme' : ''}>
 
       <IonReactRouter>
-        <IonSplitPane contentId='main'>
-          <Menu />
+
+        <IonSplitPane key='6yytryu' contentId='main'>
+
+          {/*<Menu key='sdafasdfertwet' slug='sidenav'/>*/}
+
           <IonRouterOutlet id='main'>
+
             {/* We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth */}
             <Route key='main-route' path='/tabs' render={() => <FooterTabs />}/>
-            {routes.map((r, index) => {
-              return <Route key={index} path={r.path} component={r.component} exact/>
+            <Route key='main-route' path='/:slug' component={Page}/>
+            {MyConst.APP_ROUTES.map((r, index) => {
+              return <Route key={index} path={r.path} component={ setAvailableComponent(r.component)} exact/>
             })}
-            <Route key='main-logout' path='/logout' render={() => {
-              return <RedirectToLogin setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
-            }}/>
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
 
-      <IonLoading
-        cssClass='my-custom-class'
-        isOpen={showLoading}
-        onDidDismiss={() => setShowLoading(false)}
-        message='Loading settings...'
-        duration={5000}
-      />
+            <Route key='main-logout' path='/logout' render={() => {
+              return <RedirectToLogin key='rtyueeyt' setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
+            }}/>
+
+          </IonRouterOutlet>
+
+        </IonSplitPane>
+
+      </IonReactRouter>
 
     </IonApp>
   )
@@ -205,14 +188,14 @@ export default App
 
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({
-    darkMode: state.user.darkMode,
+    darkMode: state.user.userDarkMode,
     schedule: state.data.schedule
   }),
   mapDispatchToProps: {
     loadConfData,
     loadUserData,
     setIsLoggedIn,
-    setDarkMode,
+    setUserDarkMode,
     setUsername,
     setAppIcon
   },

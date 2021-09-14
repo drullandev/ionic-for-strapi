@@ -1,45 +1,35 @@
-import React from 'react'
-import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonImg } from '@ionic/react'
-import { useTranslation } from 'react-i18next'
+import * as MyConst from '../../static/constants'
+import React, { useEffect, useState } from 'react'
+import { IonPage, IonContent } from '@ionic/react'
 
-import './About.scss'
+import PageRow from '../../components/core/PageRow'
+import { getPageRows } from '../../data/strapi/page.utils'
+import { PageProps } from '../../models/PageProps'
 
-interface AboutProps { }
+/**
+ * Page Pager Pagerorum ;);););)
+ * @param param0 
+ * @returns 
+ */
+const Page: React.FC<PageProps> = ({match}) => {
 
-const Page: React.FC<AboutProps> = () => {
-
-  const {t} = useTranslation()
-
+  const [ pageRows, setPageRows ] = useState([])
+  useEffect(() => {
+    getPageRows(match.params.slug).then(data=>{
+      setPageRows(data[0].rows)
+    })
+  },[match.params.slug])
+ 
   return (
-    <IonPage id='about-page'>
-
-      <IonHeader className='ion-no-border'>
-        <IonToolbar>
-          <IonButtons slot='start'>
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-
+    <IonPage id={match.params.slug}>
       <IonContent>
-
-        <div className='about-header'>
-          {/* Instead of loading an image each time the select changes, use opacity to transition them */}
-          <IonImg src={'../assets/img/about/madison.jpg'} style={{opacity: '1'}}/>
-        </div>
-
-        <div className='about-info'>
-          <h3 className='ion-padding-top ion-padding-start'>About</h3>
-          <p className='ion-padding-start ion-padding-end'>
-            The Ionic Conference is a one-day conference on featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
-          </p>
-        </div>
-
+      {pageRows ? pageRows.map((row:any, i:number)=>(
+        <PageRow key={i} area={row.area} menu={row.menu} form={row.form}/>
+      )) : (<></>)}
       </IonContent>
-
-
-    </IonPage>
+    </IonPage> 
   )
+
 }
 
 export default React.memo(Page)

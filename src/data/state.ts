@@ -16,11 +16,12 @@ export const initialState: AppState = {
     loading: false,
   },
   user: {
-    email: '',
-    darkMode: false,
+    useremail: '',
+    userDarkMode: false,
     isLoggedin: false,
     hasSeenTutorial: false,
-    loading: false,
+    loading: false,    
+    userjwt: '',
   }
 }
 

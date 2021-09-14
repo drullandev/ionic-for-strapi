@@ -14,7 +14,7 @@ import axios from 'axios'
 export const set = async (action:string, form:React.FormEvent)=>{//}, history:any) => {
   switch(action){
     case 'login':     return login(form)//, history)
-    case 'signup':  return register(form)//, history)
+    case 'signup':  return signup(form)//, history)
     case 'recover':   return recover(form)//, history)
     default: break;
   }
@@ -32,7 +32,7 @@ function login(form: any){//}, history: any){
     setIsLoggedIn(true)
     setUserEmail(res.data.user.mail)
     setUsername(res.data.user.nickname)
-    setUserJwt(res.data.jwt)
+    setUserJwt(res.data.userjwt)
     setUserId(res.data.user.id)
 
     return {

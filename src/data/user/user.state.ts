@@ -1,9 +1,9 @@
 export interface UserState {
-  nickname?: string;
-  email: string;
-  jwt: boolean;
-  darkMode: boolean;
-  isLoggedin: boolean;
-  hasSeenTutorial: boolean;
-  loading: boolean;
+  nickname?: string
+  useremail?: string
+  userjwt?: string
+  userDarkMode?: boolean
+  isLoggedin?: boolean
+  hasSeenTutorial?: boolean
+  loading?: boolean
 }

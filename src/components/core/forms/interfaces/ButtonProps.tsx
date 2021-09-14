@@ -1,8 +1,9 @@
-import { SubmitHandler } from 'react-hook-form';
+//import { SubmitHandler } from 'react-hook-form';
 export interface ButtonProps {
+  label: string
   button: {
     name: string,
-    type?: string,
+    type: string,
     label?: string,
     color?: string,
     routerLink?: string,

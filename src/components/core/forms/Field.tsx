@@ -1,24 +1,84 @@
-import React, { FC } from 'react'
-import { IonItem, IonLabel, IonInput, IonText } from '@ionic/react'
+import React, { FC, useEffect, useState } from 'react'
+import { IonItem, IonLabel, IonInput, IonCheckbox } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-
-import { FieldProps } from './interfaces/FieldProps'
+import { getField } from '../../../data/strapi/app.calls'
 
 import Error from './Error'
+import Button from './Button'
 
-const Field: FC<FieldProps> = ({ name, control, component, label, errors }) => {
+//import { FieldProps } from './interfaces/FieldProps'
+import { Control, NestDataObject, FieldError } from 'react-hook-form'
+export interface FieldProps {
+  name: string
+  slug: string
+  label: string
+  control?: Control
+  errors?: NestDataObject<Record<string, any>, FieldError>
+}
+
+const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
+
+  const [ component, setComponent ] = useState<any>()
+  const [ type, setType ] = useState<any>()
+  useEffect(()=>{
+    getField(slug)
+    .then(res=>{
+      if(res.status === 200){
+        setComponent(res.data[0])
+        setType(res.data[0].fieldType)
+      }else{
+        console.error('call error', res)
+      }
+    })
+    .catch(error=>console.error(error))
+  },[])
+
+  const setComponentData = ()=>{
+    console.log('component', component)
+    if(!component) return <></>
+    switch(type){
+      case 'input': 
+        if(component.type ==='check') return renderCheckbox()
+        if(component.type ==='input') return renderInput()      
+        return renderInput()
+      case 'button': 
+        return renderButton()
+    }
+    return <></>
+  }
+
+  const renderInput = ()=> (
+    <IonItem>
+      {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
+      <IonInput
+        aria-invalid={errors && errors[component.name] ? 'true' : 'false'}
+        aria-describedby={`${component.name}Error`}
+        type={component.type}
+      />
+    </IonItem>
+  )
+
+  const renderCheckbox = ()=>(
+    <IonItem>
+      {label && <IonLabel color='primary'>{label}</IonLabel>}
+      <IonCheckbox slot='end' name={component.label}/>
+    </IonItem>
+  )
+  const renderButton = ()=>(
+    component && <Button label={label} button={component}/>    
+  )
+
   return (
     <>
-      <IonItem>
-        {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
-        <Controller
-          as={(component ? component : <></>)}
-          name={name}
-          control={control}
-          onChangeName='onIonChange'
-        />
-      </IonItem>
-      <Error label={label} name={name} errors={errors}/>
+      {type === 'input' 
+        ? <Controller
+            as={(setComponentData())}
+            name={name}
+            control={control}
+            onChangeName='onIonChange'
+          />
+        : renderButton()}
+      {type !== 'button' && <Error label={label} name={name} errors={errors}/>}
     </>
   )
 }

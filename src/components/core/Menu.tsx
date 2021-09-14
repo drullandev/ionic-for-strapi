@@ -1,47 +1,61 @@
-import React from 'react'
-import { RouteComponentProps, withRouter, useLocation } from 'react-router'
-import Header from '../../components/core/Header'
-
-import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from '@ionic/react'
-import { moonOutline, personAdd, hammer } from 'ionicons/icons'
-import { useTranslation } from 'react-i18next'
-
 import * as MyConst from '../../static/constants'
+
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps, withRouter, useLocation } from 'react-router'
+import axios from 'axios'
+
+import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } from '@ionic/react'
+import { moonOutline, personAdd, hammer } from 'ionicons/icons'
+
+//import { useTranslation } from 'react-i18next'
+
 import { connect } from '../../data/connect'
-import { setDarkMode } from '../../data/user/user.actions'
+import { setUserDarkMode } from '../../data/user/user.actions'
 
-import {  Pages } from '../../components/core/interfaces/Pages'
-import {  StateProps } from '../../components/core/interfaces/StateProps'
+import Header from './Header'
+import List from './List'
+import Area from './Area'
 
-//import './styles/Menu.css'
+// Main interfaces
+//import { PageProps } from '../../models/PageProps'
+import { StateProps } from '../../models/StateProps'
+import { AreaProps } from '../../models/AreaProps'
+
+// Components interfaces
+//import { MenuChildProps } from '../../models/MenuChildProps'
+//import { MenuCompProps } from '../../models/MenuCompProps'
+
+import './styles/Menu.css'
+//import { ListRowProps } from '../../models/ListRowProps';
+
+const testing = false
 
 interface DispatchProps {
-  setDarkMode: typeof setDarkMode
+  setUserDarkMode: typeof setUserDarkMode
 }
 
-interface MenuProps extends RouteComponentProps, StateProps, DispatchProps { }
+interface MenuProps extends RouteComponentProps, StateProps, DispatchProps { 
+  slug: string
+}
 
-const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDarkMode, menuEnabled }) => {
+const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, setUserDarkMode, menuEnabled, slug }) => {
 
   const slot = 'start'
-  const location = useLocation()
-  const {t} = useTranslation()
 
-  function extraTodo(){
-    return <IonList lines='none'>
-
-    <IonItem>
+  const extraTodo = ()=>{
+    return <IonList lines='none' key='sdafasdfasftgh'>
+    <IonItem key={'sdfgsdf'} >
       <IonIcon slot={slot} icon={moonOutline}></IonIcon>
       <IonLabel>Dark Mode</IonLabel>
-      <IonToggle checked={darkMode} onClick={() => setDarkMode(!darkMode)} />
+      <IonToggle checked={userDarkMode} onClick={() => setUserDarkMode(!userDarkMode)} />
     </IonItem>
 
-    <IonItem>
+    <IonItem key={'sdfgsdfgsdf'} >
       <IonIcon slot={slot} icon={personAdd}></IonIcon>
       <IonLabel>Select language</IonLabel>
     </IonItem>
 
-    <IonItem button onClick={() => { history.push('/tutorial') }}>
+    <IonItem key={'dswert'}  button onClick={() => { history.push('/tutorial') }}>
       <IonIcon slot={slot} icon={hammer} />
       Show Tutorial
     </IonItem>
@@ -49,39 +63,21 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
   </IonList>
   }
 
-  function renderlistItems(list: Pages[]) {
-    return list
-      .filter(route => !!route.path)
-      .map(p => (
-        (isAuthenticated === false && p.roles.find(el => el.name === 'Public' && el.allowed === true) ) ||
-        (isAuthenticated === true && p.roles.find(el => el.name === 'Authenticated' && el.allowed === true) ) 
-        ? <IonMenuToggle key={p.title} auto-hide='false'>
-            <IonItem
-              detail={false}
-              routerLink={p.path}
-              routerDirection='none'
-              className={location.pathname.startsWith(p.path) ? 'selected' : undefined}
-            >
-            <IonIcon slot={slot} icon={p.icon} />
-            <IonLabel>{t(p.title)}</IonLabel>
-          </IonItem>
-        </IonMenuToggle> : <></>
-      ))
-  }
-
   return (
-    <IonMenu type='overlay' disabled={!menuEnabled} contentId='main'>
+    <IonMenu key='sidenav' type='overlay' disabled={!menuEnabled} contentId='main'>
 
       <Header/>  
    
       <IonContent forceOverscroll={false}>
 
-        {MyConst.APP_ROUTES.map((r:any)=>(
-          <IonList lines='none'>
+        <Area {...areas}/>
+
+        {/*MyConst.LEFT_MENU_ROUTES.map((r:any, index:any)=>(
+          <IonList key={'side'+index} lines='none'>
             {r.title && <IonListHeader>{t(r.title)}</IonListHeader>}
             {renderlistItems(r.features)}         
           </IonList>
-        ))}
+        ))*/}
 
         {extraTodo()}
 
@@ -89,16 +85,17 @@ const Menu: React.FC<MenuProps> = ({ darkMode, history, isAuthenticated, setDark
       
     </IonMenu>
   )
+
 }
 
 export default connect<{}, StateProps, {}>({
   mapStateToProps: (state) => ({
-    darkMode: state.user.darkMode,
+    userDarkMode: state.user.userDarkMode,
     isAuthenticated: state.user.isLoggedin,
     menuEnabled: state.data.menuEnabled
   }),
   mapDispatchToProps: ({
-    setDarkMode
+    setUserDarkMode
   }),
   component: withRouter(Menu)
 })
