@@ -7,26 +7,17 @@ import axios from 'axios'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } from '@ionic/react'
 import { moonOutline, personAdd, hammer } from 'ionicons/icons'
 
-//import { useTranslation } from 'react-i18next'
-
 import { connect } from '../../data/connect'
 import { setUserDarkMode } from '../../data/user/user.actions'
 
 import Header from './Header'
-import List from './List'
 import Area from './Area'
 
 // Main interfaces
-//import { PageProps } from '../../models/PageProps'
 import { StateProps } from '../../models/StateProps'
-import { AreaProps } from '../../models/AreaProps'
 
-// Components interfaces
-//import { MenuChildProps } from '../../models/MenuChildProps'
-//import { MenuCompProps } from '../../models/MenuCompProps'
-
+// Style
 import './styles/Menu.css'
-//import { ListRowProps } from '../../models/ListRowProps';
 
 const testing = false
 

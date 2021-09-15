@@ -1,9 +1,10 @@
-import * as MyConst from '../../../static/constants'
 import { IonText, IonGrid, useIonLoading } from '@ionic/react'
 import React, { FC, useState, useEffect } from 'react'
 
-// FORM STYLES
-import '../styles/Form.css'
+// ABOUT FORMS VALIDATION 
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+
 
 import FormRow from './FormRow'
 
@@ -13,13 +14,12 @@ import { FormProps } from './interfaces/FormProps'
 import * as StrapiUtils from '../../../data/strapi/strapi.utils'
 import { getForm } from '../../../data/strapi/app.calls'
 
-// ABOUT FORMS VALIDATION 
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
+// FORM STYLES
+import '../styles/Form.css'
 
 const Form: FC<FormProps> = ({slug}) => {
 
-  // Form Components settings...
+  // Form Component settings...
   const [ formTitle,   setFormTitle   ] = useState([])
   const [ formRows,    setFormRows    ] = useState([])
   
@@ -27,9 +27,6 @@ const Form: FC<FormProps> = ({slug}) => {
   const [ formValidation, setFormValidation ] = useState<ObjectShape>({})   
   const validationSchema = yup.object().shape(formValidation)  
   const { register, control, handleSubmit, errors } = useForm({validationSchema})
-
-  // ALERT
-  const [ showAlert, setShowAlert ] = useState(false)
 
   // Form and window actions
   const [ setLoading, dismissLoading ] = useIonLoading()
@@ -40,8 +37,10 @@ const Form: FC<FormProps> = ({slug}) => {
         if(data.status === 200){
           setFormTitle(data.data[0].title)
           setFormRows(data.data[0].rows)
-          var val = setValidation(data.data[0].rows)
-          setFormValidation(val)
+          setValidations(data.data[0].rows)
+          var val = setValidations(data.data[0].rows)
+          console.log(val)
+          //setFormValidation(val)
         }else{
           console.error('call error', data)
         }
@@ -50,53 +49,28 @@ const Form: FC<FormProps> = ({slug}) => {
     dismissLoading()
   },[slug])
 
-  function setValidation(rows:any){
-
-  }
-
-  /*
-  // SET EACH VALIDATION TO THE TIELD BY RULES
-  function fieldValidation(rul:any, rule:any){
-    switch(rule.param){
-      case 'min': rul = rul.min(rule.number); break;
-      case 'max': rul = rul.max(rule.number); break;
-      case 'required':
-          rul = rule.boolean === true 
-          ? rul.required()               
-          : rul.notRequired()
-      break;
-      default: break;
-    }
-    return rul
-  }
-
-  function setValidations(fields: any){
-
+  function setValidations(rows: any){
     var rules = []
-    for(let i = 0; i < fields.length; i++ ){
-
-      var type = fields[i].field.type
-      var rul = 
-        type === 'text' ? yup.string() : 
-        type === 'email' ? yup.string().email() : 
-        type === 'check' ? yup.boolean().oneOf([true],'You must accept the '+fields[i].name) :
-        type === 'password' ? yup.string() :
-        type === 'number' ? yup.number().positive().integer() : yup.string()
-
-      for(let ii = 0; ii < fields[i].rules.length; ii++ ){
-        for(let iii = 0; iii < fields[ii].rules.length; iii++ ){                           
-          var rule = fields[ii].rules[iii]
-          rul = fieldValidation(rul, rule)        
-        }
+    for(let i = 0; i < rows.length; i++ ){
+      var columns = rows[i].columns
+      for(var ii = 0; ii < rows[i].columns.length; ii++){
+        var row = rows[i].columns[ii]
+        var type = row.field.type
+        var rul = 
+          type === 'text' ? yup.string() : 
+          type === 'email' ? yup.string().email() : 
+          type === 'check' ? yup.boolean().oneOf([true],'You must accept the '+row.name) :
+          type === 'password' ? yup.string() :
+          type === 'number' ? yup.number().positive().integer() : yup.string()
+        rul = ( row.required === true )
+          ? rul.required() : rul.notRequired()
+        if(row.field.min) rul = rul.min(parseInt(row.field.min))
+        if(row.field.max) rul = rul.max(parseInt(row.field.max))
+        rules[row.field.slug] = rul
       }
-
-      rules[fields[i].field.fieldName] = rul
-
     }
     setFormValidation(Object.assign(formValidation, rules))
   }
-
-*/
 
   const onSubmit: SubmitHandler<IFormValues> = form => {
     return StrapiUtils.set(slug, form)

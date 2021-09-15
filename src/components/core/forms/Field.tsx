@@ -6,20 +6,13 @@ import { getField } from '../../../data/strapi/app.calls'
 import Error from './Error'
 import Button from './Button'
 
-//import { FieldProps } from './interfaces/FieldProps'
-import { Control, NestDataObject, FieldError } from 'react-hook-form'
-export interface FieldProps {
-  name: string
-  slug: string
-  label: string
-  control?: Control
-  errors?: NestDataObject<Record<string, any>, FieldError>
-}
+import { FieldProps } from './interfaces/FieldProps'
 
 const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
 
   const [ component, setComponent ] = useState<any>()
   const [ type, setType ] = useState<any>()
+  
   useEffect(()=>{
     getField(slug)
     .then(res=>{
@@ -34,7 +27,6 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
   },[])
 
   const setComponentData = ()=>{
-    console.log('component', component)
     if(!component) return <></>
     switch(type){
       case 'input': 
