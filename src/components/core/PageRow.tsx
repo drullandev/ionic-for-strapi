@@ -1,29 +1,37 @@
-import * as MyConst from '../../static/constants'
 import React from 'react'
+//import Area from './_Area'
+import Menu from './Menu'
+import Form from './forms/Form'
+import Component from './Component'
 
-import { IonRow, IonGrid } from '@ionic/react'
+import { PageRowProps } from './interfaces/PageRowProps'
 
-import Area from '../../components/core/Area'
-import Menu from '../../components/core/Menu'
-import Form from '../../components/core/Form'
+/**
+ * Painting a page row ;)
+ * @param param0 
+ * @returns 
+ */
+const PageRow: React.FC<PageRowProps> = ({area, menu, form, component}) => {
+  console.log('PageRowProps', {area, menu, form, component})
+  const returnComponent = () =>{
+    if(!component) return
+    return component && <Component
+      name={component.name}
+      slug={component.slug}
+      params={component.params}
+      override={component.params}
+    />
+  }
 
-interface PageRowProps {
-  area: any,
-  menu: any,
-  form: any,
-}
-
-const PageRow: React.FC<PageRowProps> = ({area, menu, form}) => {
-  //console.log('PageRowProps', {area, menu, form})
   return (
     <>
-      {area ? <Area {...area}/>
-        : menu ? <Menu {...menu}/>
-          : form ? <Form {...form}/>
-            : <></>
-      }
+      { menu ? <Menu {...menu}/> :
+        form ? <Form {...form}/> :
+        component ? returnComponent()
+        : <></>}
     </>
   )
+
 }
 
 export default PageRow

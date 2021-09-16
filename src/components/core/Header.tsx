@@ -1,9 +1,15 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle } from '@ionic/react'
-import { HeaderProps } from '../../models/HeaderProps'
+import { HeaderProps } from './interfaces/HeaderProps'
 
-const Header: React.FC<HeaderProps> = ({label, slot}) =>  (
-  <IonHeader>
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
+const Header: React.FC<HeaderProps> = ({label, slot}) =>  {
+  //console.log('getting header', {label, slot})
+  return <IonHeader>
     <IonToolbar>
       <IonButtons slot={slot ? slot : 'start'}>
         <IonMenuButton></IonMenuButton>
@@ -11,6 +17,6 @@ const Header: React.FC<HeaderProps> = ({label, slot}) =>  (
       <IonTitle>{label}</IonTitle>
     </IonToolbar>
   </IonHeader>
-)
+}
 
 export default Header

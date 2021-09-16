@@ -1,6 +1,6 @@
 import { IonContent, IonPage } from '@ionic/react'
 import React from 'react'
-import Form from '../../components/core/forms/FormSet'
+import Form from '../../components/core/forms/Form'
 import Header from '../../components/core/Header'
 
 import { RouteComponentProps } from "react-router"

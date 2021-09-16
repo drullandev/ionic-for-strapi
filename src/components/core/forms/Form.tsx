@@ -5,7 +5,7 @@ import React, { FC, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-
+// Components
 import FormRow from './FormRow'
 
 // FORM INTERFACES
@@ -26,7 +26,7 @@ const Form: FC<FormProps> = ({slug}) => {
   // Form validation conditions...
   const [ formValidation, setFormValidation ] = useState<ObjectShape>({})   
   const validationSchema = yup.object().shape(formValidation)  
-  const { register, control, handleSubmit, errors } = useForm({validationSchema})
+  const { control, handleSubmit, errors } = useForm({validationSchema})
 
   // Form and window actions
   const [ setLoading, dismissLoading ] = useIonLoading()
@@ -38,9 +38,6 @@ const Form: FC<FormProps> = ({slug}) => {
           setFormTitle(data.data[0].title)
           setFormRows(data.data[0].rows)
           setValidations(data.data[0].rows)
-          var val = setValidations(data.data[0].rows)
-          console.log(val)
-          //setFormValidation(val)
         }else{
           console.error('call error', data)
         }
@@ -55,30 +52,46 @@ const Form: FC<FormProps> = ({slug}) => {
       var columns = rows[i].columns
       for(var ii = 0; ii < rows[i].columns.length; ii++){
         var row = rows[i].columns[ii]
-        var type = row.field.type
-        var rul = 
-          type === 'text' ? yup.string() : 
-          type === 'email' ? yup.string().email() : 
-          type === 'check' ? yup.boolean().oneOf([true],'You must accept the '+row.name) :
-          type === 'password' ? yup.string() :
-          type === 'number' ? yup.number().positive().integer() : yup.string()
-        rul = ( row.required === true )
-          ? rul.required() : rul.notRequired()
-        if(row.field.min) rul = rul.min(parseInt(row.field.min))
-        if(row.field.max) rul = rul.max(parseInt(row.field.max))
-        rules[row.field.slug] = rul
+        if(row.field.fieldType === 'input'){
+          var type = row.field.type
+          var rule = 
+            type === 'text'     ? yup.string() : 
+            type === 'email'    ? yup.string().email() : 
+            type === 'check'    ? yup.boolean().oneOf([true],'You must accept the '+row.name) :
+            type === 'password' ? yup.string() :
+            type === 'number'   ? yup.number()
+                                : yup.string()
+  
+          if(type === 'number'){
+            if(row.field.num_sign === 'positive') rule = rule.positive()
+            if(row.field.num_type === 'integer') rule = rule.integer()
+          }
+  
+          if(row.field.regexp){
+            rule = rule.matches(row.field.regexp, row.field.regexp_message)
+          }
+  
+          rule = ( row.required === true)
+            ? rule.required() : rule.notRequired()
+  
+          if(row.field.min) rule = rule.min(parseInt(row.field.min))
+          if(row.field.max) rule = rule.max(parseInt(row.field.max))
+
+          rules[row.field.slug] = rule
+
+        }
       }
     }
     setFormValidation(Object.assign(formValidation, rules))
   }
 
-  const onSubmit: SubmitHandler<IFormValues> = form => {
+  const onSubmit: SubmitHandler<IFormValues> = (form: React.FormEvent<Element>) => {
     return StrapiUtils.set(slug, form)
   }
 
   return (
     <div className='ion-padding'>
-      <form name={slug} onSubmit={handleSubmit(onSubmit)}>
+      <form noValidate name={slug} onSubmit={handleSubmit(onSubmit)}>
         <IonText color='primary' style={{textAlign: 'center'}}>
           <h2>{formTitle}</h2>
         </IonText>

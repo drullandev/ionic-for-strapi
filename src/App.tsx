@@ -29,14 +29,13 @@ import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setUsername, loadUserData, setUserDarkMode, setAppIcon } from './data/user/user.actions'
-import { getSettings, getAreas } from './data/strapi/app.calls'
+import { getSettings } from './data/strapi/app.calls'
 
 /* Core pages */
 import Account from './pages/core/Account'
 import Tutorial from './pages/core/Tutorial'
 import Page from './pages/core/Page'
 import HomeOrTutorial from './components/core/HomeOrTutorial'
-//import FormPage from './pages/core/FormPage'
 
 /* Pages components */
 import Menu from './components/core/Menu'
@@ -121,7 +120,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
       })
 
       */
-    getAreas()
 
     setShowLoading(false)
 
@@ -156,22 +154,22 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
       <IonReactRouter>
 
-        <IonSplitPane key='6yytryu' contentId='main'>
+        <IonSplitPane contentId='main'>
 
-          {/*<Menu key='sdafasdfertwet' slug='sidenav'/>*/}
+          <Menu key='sdafasdfertwet' slug='sidenav'/>
 
           <IonRouterOutlet id='main'>
 
             {/* We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth */}
             <Route key='main-route' path='/tabs' render={() => <FooterTabs />}/>
-            <Route key='main-route' path='/:slug' component={Page}/>
+            <Route key='main-route2' path='/:slug' component={Page}/>
             {MyConst.APP_ROUTES.map((r, index) => {
               return <Route key={index} path={r.path} component={ setAvailableComponent(r.component)} exact/>
             })}
 
             <Route key='main-logout' path='/logout' render={() => {
-              return <RedirectToLogin key='rtyueeyt' setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
+              return <RedirectToLogin key='rtl' setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
             }}/>
 
           </IonRouterOutlet>

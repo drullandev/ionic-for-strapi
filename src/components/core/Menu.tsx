@@ -61,8 +61,6 @@ const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, set
    
       <IonContent forceOverscroll={false}>
 
-        <Area {...areas}/>
-
         {/*MyConst.LEFT_MENU_ROUTES.map((r:any, index:any)=>(
           <IonList key={'side'+index} lines='none'>
             {r.title && <IonListHeader>{t(r.title)}</IonListHeader>}

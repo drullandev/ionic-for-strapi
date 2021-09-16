@@ -1,6 +1,6 @@
 import { Control, NestDataObject, FieldError } from 'react-hook-form'
 export interface FieldProps {
-  name?: string
+  name: string
   label: string
   slug: string
   columns?: any[]

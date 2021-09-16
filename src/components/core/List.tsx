@@ -3,7 +3,7 @@ import * as MyConst from '../../static/constants'
 import React from 'react'
 import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
 
-import { ListProps } from '../../models/ListProps'
+import { ListProps } from './interfaces/ListProps'
 import { ListRowProps } from '../../models/ListRowProps'
 
 const List: React.FC<ListProps> = (rows) => {

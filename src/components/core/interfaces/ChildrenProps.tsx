@@ -1,4 +1,4 @@
 export interface HeaderProps {
   label?: string
-  slot?:string
+  slot?: string
 }

@@ -13,9 +13,7 @@ import {
     calendar,
     informationCircle,
     people,
-    help,
-    keySharp,
-    home,
+    help
 } from 'ionicons/icons'
 
     // The default language for the app

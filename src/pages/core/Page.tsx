@@ -1,32 +1,58 @@
-import * as MyConst from '../../static/constants'
 import React, { useEffect, useState } from 'react'
-import { IonPage, IonContent } from '@ionic/react'
+import { IonPage, IonHeader, IonContent, IonFooter } from '@ionic/react'
+import { RouteComponentProps } from 'react-router'
 
 import PageRow from '../../components/core/PageRow'
+//XXX: Failing!" :/ //import { PageProps } from '../../components/core/interfaces/PageProps'
 import { getPageRows } from '../../data/strapi/page.utils'
-import { PageProps } from '../../models/PageProps'
+
+export interface PageProps extends RouteComponentProps<{
+  slug: string,
+}> {}
 
 /**
  * Page Pager Pagerorum ;);););)
- * @param param0 
+ * @param match 
  * @returns 
  */
 const Page: React.FC<PageProps> = ({match}) => {
-
+  //console.log('Load Page', match)
+  const [ page, setPage ] = useState<PageProps>()
   const [ pageRows, setPageRows ] = useState([])
   useEffect(() => {
-    getPageRows(match.params.slug).then(data=>{
-      setPageRows(data[0].rows)
+    getPageRows(match.params.slug).then(res=>{
+      setPage(res)
+      setPageRows(res[0].rows)
     })
   },[match.params.slug])
+
+  const returnPageRow = (row:any, i:number) =>(
+    <PageRow
+      key={i}
+      area={row.area}
+      menu={row.menu}
+      form={row.form}
+      component={row.component}
+    />
+  )
  
   return (
     <IonPage id={match.params.slug}>
+      <IonHeader>
+        {pageRows ? pageRows.map((row:any, i:number)=>(
+          row.section === 'header' && returnPageRow(row, i)
+        )) : (<></>)}
+      </IonHeader>
       <IonContent>
-      {pageRows ? pageRows.map((row:any, i:number)=>(
-        <PageRow key={i} area={row.area} menu={row.menu} form={row.form}/>
-      )) : (<></>)}
+        {pageRows ? pageRows.map((row:any, i:number)=>(
+          row.section === 'content' && returnPageRow(row, i)
+        )) : (<></>)}
       </IonContent>
+      <IonFooter>
+        {pageRows ? pageRows.map((row:any, i:number)=>(
+          row.section === 'footer' && returnPageRow(row, i)
+        )) : (<></>)}
+      </IonFooter>
     </IonPage> 
   )
 

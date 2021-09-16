@@ -1,33 +1,18 @@
-import * as MyConst from '../../../static/constants'
-
 import React from 'react'
 import { IonRow } from '@ionic/react'
-
 import FormCol from './FormCol'
+import { FormRowProps } from './interfaces/FormRowProps'
 
-import { Control, NestDataObject, FieldError } from 'react-hook-form'
-
-export interface Column {
-  id: number,
-  field: {
-    id:number
-    slug:string
-    label?:string 
-    required?: boolean
-    routeLink?:string
-  }
-}
-
-export interface FormRowProps {
-  columns: Column[]
-  control?: Control
-  errors?: NestDataObject<Record<string, any>, FieldError>
-}
-
+/**
+ * Running over columns to make it easier to make a simple grid on form
+ * @param param0 
+ * @returns 
+ */
 const FormRow: React.FC<FormRowProps> = ({ columns, control, errors }) => {
   //console.log('FormRow',{ columns, control, errors })
   return (
-    <IonRow>
+    <IonRow 
+      style={{marginTop:'20px'}}>
       {columns.map((row:any)=>(
         <FormCol
           row={row}

@@ -51,7 +51,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
   )
 
   const renderCheckbox = ()=>(
-    <IonItem>
+    <IonItem style={{paddingTop: '25px'}}>
       {label && <IonLabel color='primary'>{label}</IonLabel>}
       <IonCheckbox slot='end' name={component.label}/>
     </IonItem>

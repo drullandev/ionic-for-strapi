@@ -16,17 +16,11 @@ import SpeakerDetail from '../../pages/extra/SpeakerDetail'
 import MapView from '../../pages/extra/MapView'
 
 interface FooterTabsProps { }
-
+/**
+ * 
+ * @returns 
+ */
 const FooterTabs: React.FC<FooterTabsProps> = () => {
-
-  useEffect(()=>{
-    fetch('http://localhost:1337/areas?slug=footer')
-    .then(res=>res.json())
-    .then(data=>{
-      //console.log(data)
-    })
-    .catch(err=>{console.log(err)})
-  },[])
 
   useEffect(()=>{
     fetch('http://localhost:1337/paths')
@@ -37,7 +31,6 @@ const FooterTabs: React.FC<FooterTabsProps> = () => {
     .catch(err=>{console.log(err)})
   },[])
 
-  // TODO: Move to some better ort Gobal place to invoque the components ;)
   function setAvailableComponent(comp:any, jsx:boolean = false){
     switch(comp){
       case 'SchedulePage': return jsx ? <SchedulePage/> : SchedulePage
@@ -54,7 +47,6 @@ const FooterTabs: React.FC<FooterTabsProps> = () => {
       default: return jsx ? <Page/> : Page
     }
   }
-
 
   return (
     <IonTabs>
