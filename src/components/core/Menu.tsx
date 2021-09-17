@@ -1,20 +1,21 @@
-import * as MyConst from '../../static/constants'
-
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter, useLocation } from 'react-router'
-import axios from 'axios'
-
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } from '@ionic/react'
+
+// Extras
 import { moonOutline, personAdd, hammer } from 'ionicons/icons'
 
+// Functions
 import { connect } from '../../data/connect'
 import { setUserDarkMode } from '../../data/user/user.actions'
+import { getMenu } from '../../data/strapi/app.calls'
 
+// Components
 import Header from './Header'
-import Area from './Area'
 
 // Main interfaces
 import { StateProps } from '../../models/StateProps'
+import MenuRow from '../../components/core/MenuRow'
 
 // Style
 import './styles/Menu.css'
@@ -31,7 +32,18 @@ interface MenuProps extends RouteComponentProps, StateProps, DispatchProps {
 
 const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, setUserDarkMode, menuEnabled, slug }) => {
 
-  const slot = 'start'
+  const [ menu, setMenu ] = useState()
+  const [ menus, setMenus ] = useState([])
+  const [ slot, setSlot ] = useState('start')
+  useEffect(()=>{
+    getMenu(slug)
+    .then(res=>{
+      setMenu(res.data[0])
+      if(res.data[0].rows){
+        setMenus(res.data[0].rows)
+      }
+    })
+  },[slug])
 
   const extraTodo = ()=>{
     return <IonList lines='none' key='sdafasdfasftgh'>
@@ -54,24 +66,36 @@ const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, set
   </IonList>
   }
 
+  const returnMenuRow = (row:any, i:number) =>{
+
+    if(row.menu){
+      console.log('One')
+      console.log(row.menu)
+      returnMenuRow(row.menu, i)
+    }else if(row.rows){
+      console.log('Twoo')
+      console.log(row.rows)
+    }
+
+
+    return <></>/* <MenuRow
+    key={i}
+    area={row.area}
+    menu={row.menu}
+    form={row.form}
+    component={row.component}
+    />*/
+  }
+  
+
   return (
-    <IonMenu key='sidenav' type='overlay' disabled={!menuEnabled} contentId='main'>
-
-      <Header/>  
-   
+    <IonMenu key={slug} type='overlay' disabled={!menuEnabled} contentId='main'>
+      <Header/>
       <IonContent forceOverscroll={false}>
-
-        {/*MyConst.LEFT_MENU_ROUTES.map((r:any, index:any)=>(
-          <IonList key={'side'+index} lines='none'>
-            {r.title && <IonListHeader>{t(r.title)}</IonListHeader>}
-            {renderlistItems(r.features)}         
-          </IonList>
-        ))*/}
-
-        {extraTodo()}
-
-      </IonContent>
-      
+        {menus.map((menu:MenuProps, i:number)=>(
+          returnMenuRow(menu, i)
+        ))}
+      </IonContent>      
     </IonMenu>
   )
 
@@ -88,3 +112,8 @@ export default connect<{}, StateProps, {}>({
   }),
   component: withRouter(Menu)
 })
+
+/*
+
+        {extraTodo()}
+*/

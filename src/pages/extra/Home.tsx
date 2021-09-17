@@ -13,7 +13,7 @@ import { connect } from '../../data/connect'
 import { setSearchText } from '../../data/sessions/sessions.actions'
 import { Schedule } from '../../models/Schedule'
 
-import '../../styles/SchedulePage.scss'
+import '../../styles/Home.scss'
 
 interface OwnProps { }
 
@@ -27,9 +27,9 @@ interface DispatchProps {
   setSearchText: typeof setSearchText
 }
 
-type SchedulePageProps = OwnProps & StateProps & DispatchProps
+type HomeProps = OwnProps & StateProps & DispatchProps
 
-const SchedulePage: React.FC<SchedulePageProps> = ({ favoritesSchedule, schedule, setSearchText, mode }) => {
+const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText, mode }) => {
   
   const [segment, setSegment] = useState<'all' | 'favorites'>('all')
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
@@ -177,6 +177,6 @@ export default connect<OwnProps, StateProps, DispatchProps>({
     setSearchText
   },
 
-  component: React.memo(SchedulePage)
+  component: React.memo(Home)
   
 })

@@ -156,7 +156,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
         <IonSplitPane contentId='main'>
 
-          <Menu key='sdafasdfertwet' slug='sidenav'/>
+          <Menu key='mainMenu' slug='sidenav'/>
 
           <IonRouterOutlet id='main'>
 

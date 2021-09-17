@@ -38,11 +38,12 @@ export const PHOTO_STORAGE = RestAPI + '/uploads'
 export const pagesOrigin = RestAPI+'/forms?slug='
 export const formsOrigin = RestAPI+'/forms?slug='
 export const fieldsOrigin = RestAPI+'/fields?slug='
+export const menusOrigin = RestAPI+'/menus?slug='
 
 
 // OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
 
-export const HOME = '/tabs/schedule'
+export const HOME = '/tabs/home'
 export const TUTORIAL = '/tutorial'
 
 
@@ -160,9 +161,9 @@ export const TABS = [{
   element: 'schedule',
   label: 'Schedule',
   icon: calendar,
-  path: '/tabs/schedule',
+  path: '/tabs/home',
   endpoints:[{
-    component:  'SchedulePage',
+    component:  'Home',
     path: '',
     exact: true,
     main: true,

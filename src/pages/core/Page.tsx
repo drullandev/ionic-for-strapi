@@ -3,7 +3,6 @@ import { IonPage, IonHeader, IonContent, IonFooter } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 
 import PageRow from '../../components/core/PageRow'
-//XXX: Failing!" :/ //import { PageProps } from '../../components/core/interfaces/PageProps'
 import { getPageRows } from '../../data/strapi/page.utils'
 
 export interface PageProps extends RouteComponentProps<{
@@ -22,7 +21,7 @@ const Page: React.FC<PageProps> = ({match}) => {
   useEffect(() => {
     getPageRows(match.params.slug).then(res=>{
       setPage(res)
-      setPageRows(res[0].rows)
+      if(res[0].rows) setPageRows(res[0].rows)
     })
   },[match.params.slug])
 

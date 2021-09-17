@@ -15,6 +15,12 @@ export const getForm = async (slug:string) => {
 }
 
 // Recovering the form parameters...
+export const getMenu = async (slug:string) => {
+  if(testing) console.log('app.calls::getMenu')
+  return axios.get(MyConst.menusOrigin+slug)  
+}
+
+// Recovering the form parameters...
 export const getField = async (slug:string) => {
   if(testing) console.log('app.calls::getField')
   return axios.get(MyConst.fieldsOrigin+slug)  

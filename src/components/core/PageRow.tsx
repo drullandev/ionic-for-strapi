@@ -12,7 +12,7 @@ import { PageRowProps } from './interfaces/PageRowProps'
  * @returns 
  */
 const PageRow: React.FC<PageRowProps> = ({area, menu, form, component}) => {
-  console.log('PageRowProps', {area, menu, form, component})
+  //console.log('PageRowProps', {area, menu, form, component})
   const returnComponent = () =>{
     if(!component) return
     return component && <Component
