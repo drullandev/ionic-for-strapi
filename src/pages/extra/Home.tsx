@@ -30,7 +30,7 @@ interface DispatchProps {
 type HomeProps = OwnProps & StateProps & DispatchProps
 
 const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText, mode }) => {
-  
+
   const [segment, setSegment] = useState<'all' | 'favorites'>('all')
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
@@ -52,7 +52,7 @@ const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText,
     <IonPage ref={pageRef} id='schedule-page'>
 
       <IonHeader translucent={true}>
-        
+
         <IonToolbar>
 
           {!showSearchbar &&
@@ -178,5 +178,5 @@ export default connect<OwnProps, StateProps, DispatchProps>({
   },
 
   component: React.memo(Home)
-  
+
 })

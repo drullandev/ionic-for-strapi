@@ -23,7 +23,7 @@ const Custom: FC<CustomProps> = ({
   return (
     <>
       <IonItem>
-        {label && <IonLabel position={type==='check' ? 'start' : 'floating'}>{label}</IonLabel>}
+        {label && <IonLabel position={type === 'check' ? 'start' : 'floating'}>{label}</IonLabel>}
         <Controller
           control={control}
           name={name}
@@ -32,11 +32,11 @@ const Custom: FC<CustomProps> = ({
             fieldState: { invalid, isTouched, isDirty, error },
             formState,
           }) => (
-            type==='check'
-              ? <IonCheckbox onBlur={onBlur} onChange={onChange} checked={value}/>
-              :  type === 'text'
-                ? <IonText  onBlur={onBlur} onChange={onChange} value={value}/>
-                : <IonInput onBlur={onBlur} onChange={onChange} value={value}/>
+            type === 'check'
+              ? <IonCheckbox onBlur={onBlur} onChange={onChange} checked={value} />
+              : type === 'text'
+                ? <IonText onBlur={onBlur} onChange={onChange} value={value} />
+                : <IonInput onBlur={onBlur} onChange={onChange} value={value} />
           )}
           rules={{ required: true }}
         />

@@ -7,7 +7,7 @@ import { HeaderProps } from './interfaces/HeaderProps'
  * @param param0 
  * @returns 
  */
-const Header: React.FC<HeaderProps> = ({label, slot}) =>  {
+const Header: React.FC<HeaderProps> = ({ label, slot }) => {
   //console.log('getting header', {label, slot})
   return <IonHeader>
     <IonToolbar>

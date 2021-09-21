@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router'
 
 import { useTranslation } from 'react-i18next'
 
-interface OwnProps extends RouteComponentProps {}
+interface OwnProps extends RouteComponentProps { }
 
 interface DispatchProps {
   setHasSeenTutorial: typeof setHasSeenTutorial
@@ -20,7 +20,7 @@ interface TutorialProps extends OwnProps, DispatchProps { }
 
 const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMenuEnabled }) => {
 
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   const [showSkip, setShowSkip] = useState(true)
   const slideRef = useRef<HTMLIonSlidesElement>(null)
@@ -28,14 +28,14 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
   useIonViewWillEnter(() => {
     setMenuEnabled(false)
   })
-  
-  const startApp = async () => { 
+
+  const startApp = async () => {
     setHasSeenTutorial(true)
     setMenuEnabled(true)
     history.push('/tabs/schedule', { direction: 'none' })
   }
 
-  const handleSlideChangeStart = () => { 
+  const handleSlideChangeStart = () => {
     slideRef.current!.isEnd().then(isEnd => setShowSkip(!isEnd))
   }
 
@@ -88,7 +88,7 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
               <IonIcon slot="end" icon={arrowForward} />
             </IonButton>
           </IonSlide>
-          
+
         </IonSlides>
       </IonContent>
     </IonPage>

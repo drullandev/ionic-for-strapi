@@ -29,11 +29,11 @@ import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setUsername, loadUserData, setUserDarkMode, setAppIcon } from './data/user/user.actions'
-import { getSettings } from './data/strapi/app.calls'
+import { restGet } from './data/strapi/app.calls'
 
 /* Core pages */
 import Account from './pages/core/Account'
-import Tutorial from './pages/core/Tutorial'
+import Tutorial from './pages/extra/Tutorial'
 import Page from './pages/core/Page'
 import HomeOrTutorial from './components/core/HomeOrTutorial'
 
@@ -45,19 +45,20 @@ import RedirectToLogin from './components/core/RedirectToLogin'
 /* Pages models */
 import { Schedule } from './models/Schedule'
 
-function setAvailableComponent(comp:any, jsx:boolean = false){
-  switch(comp){
-    case 'HomeOrTutorial': return jsx ? <HomeOrTutorial/> : HomeOrTutorial
+function setAvailableComponent(name: any, jsx: boolean = false) {
+  console.log('compa', name)
+  switch (name) {
+    case 'HomeOrTutorial': return jsx ? <HomeOrTutorial /> : HomeOrTutorial
     case 'Account': return Account
-    case 'Tutorial': return  Tutorial
-    default: return Account
+    case 'Tutorial': return Tutorial
+    default: return Page
   }
 }
 
 const App: React.FC = () => {
   return (
     <AppContextProvider>
-      <IonicAppConnected/>
+      <IonicAppConnected />
     </AppContextProvider>
   )
 }
@@ -68,12 +69,12 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setIsLoggedIn:  typeof setIsLoggedIn
-  setUsername:    typeof setUsername
-  loadConfData:   typeof loadConfData
-  loadUserData:   typeof loadUserData
-  setUserDarkMode:    typeof setUserDarkMode
-  setAppIcon:     typeof setAppIcon
+  setIsLoggedIn: typeof setIsLoggedIn
+  setUsername: typeof setUsername
+  loadConfData: typeof loadConfData
+  loadUserData: typeof loadUserData
+  setUserDarkMode: typeof setUserDarkMode
+  setAppIcon: typeof setAppIcon
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -89,8 +90,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
   setAppIcon
 }) => {
 
-  const [ showLoading,   setShowLoading] = useState(false)
-  //const [ settingsUpdate, setSettingsUpdate] = useState('')
+  const [showLoading, setShowLoading] = useState(false)
+  const [paths, setPaths] = useState([])
 
   useEffect(() => {
 
@@ -98,52 +99,34 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
     loadUserData()
 
-    loadConfData()    
+    loadConfData()
 
-    /*getSettings()
-      .then(res => {        
-        parseSettings(res)
-      })
-      .catch(function (error) {
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data)
-          console.log(error.response.status)
-          console.log(error.response.headers)
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message)
-        }    
-      })
-
-      */
+    restGet('settings').then(res => { parseSettings(res) })
+    restGet('paths').then(res => { console.log(res.data); setPaths(res.data) })
 
     setShowLoading(false)
 
     // eslint-disable-next-line
-  },[])
+  }, [])
 
   /**
    * Allows to get the App Settings
    * @param response 
    */
-  function parseSettings(response: any){
-    response.data.status.forEach((elem:any) => {
-      switch(elem.key){
-        case 'Dark Mode - Default' : {
+  function parseSettings(response: any) {
+    response.data.status.forEach((elem: any) => {
+      switch (elem.key) {
+        case 'Dark Mode - Default': {
           setUserDarkMode(elem.value)
         }
       }
     })
-    response.data.app_images.forEach((elem:any) => {
-      console.log('Name:'+elem.name)
-      switch(elem.name){
-        case 'app-icon' : {
-          console.log(MyConst.RestAPI+elem.image.url)
-          setAppIcon(MyConst.RestAPI+elem.image.url)
+    response.data.app_images.forEach((elem: any) => {
+      console.log('Name:' + elem.name)
+      switch (elem.name) {
+        case 'app-icon': {
+          console.log(MyConst.RestAPI + elem.image.url)
+          setAppIcon(MyConst.RestAPI + elem.image.url)
         }
       }
     })
@@ -156,21 +139,25 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
         <IonSplitPane contentId='main'>
 
-          <Menu key='mainMenu' slug='sidenav'/>
+          <Menu key='mainMenu' slug={'sidenav'} />
 
           <IonRouterOutlet id='main'>
 
             {/* We use IonRoute here to keep the tabs state intact,
             which makes transitions between tabs and non tab pages smooth */}
-            <Route key='main-route' path='/tabs' render={() => <FooterTabs />}/>
-            <Route key='main-route2' path='/:slug' component={Page}/>
-            {MyConst.APP_ROUTES.map((r, index) => {
-              return <Route key={index} path={r.path} component={ setAvailableComponent(r.component)} exact/>
-            })}
+            <Route path='/' component={HomeOrTutorial} />
+            <Route path='/tabs' render={() => <FooterTabs />} />
+            <Route path='/:slug' component={Page} />
+            <Route path='/account' component={Account} />
+            <Route path='/tutorial' component={Tutorial} />
 
-            <Route key='main-logout' path='/logout' render={() => {
-              return <RedirectToLogin key='rtl' setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
-            }}/>
+            {/*paths.map((r:any, index) => (
+              <Route key={index} path={r.value} component={ setAvailableComponent(r.component)} exact/>
+            ))*/}
+
+            <Route key='main-logout' path='/logout' render={() => (
+              <RedirectToLogin key='rtl' setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />
+            )} />
 
           </IonRouterOutlet>
 

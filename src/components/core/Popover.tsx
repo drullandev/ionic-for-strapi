@@ -6,7 +6,7 @@ interface PopoverProps {
   dismiss: () => void
 }
 
-const Popover: React.FC<PopoverProps> = ({dismiss}) => {
+const Popover: React.FC<PopoverProps> = ({ dismiss }) => {
 
   const close = (url: string) => {
     window.open(url, '_blank')

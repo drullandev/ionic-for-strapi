@@ -61,10 +61,10 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
       <IonHeader translucent={true}>
         <IonToolbar>
           <IonButtons slot="start">
-            { ios &&
+            {ios &&
               <IonButton onClick={onDismissModal}>Cancel</IonButton>
             }
-            { !ios &&
+            {!ios &&
               <IonButton onClick={handleDeselectAll}>Reset</IonButton>
             }
           </IonButtons>
@@ -80,12 +80,12 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
       </IonHeader>
 
       <IonContent>
-        <IonList lines={ ios ? 'inset' : 'full'}>
+        <IonList lines={ios ? 'inset' : 'full'}>
           <IonListHeader>Tracks</IonListHeader>
 
           {allTracks.map((track, index) => (
             <IonItem key={track}>
-              { ios &&
+              {ios &&
                 <IonIcon slot="start" icon={iconMap[track]} color="medium" />
               }
               <IonLabel>{track}</IonLabel>
@@ -100,7 +100,7 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
         </IonList>
       </IonContent>
 
-      { ios &&
+      {ios &&
         <IonFooter>
           <IonToolbar>
             <IonButtons slot="start">

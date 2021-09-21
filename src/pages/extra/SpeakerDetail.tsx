@@ -17,11 +17,11 @@ interface OwnProps extends RouteComponentProps {
   speaker?: Speaker
 }
 
-interface StateProps {}
+interface StateProps { }
 
-interface DispatchProps {}
+interface DispatchProps { }
 
-interface SpeakerDetailProps extends OwnProps, StateProps, DispatchProps {}
+interface SpeakerDetailProps extends OwnProps, StateProps, DispatchProps { }
 
 const SpeakerDetail: React.FC<SpeakerDetailProps> = ({ speaker }) => {
   const [showActionSheet, setShowActionSheet] = useState(false)
@@ -102,14 +102,14 @@ const SpeakerDetail: React.FC<SpeakerDetailProps> = ({ speaker }) => {
         </IonHeader>
 
         <div className='speaker-background'>
-          <img src={speaker.profilePic} alt={speaker.name}/>
+          <img src={speaker.profilePic} alt={speaker.name} />
           <h2>{speaker.name}</h2>
         </div>
 
         <div className='ion-padding speaker-detail'>
           <p>{speaker.about} Say hello on social media!</p>
 
-          <hr/>
+          <hr />
 
           <IonChip color='twitter' onClick={() => openExternalUrl(`https://twitter.com/${speaker.twitter}`)}>
             <IonIcon icon={logoTwitter}></IonIcon>

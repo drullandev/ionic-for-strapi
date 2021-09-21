@@ -24,8 +24,8 @@ interface AccountProps extends OwnProps, StateProps, DispatchProps { }
 
 const Account: React.FC<AccountProps> = ({ setUsername, nickname }) => {
 
-  const {t} = useTranslation()
-  
+  const { t } = useTranslation()
+
   const [showAlert, setShowAlert] = useState(false)
 
   const clicked = (text: string) => {
@@ -34,21 +34,21 @@ const Account: React.FC<AccountProps> = ({ setUsername, nickname }) => {
 
   return (
     <IonPage id='account-page'>
-      
-      <Header label={''}/>
-      
-      <IonContent>        
+
+      <Header label={''} />
+
+      <IonContent>
         {(<div className='ion-padding-top ion-text-center'>
-            <img src='https://www.gravatar.com/avatar?d=mm&s=140' alt='avatar' />
-            <h2>{ nickname }</h2>
-            <IonList inset>
-              <IonItem onClick={() => clicked('Update Picture')}>Update Picture</IonItem>
-              <IonItem onClick={() => setShowAlert(true)}>Change Username</IonItem>
-              <IonItem onClick={() => clicked('Change Password')}>Change Password</IonItem>
-              <IonItem routerLink='/support' routerDirection='none'>Support</IonItem>
-              <IonItem routerLink='/logout' routerDirection='none'>Logout</IonItem>
-            </IonList>
-          </div>)}
+          <img src='https://www.gravatar.com/avatar?d=mm&s=140' alt='avatar' />
+          <h2>{nickname}</h2>
+          <IonList inset>
+            <IonItem onClick={() => clicked('Update Picture')}>Update Picture</IonItem>
+            <IonItem onClick={() => setShowAlert(true)}>Change Username</IonItem>
+            <IonItem onClick={() => clicked('Change Password')}>Change Password</IonItem>
+            <IonItem routerLink='/support' routerDirection='none'>Support</IonItem>
+            <IonItem routerLink='/logout' routerDirection='none'>Logout</IonItem>
+          </IonList>
+        </div>)}
       </IonContent>
 
       <IonAlert
@@ -73,7 +73,7 @@ const Account: React.FC<AccountProps> = ({ setUsername, nickname }) => {
         ]}
         onDidDismiss={() => setShowAlert(false)}
       />
-      
+
     </IonPage>
   )
 }

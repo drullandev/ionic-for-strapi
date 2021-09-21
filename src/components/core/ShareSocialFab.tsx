@@ -12,7 +12,7 @@ const ShareSocialFab: React.FC = () => {
     setShowLoading(true);
   };
 
-  return(
+  return (
     <>
       <IonLoading
         isOpen={showLoading}

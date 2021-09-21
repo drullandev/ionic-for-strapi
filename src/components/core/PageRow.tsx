@@ -11,10 +11,10 @@ import { PageRowProps } from './interfaces/PageRowProps'
  * @param param0 
  * @returns 
  */
-const PageRow: React.FC<PageRowProps> = ({area, menu, form, component}) => {
+const PageRow: React.FC<PageRowProps> = ({ area, menu, form, component }) => {
   //console.log('PageRowProps', {area, menu, form, component})
-  const returnComponent = () =>{
-    if(!component) return
+  const returnComponent = () => {
+    if (!component) return
     return component && <Component
       name={component.name}
       slug={component.slug}
@@ -25,10 +25,10 @@ const PageRow: React.FC<PageRowProps> = ({area, menu, form, component}) => {
 
   return (
     <>
-      { menu ? <Menu {...menu}/> :
-        form ? <Form {...form}/> :
-        component ? returnComponent()
-        : <></>}
+      {menu ? <Menu {...menu} /> :
+        form ? <Form {...form} /> :
+          component ? returnComponent()
+            : <></>}
     </>
   )
 

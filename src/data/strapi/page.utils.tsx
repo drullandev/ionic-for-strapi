@@ -1,16 +1,23 @@
 import axios from 'axios'
 
-import SessionDetail from '../../pages/core/SessionDetail'
-import About from '../../pages/core/About'
+// Core pages
 import Page from '../../pages/core/Page'
-import FormPage from '../../pages/core/FormPage'
 import Account from '../../pages/core/Account'
 
+// Extra pages
+import SessionDetail from '../../pages/extra/SessionDetail'
+import About from '../../pages/extra/About'
 import Home from '../../pages/extra/Home'
 import SpeakerList from '../../pages/extra/SpeakerList'
 import SpeakerDetail from '../../pages/extra/SpeakerDetail'
 import MapView from '../../pages/extra/MapView'
 
+/**
+ * Recover from apiRest by model and slug async await ^^
+ * @param model 
+ * @param slug 
+ * @returns 
+ */
 export const getModelRowBySlug = async (model:string, slug: string) => {
   try {
     let url = 'http://localhost:1337/'+model+'?slug='+slug

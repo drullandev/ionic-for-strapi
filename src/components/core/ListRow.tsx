@@ -2,14 +2,15 @@
 
 import React from 'react'
 import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
-import { ListRowProps } from '../../models/ListRowProps'
+import { ListRowProps } from './interfaces/ListRowProps'
+
 const ListRow: React.FC<ListRowProps> = (row) => (
   //(isAuthenticated === false && p.roles.find(el => el.name === 'Public' && el.allowed === true) ) ||
   //(isAuthenticated === true && p.roles.find(el => el.name === 'Authenticated' && el.allowed === true) ) 
   //?
   <IonMenuToggle key={row.title} auto-hide='false'>
-    <IonItem       
-      key={row.title}     
+    <IonItem
+      key={row.title}
       detail={false}
       routerLink={row.path}
       routerDirection='none'

@@ -11,6 +11,10 @@ import { UserState } from './user.state'
 
 var testing = false
 
+export const userAction = () => {
+
+}
+
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
   dispatch(setLoading(true))
   const data = await getUserData()

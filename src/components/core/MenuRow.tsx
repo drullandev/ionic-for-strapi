@@ -1,30 +1,42 @@
-//import * as MyConst from '../../static/constants'
+import React, { useEffect, useState } from 'react'
+import { IonItem, IonLabel } from '@ionic/react'
+import { RouteComponentProps } from 'react-router'
+import { restGet } from '../../data/strapi/app.calls'
+import { PathProps } from './interfaces/PathProps'
+import Icon from './Icon'
 
-import React from 'react'
-import { IonMenuToggle, IonIcon, IonItem, IonLabel } from '@ionic/react'
-import {
-  logIn,
-  logOut,
-  person,
-  personAdd,
-  calendarOutline,
-  peopleOutline,
-  mapOutline,
-  informationCircleOutline,
-  location,
-  calendar,
-  informationCircle,
-  people,
-  help
-} from 'ionicons/icons'
+export interface MenuRowProps extends RouteComponentProps {
+  label: string
+  row: {
+    component: {
+      component: {
+        id: number
+      }
+    }
+    slug: string
+    path: {
+      value: string
+    }
+  }
+}
 
-import { MenuRowProps } from '../core/interfaces/MenuRowProps'
+const MenuRow: React.FC<MenuRowProps> = ({ history, label, row }) => {
+  //console.log('MenuRow', row)
 
-const MenuRow: React.FC<MenuRowProps> = ({key, label, icon, slot}) => (
-  <IonItem key={key} >
-    <IonIcon slot={slot} icon={person}></IonIcon>
+  const [path, setPath] = useState<PathProps>()
+  useEffect(() => {
+    restGet('paths', { slug: row.slug })
+      .then(res => {
+        console.log('puto path', res.data)
+        setPath(res.data[0])
+      })
+  }, [])
+
+  return <IonItem key={'dswert'} button onClick={() => { history.push(row.path.value) }}>
+    <Icon slot={'start'} name={'person'} />
     <IonLabel>{label}</IonLabel>
   </IonItem>
-)
+
+}
 
 export default MenuRow

@@ -7,7 +7,7 @@ interface PopoverProps {
 }
 
 
-const Settings: React.FC<PopoverProps> = ({dismiss}) => {
+const Settings: React.FC<PopoverProps> = ({ dismiss }) => {
 
   const close = (url: string) => {
     window.open(url, '_blank')
@@ -27,7 +27,7 @@ const Settings: React.FC<PopoverProps> = ({dismiss}) => {
 
   return (
     <>
-      {data.map((setting:any) => (
+      {data.map((setting: any) => (
         console.log(setting)
       ))}
     </>

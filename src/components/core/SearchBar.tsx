@@ -3,9 +3,9 @@ import { IonSearchbar } from '@ionic/react'
 
 const SearchBar: React.FC = () => {
 
-  const searchText= 'Search string'
+  const searchText = 'Search string'
 
-  function setSearchText(text:string){
+  function setSearchText(text: string) {
     console.log(text)
   }
 

@@ -46,24 +46,24 @@ const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, speakerSessions }) 
           </IonToolbar>
         </IonHeader>
 
-          <IonGrid fixed>
-            <IonRow>
-              {speakers.map(speaker => (
-                <IonCol size='12' size-md='6' key={speaker.id}>
-                  <SpeakerItem
-                    key={speaker.id}
-                    speaker={speaker}
-                    sessions={speakerSessions[speaker.name]}
-                  />
-                </IonCol>
-              ))}
-            </IonRow>
-          </IonGrid>
+        <IonGrid fixed>
+          <IonRow>
+            {speakers.map(speaker => (
+              <IonCol size='12' size-md='6' key={speaker.id}>
+                <SpeakerItem
+                  key={speaker.id}
+                  speaker={speaker}
+                  sessions={speakerSessions[speaker.name]}
+                />
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
 
   )
-  
+
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({

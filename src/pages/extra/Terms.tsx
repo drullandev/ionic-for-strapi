@@ -12,7 +12,7 @@ interface AboutProps { }
 
 const About: React.FC<AboutProps> = () => {
 
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   const [showPopover, setShowPopover] = useState(false)
   const [popoverEvent, setPopoverEvent] = useState()
@@ -48,7 +48,7 @@ const About: React.FC<AboutProps> = () => {
   return (
     <IonPage id='about-page'>
 
-      <Header label={'About'}/>
+      <Header label={'About'} />
 
       <IonContent>
         <IonHeader className='ion-no-border'>
@@ -66,16 +66,16 @@ const About: React.FC<AboutProps> = () => {
 
         <div className='about-header'>
           {/* Instead of loading an image each time the select changes, use opacity to transition them */}
-          <div className='about-image madison' style={{'opacity': location === 'madison' ? '1' : undefined}}></div>
-          <div className='about-image austin' style={{'opacity': location === 'austin' ? '1' : undefined}}></div>
-          <div className='about-image chicago' style={{'opacity': location === 'chicago' ? '1' : undefined}}></div>
-          <div className='about-image seattle' style={{'opacity': location === 'seattle' ? '1' : undefined}}></div>
+          <div className='about-image madison' style={{ 'opacity': location === 'madison' ? '1' : undefined }}></div>
+          <div className='about-image austin' style={{ 'opacity': location === 'austin' ? '1' : undefined }}></div>
+          <div className='about-image chicago' style={{ 'opacity': location === 'chicago' ? '1' : undefined }}></div>
+          <div className='about-image seattle' style={{ 'opacity': location === 'seattle' ? '1' : undefined }}></div>
         </div>
         <div className='about-info'>
           <h3 className='ion-padding-top ion-padding-start'>About</h3>
 
           <p className='ion-padding-start ion-padding-end'>
-            The Ionic Conference is a one-day conference on { displayDate(conferenceDate, 'mediumDate') } featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
+            The Ionic Conference is a one-day conference on {displayDate(conferenceDate, 'mediumDate')} featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
           </p>
 
           <h3 className='ion-padding-top ion-padding-start'>Details</h3>
@@ -113,12 +113,12 @@ const About: React.FC<AboutProps> = () => {
                 Wifi network
               </IonLabel>
               <IonLabel className='ion-text-end'>
-                ica{ displayDate(conferenceDate, 'y') }
+                ica{displayDate(conferenceDate, 'y')}
               </IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>
-               Password
+                Password
               </IonLabel>
               <IonLabel className='ion-text-end'>
                 makegoodthings

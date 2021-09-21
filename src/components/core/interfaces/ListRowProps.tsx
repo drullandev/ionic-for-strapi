@@ -1,6 +1,6 @@
 export interface ListRowProps {
   id: number
-  title?:string 
+  title?: string
   name?: string
   path: string
   slot?: string

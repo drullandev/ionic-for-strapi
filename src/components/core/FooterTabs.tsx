@@ -4,10 +4,9 @@ import React, { useEffect } from 'react'
 import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react'
 import { Route, Redirect } from 'react-router'
 
-import SessionDetail from '../../pages/core/SessionDetail'
-import About from '../../pages/core/About'
+import SessionDetail from '../../pages/extra/SessionDetail'
+import About from '../../pages/extra/About'
 import Page from '../../pages/core/Page'
-import FormPage from '../../pages/core/FormPage'
 import Account from '../../pages/core/Account'
 
 import Home from '../../pages/extra/Home'
@@ -16,35 +15,46 @@ import SpeakerDetail from '../../pages/extra/SpeakerDetail'
 import MapView from '../../pages/extra/MapView'
 
 interface FooterTabsProps { }
+
 /**
  * 
  * @returns 
  */
 const FooterTabs: React.FC<FooterTabsProps> = () => {
 
-  useEffect(()=>{
+  useEffect(() => {
     fetch('http://localhost:1337/paths')
-    .then(res=>res.json())
-    .then(data=>{
-      //console.log(data)
-    })
-    .catch(err=>{console.log(err)})
-  },[])
+      .then(res => res.json())
+      .then(data => {
+        console.log('All the paths')
+        console.log(data)
+      })
+      .catch(err => { console.log(err) })
+  }, [])
 
-  function setAvailableComponent(comp:any, jsx:boolean = false){
-    switch(comp){
-      case 'Home': return jsx ? <Home/> : Home
-      case 'SpeakerList': return jsx ? <SpeakerList/> : SpeakerList
-      case 'SpeakerDetail': return jsx ? <SpeakerDetail/> : SpeakerDetail
-      case 'MapView': return jsx ? <MapView/> : MapView
-      case 'About': return jsx ? <About/> : About
-      case 'Tutorial': return jsx ? <Page/> : Page
-      case 'Page': return jsx ? <Page/> : Page
-      case 'Index': return jsx ? <Page/> : Page
+  useEffect(() => {
+    fetch('http://localhost:1337/menus?slug=footer')
+      .then(res => res.json())
+      .then(data => {
+        console.log('All the paths')
+        console.log(data)
+      })
+      .catch(err => { console.log(err) })
+  }, [])
+
+  function setAvailableComponent(comp: any, jsx: boolean = false) {
+    switch (comp) {
+      case 'Home': return jsx ? <Home /> : Home
+      case 'SpeakerList': return jsx ? <SpeakerList /> : SpeakerList
+      case 'SpeakerDetail': return jsx ? <SpeakerDetail /> : SpeakerDetail
+      case 'MapView': return jsx ? <MapView /> : MapView
+      case 'About': return jsx ? <About /> : About
+      case 'Tutorial': return jsx ? <Page /> : Page
+      case 'Page': return jsx ? <Page /> : Page
+      case 'Index': return jsx ? <Page /> : Page
       case 'Account': return Account
-      case 'Form': return FormPage
       case 'SessionDetail': return SessionDetail
-      default: return jsx ? <Page/> : Page
+      default: return jsx ? <Page /> : Page
     }
   }
 
@@ -59,13 +69,13 @@ const FooterTabs: React.FC<FooterTabsProps> = () => {
         */}
         <Redirect exact path='/tabs' to={MyConst.HOME} />
 
-        {MyConst.TABS.map((t:any) => {
+        {MyConst.TABS.map((t: any) => {
           return t.endpoints
-            ? t.endpoints.map((ep:any)=>{
+            ? t.endpoints.map((ep: any) => {
               const compo = setAvailableComponent(ep.component, false)
               return t.main === true
-                ? (<Route key={t.path} path={t.path+ep.path} render={() => setAvailableComponent(ep.component, true)} exact={ep.exact} />)
-                : (<Route key={t.path} path={t.path+ep.path} component={compo} exact={ep.exact}/>)
+                ? (<Route key={t.path} path={t.path + ep.path} render={() => setAvailableComponent(ep.component, true)} exact={ep.exact} />)
+                : (<Route key={t.path} path={t.path + ep.path} component={compo} exact={ep.exact} />)
             })
             : (<Route key={t.path} path={t.href} render={() => setAvailableComponent(t.component, true)} exact={t.exact} />)
         })}
@@ -74,7 +84,7 @@ const FooterTabs: React.FC<FooterTabsProps> = () => {
 
       <IonTabBar slot='bottom'>
 
-        {MyConst.TABS.map((t:any) => {
+        {MyConst.TABS.map((t: any) => {
           return <IonTabButton key={t.path} tab={t.element} href={t.path}>
             <IonIcon icon={t.icon} />
             <IonLabel>{t.label}</IonLabel>

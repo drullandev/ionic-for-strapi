@@ -12,70 +12,70 @@ import FormRow from './FormRow'
 import { FormProps } from './interfaces/FormProps'
 
 import * as StrapiUtils from '../../../data/strapi/strapi.utils'
-import { getForm } from '../../../data/strapi/app.calls'
+import { restGet } from '../../../data/strapi/app.calls'
 
 // FORM STYLES
 import '../styles/Form.css'
 
-const Form: FC<FormProps> = ({slug}) => {
+const Form: FC<FormProps> = ({ slug }) => {
 
   // Form Component settings...
-  const [ formTitle,   setFormTitle   ] = useState([])
-  const [ formRows,    setFormRows    ] = useState([])
-  
+  const [formTitle, setFormTitle] = useState([])
+  const [formRows, setFormRows] = useState([])
+
   // Form validation conditions...
-  const [ formValidation, setFormValidation ] = useState<ObjectShape>({})   
-  const validationSchema = yup.object().shape(formValidation)  
-  const { control, handleSubmit, errors } = useForm({validationSchema})
+  const [formValidation, setFormValidation] = useState<ObjectShape>({})
+  const validationSchema = yup.object().shape(formValidation)
+  const { control, handleSubmit, errors } = useForm({ validationSchema })
 
   // Form and window actions
-  const [ setLoading, dismissLoading ] = useIonLoading()
+  const [setLoading, dismissLoading] = useIonLoading()
   useEffect(() => {
     setLoading({ message: 'Loading form...', duration: 345 })
-    getForm(slug)
-      .then(data=>{
-        if(data.status === 200){
+    restGet('forms', { slug: slug })
+      .then(data => {
+        if (data.status === 200) {
           setFormTitle(data.data[0].title)
           setFormRows(data.data[0].rows)
           setValidations(data.data[0].rows)
-        }else{
+        } else {
           console.error('call error', data)
         }
       })
-      .catch(error=>console.error(error))
+      .catch(error => console.error(error))
     dismissLoading()
-  },[slug])
+  }, [slug])
 
-  function setValidations(rows: any){
+  function setValidations(rows: any) {
     var rules = []
-    for(let i = 0; i < rows.length; i++ ){
+    for (let i = 0; i < rows.length; i++) {
       var columns = rows[i].columns
-      for(var ii = 0; ii < rows[i].columns.length; ii++){
+      for (var ii = 0; ii < rows[i].columns.length; ii++) {
         var row = rows[i].columns[ii]
-        if(row.field.fieldType === 'input'){
+        if (row.field.fieldType === 'input') {
           var type = row.field.type
-          var rule = 
-            type === 'text'     ? yup.string() : 
-            type === 'email'    ? yup.string().email() : 
-            type === 'check'    ? yup.boolean().oneOf([true],'You must accept the '+row.name) :
-            type === 'password' ? yup.string() :
-            type === 'number'   ? yup.number()
-                                : yup.string()
-  
-          if(type === 'number'){
-            if(row.field.num_sign === 'positive') rule = rule.positive()
-            if(row.field.num_type === 'integer') rule = rule.integer()
+          var rule =
+            type === 'text' ? yup.string() :
+              type === 'email' ? yup.string().email() :
+                type === 'check' ? yup.boolean().oneOf([true], 'You must accept the ' + row.name) :
+                  type === 'password' ? yup.string() :
+                    type === 'number' ? yup.number()
+                      : yup.string()
+
+          if (type === 'number') {
+            if (row.field.num_sign === 'positive') rule = rule.positive()
+            if (row.field.num_type === 'integer') rule = rule.integer()
           }
-  
-          if(row.field.regexp){
+
+          if (row.field.regexp) {
             rule = rule.matches(row.field.regexp, row.field.regexp_message)
           }
-  
-          rule = ( row.required === true)
+
+          rule = (row.required === true)
             ? rule.required() : rule.notRequired()
-  
-          if(row.field.min) rule = rule.min(parseInt(row.field.min))
-          if(row.field.max) rule = rule.max(parseInt(row.field.max))
+
+          if (row.field.min) rule = rule.min(parseInt(row.field.min))
+          if (row.field.max) rule = rule.max(parseInt(row.field.max))
 
           rules[row.field.slug] = rule
 
@@ -92,11 +92,11 @@ const Form: FC<FormProps> = ({slug}) => {
   return (
     <div className='ion-padding'>
       <form noValidate name={slug} onSubmit={handleSubmit(onSubmit)}>
-        <IonText color='primary' style={{textAlign: 'center'}}>
+        <IonText color='primary' style={{ textAlign: 'center' }}>
           <h2>{formTitle}</h2>
         </IonText>
         <IonGrid>
-          {formRows.map((row:any, i:number) => (
+          {formRows.map((row: any, i: number) => (
             <FormRow key={i} columns={row.columns} control={control} errors={errors} />
           ))}
         </IonGrid>

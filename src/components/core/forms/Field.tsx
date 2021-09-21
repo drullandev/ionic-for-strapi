@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox } from '@ionic/react'
+import { IonItem, IonLabel, IonInput, IonCheckbox, useIonLoading } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-import { getField } from '../../../data/strapi/app.calls'
+import { restGet } from '../../../data/strapi/app.calls'
 
 import Error from './Error'
 import Button from './Button'
@@ -10,36 +10,37 @@ import { FieldProps } from './interfaces/FieldProps'
 
 const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
 
-  const [ component, setComponent ] = useState<any>()
-  const [ type, setType ] = useState<any>()
-  
-  useEffect(()=>{
-    getField(slug)
-    .then(res=>{
-      if(res.status === 200){
-        setComponent(res.data[0])
-        setType(res.data[0].fieldType)
-      }else{
-        console.error('call error', res)
-      }
-    })
-    .catch(error=>console.error(error))
-  },[])
+  const [component, setComponent] = useState<any>()
+  const [type, setType] = useState<any>()
 
-  const setComponentData = ()=>{
-    if(!component) return <></>
-    switch(type){
-      case 'input': 
-        if(component.type ==='check') return renderCheckbox()
-        if(component.type ==='input') return renderInput()      
+  useEffect(() => {
+    restGet('fields', { slug: slug })
+      .then(res => {
+        if (res.status === 200) {
+          setComponent(res.data[0])
+          setType(res.data[0].fieldType)
+        } else {
+          console.error('call error', res)
+        }
+      })
+      .catch(error => console.error(error))
+
+  }, [slug])
+
+  const setComponentData = () => {
+    if (!component) return <></>
+    switch (type) {
+      case 'input':
+        if (component.type === 'check') return renderCheckbox()
+        if (component.type === 'input') return renderInput()
         return renderInput()
-      case 'button': 
+      case 'button':
         return renderButton()
     }
     return <></>
   }
 
-  const renderInput = ()=> (
+  const renderInput = () => (
     <IonItem>
       {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
       <IonInput
@@ -50,27 +51,28 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
     </IonItem>
   )
 
-  const renderCheckbox = ()=>(
-    <IonItem style={{paddingTop: '25px'}}>
+  const renderCheckbox = () => (
+    <IonItem style={{ paddingTop: '25px' }}>
       {label && <IonLabel color='primary'>{label}</IonLabel>}
-      <IonCheckbox slot='end' name={component.label}/>
+      <IonCheckbox slot='end' name={component.label} />
     </IonItem>
   )
-  const renderButton = ()=>(
-    component && <Button label={label} button={component}/>    
+
+  const renderButton = () => (
+    component && <Button label={label} button={component} />
   )
 
   return (
     <>
-      {type === 'input' 
+      {type === 'input'
         ? <Controller
-            as={(setComponentData())}
-            name={name}
-            control={control}
-            onChangeName='onIonChange'
-          />
+          as={(setComponentData())}
+          name={name}
+          control={control}
+          onChangeName='onIonChange'
+        />
         : renderButton()}
-      {type !== 'button' && <Error label={label} name={name} errors={errors}/>}
+      {type !== 'button' && <Error label={label} name={name} errors={errors} />}
     </>
   )
 }

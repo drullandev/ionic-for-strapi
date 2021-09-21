@@ -1,13 +1,13 @@
 import { Path, Control, DeepMap, FieldError, FieldValues, UseFormRegister } from "react-hook-form"
 export interface InputProps {
-  field:  {
+  field: {
     fieldType: string,
     type: string,
-    slug:string,
+    slug: string,
     name: string,
     label: Path<FormValues>
   },
-  rules:{
+  rules: {
     id: number,
     param: string,
     value: string,

@@ -1,27 +1,23 @@
 import * as MyConst from '../../static/constants'
 import axios from 'axios'
 
-const testing = true
+const testing = false
 
-// Get main app Settings
-export const getSettings = async () => {
-  if(testing) console.log('app.calls::getSettings')
-  return axios.get(MyConst.RestAPI+'/settings')
-}
-// Recovering the form parameters...
-export const getForm = async (slug:string) => {
-  if(testing) console.log('app.calls::getForm')
-  return axios.get(MyConst.formsOrigin+slug)  
-}
-
-// Recovering the form parameters...
-export const getMenu = async (slug:string) => {
-  if(testing) console.log('app.calls::getMenu')
-  return axios.get(MyConst.menusOrigin+slug)  
+/**
+ * App CRUD
+ * @param model 
+ * @param params 
+ * @returns 
+ */
+export const restGet = async (model:string, params:object = {}) => {
+  if(testing) console.log('app.calls.restGet::'+model)
+  const queryString = (params)
+    ? '?'+Object.keys(params).map(key => `${key}=${params[key]}`)
+    : ''
+  return axios.get(MyConst.RestAPI+'/'+model+queryString)
 }
 
-// Recovering the form parameters...
-export const getField = async (slug:string) => {
-  if(testing) console.log('app.calls::getField')
-  return axios.get(MyConst.fieldsOrigin+slug)  
+export const restPost = async (model:string, params:any, body:any) => {
+  if(testing) console.log('app.calls.restPost::'+model, body)
+  return axios.post(MyConst.RestAPI+'/'+model, body)
 }

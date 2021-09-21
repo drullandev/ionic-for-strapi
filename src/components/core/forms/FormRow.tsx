@@ -11,13 +11,13 @@ import { FormRowProps } from './interfaces/FormRowProps'
 const FormRow: React.FC<FormRowProps> = ({ columns, control, errors }) => {
   //console.log('FormRow',{ columns, control, errors })
   return (
-    <IonRow 
-      style={{marginTop:'20px'}}>
-      {columns.map((row:any)=>(
+    <IonRow
+      style={{ marginTop: '20px' }}>
+      {columns.map((row: any) => (
         <FormCol
           row={row}
           control={control}
-          errors={errors}/>
+          errors={errors} />
       ))}
     </IonRow>
   )

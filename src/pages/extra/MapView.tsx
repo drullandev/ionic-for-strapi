@@ -9,34 +9,35 @@ import Header from '../../components/core/Header'
 
 import '../../styles/MapView.scss'
 
-interface OwnProps {}
+interface OwnProps { }
 
 interface StateProps {
   locations: Location[]
   mapCenter: Location
 }
 
-interface DispatchProps {}
+interface DispatchProps { }
 
-interface MapViewProps extends OwnProps, StateProps, DispatchProps {}
+interface MapViewProps extends OwnProps, StateProps, DispatchProps { }
 
 const MapView: React.FC<MapViewProps> = ({ locations, mapCenter }) => {
   return (
-  <IonPage id="map-view">
-    <IonHeader>
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonMenuButton></IonMenuButton>
-        </IonButtons>
-        <IonTitle>Map</IonTitle>
-      </IonToolbar>
-    </IonHeader>
+    <IonPage id="map-view">
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonTitle>Map</IonTitle>
+        </IonToolbar>
+      </IonHeader>
 
-    <IonContent class="map-page">
-      <Map locations={locations} mapCenter={mapCenter} />
-    </IonContent>
-  </IonPage>
-)}
+      <IonContent class="map-page">
+        <Map locations={locations} mapCenter={mapCenter} />
+      </IonContent>
+    </IonPage>
+  )
+}
 
 export default connect<OwnProps, StateProps, DispatchProps>({
   mapStateToProps: (state) => ({

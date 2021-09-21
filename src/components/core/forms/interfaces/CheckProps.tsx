@@ -1,6 +1,6 @@
 import { Control, DeepMap, FieldError } from 'react-hook-form'
 export interface CheckProps {
-  field : {
+  field: {
     label: string,
     name: string,
   }

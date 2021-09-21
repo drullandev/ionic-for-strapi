@@ -23,5 +23,5 @@ export const AppContextProvider: React.FC = (props => {
       {props.children}
     </AppContext.Provider>
   )
-  
+
 })

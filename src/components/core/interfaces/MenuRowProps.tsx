@@ -1,6 +1,7 @@
-export interface MenuRowProps {
+export interface MenuRowProps extends RouteComponentProps {
   key:string
   label:string
   icon:string,
-  slot:string
+  slot:string,
+  path?:string
 }

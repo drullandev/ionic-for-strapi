@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 
 const LanguageSelector = () => {
 
-  const {t} = useTranslation()
-  
+  const { t } = useTranslation()
+
   /*const [languages, setLanguages] = useState<Language[]>([])
   useEffect(() => {
     fetch('assets/dump/others/languages.json').then(res => res.json()).then(setLanguages)

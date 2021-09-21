@@ -17,7 +17,7 @@ const RedirectToLogin: React.FC<RedirectToLoginProps> = ({ setIsLoggedIn, setUse
     setUsername(undefined)
     ionRouterContext.push(MyConst.HOME)
   }, [setIsLoggedIn, setUsername, ionRouterContext])
-  
+
   return null
 
 }
