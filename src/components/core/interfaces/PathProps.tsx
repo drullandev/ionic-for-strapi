@@ -1,6 +1,6 @@
 export interface PathProps {
   slug?: string
-  value?: string
+  value: string
   component: {
     name?: string
     icon?: string

@@ -4,11 +4,4 @@ export interface MenuChildProps {
     slug: string
     slot: string
   }
-  area?: {
-    id: number
-    name?: string
-    title?: string
-    slug: string
-    position?: string
-  }[]
 }

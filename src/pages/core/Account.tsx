@@ -6,7 +6,6 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMe
 
 import { setUsername } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'
-import Header from '../../components/core/Header'
 
 import '../../styles/Account.scss'
 
@@ -34,8 +33,6 @@ const Account: React.FC<AccountProps> = ({ setUsername, nickname }) => {
 
   return (
     <IonPage id='account-page'>
-
-      <Header label={''} />
 
       <IonContent>
         {(<div className='ion-padding-top ion-text-center'>

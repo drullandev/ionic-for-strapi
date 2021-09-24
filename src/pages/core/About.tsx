@@ -3,10 +3,10 @@ import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, 
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 
-import './About.scss'
-
 import Popover from '../../components/core/Popover'
 import Header from '../../components/core/Header'
+
+import './About.scss'
 
 interface AboutProps { }
 
@@ -30,7 +30,10 @@ const About: React.FC<AboutProps> = () => {
 
   // momentjs would be a better way to do this https://momentjs.com/
   function displayDate(date: string, format: string) {
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June', 'July',
+      'August', 'September', 'October', 'November', 'December']
 
     const d = new Date(date)
     const year = d.getFullYear()
@@ -48,21 +51,28 @@ const About: React.FC<AboutProps> = () => {
   return (
     <IonPage id='about-page'>
 
-      <Header label={'About'} />
+      <IonHeader className='ion-no-border'>
+
+        <IonToolbar>
+          <IonButtons slot='start'>
+
+            <IonMenuButton></IonMenuButton>
+
+          </IonButtons>
+
+          <IonButtons slot='end'>
+
+            <IonButton onClick={presentPopover}>
+              <IonIcon slot='icon-only' ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
+            </IonButton>
+            
+          </IonButtons>
+
+        </IonToolbar>
+
+      </IonHeader>
 
       <IonContent>
-        <IonHeader className='ion-no-border'>
-          <IonToolbar>
-            <IonButtons slot='start'>
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonButtons slot='end'>
-              <IonButton onClick={presentPopover}>
-                <IonIcon slot='icon-only' ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
 
         <div className='about-header'>
           {/* Instead of loading an image each time the select changes, use opacity to transition them */}
@@ -77,6 +87,27 @@ const About: React.FC<AboutProps> = () => {
           <p className='ion-padding-start ion-padding-end'>
             The Ionic Conference is a one-day conference on {displayDate(conferenceDate, 'mediumDate')} featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
           </p>
+
+          <p className='ion-padding-start ion-padding-end'>
+            The Ionic Conference is a one-day conference on {displayDate(conferenceDate, 'mediumDate')} featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
+          </p>
+
+          <p className='ion-padding-start ion-padding-end'>
+            The Ionic Conference is a one-day conference on {displayDate(conferenceDate, 'mediumDate')} featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
+          </p>
+
+          <p className='ion-padding-start ion-padding-end'>
+            The Ionic Conference is a one-day conference on {displayDate(conferenceDate, 'mediumDate')} featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
+          </p>
+
+          <p className='ion-padding-start ion-padding-end'>
+            The Ionic Conference is a one-day conference on {displayDate(conferenceDate, 'mediumDate')} featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
+          </p>
+
+          <p className='ion-padding-start ion-padding-end'>
+            The Ionic Conference is a one-day conference on {displayDate(conferenceDate, 'mediumDate')} featuring talks from the Ionic team. It is focused on Ionic applications being built with Ionic Framework. This includes migrating apps to the latest version of the framework, Angular concepts, Webpack, Sass, and many other technologies used in Ionic 2. Tickets are completely sold out, and we’re expecting more than 1000 developers – making this the largest Ionic conference ever!
+          </p>
+          
 
           <h3 className='ion-padding-top ion-padding-start'>Details</h3>
 

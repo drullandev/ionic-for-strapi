@@ -3,7 +3,9 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } from '@ionic/react'
 
 // Extras
-import { moonOutline, personAdd, hammer } from 'ionicons/icons'
+import { moonOutline
+  //, personAdd, hammer
+} from 'ionicons/icons'
 
 // Functions
 import { connect } from '../../data/connect'
@@ -15,7 +17,7 @@ import Header from './Header'
 import SubMenu from './SubMenu'
 
 // Main interfaces
-import { StateProps } from '../../models/StateProps'
+//import { StateProps } from '../../models/StateProps'
 import { MenuRowProps } from './interfaces/MenuRowProps'
 
 // Style
@@ -23,6 +25,12 @@ import './styles/Menu.css'
 
 interface DispatchProps {
   setUserDarkMode: typeof setUserDarkMode
+}
+
+export interface StateProps {
+  userDarkMode: boolean
+  isAuthenticated: boolean
+  menuEnabled: boolean
 }
 
 interface MenuProps extends RouteComponentProps, StateProps, DispatchProps {
@@ -34,7 +42,7 @@ interface Menu2Props {
   title: string
 }
 
-const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, setUserDarkMode, menuEnabled, slug }) => {
+const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenticated, history, setUserDarkMode }) => {
 
   const [menu, setMenu] = useState<Menu2Props>()
   const [menus, setMenus] = useState<MenuProps[]>([])
@@ -42,7 +50,6 @@ const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, set
   useEffect(() => {
     restGet('menus', { slug: slug })
       .then(res => {
-        console.log('pijaco', res.data[0])
         setMenu(res.data[0])
         setMenus(res.data[0].rows)
       })
@@ -67,7 +74,7 @@ const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, set
             <IonToggle checked={userDarkMode} onClick={() => setUserDarkMode(!userDarkMode)} />
           </IonItem>
 
-          <IonItem key={'sdfgsdfgsdf'} >
+          {/*<IonItem key={'sdfgsdfgsdf'} >
             <IonIcon slot={slot} icon={personAdd} />
             <IonLabel>Select language</IonLabel>
           </IonItem>
@@ -75,7 +82,7 @@ const Menu: React.FC<MenuProps> = ({ userDarkMode, history, isAuthenticated, set
           <IonItem key={'dswert'} button onClick={() => { history.push('/tutorial') }}>
             <IonIcon slot={slot} icon={hammer} />
             <IonLabel>Show Tutorial</IonLabel>
-          </IonItem>
+          </IonItem>*/}
 
         </IonList>
 

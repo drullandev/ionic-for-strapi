@@ -8,4 +8,5 @@ export interface PageRowProps {
     slug: string
     params: string
   }
+  params: string
 }

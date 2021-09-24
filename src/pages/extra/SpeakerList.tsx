@@ -1,7 +1,7 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonGrid, IonRow, IonCol } from '@ionic/react'
 
-import SpeakerItem from '../../components/core/SpeakerItem'
+import SpeakerItem from '../../components/extra/SpeakerItem'
 
 import { Speaker } from '../../models/Speaker'
 import { Session } from '../../models/Schedule'

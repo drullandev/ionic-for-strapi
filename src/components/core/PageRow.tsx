@@ -1,8 +1,7 @@
 import React from 'react'
-//import Area from './_Area'
 import Menu from './Menu'
 import Form from './forms/Form'
-import Component from './Component'
+import MyComponent from './MyComponent'
 
 import { PageRowProps } from './interfaces/PageRowProps'
 
@@ -11,11 +10,11 @@ import { PageRowProps } from './interfaces/PageRowProps'
  * @param param0 
  * @returns 
  */
-const PageRow: React.FC<PageRowProps> = ({ area, menu, form, component }) => {
-  //console.log('PageRowProps', {area, menu, form, component})
+const PageRow: React.FC<PageRowProps> = ({ menu, form, component }) => {
+  //console.log('PageRowProps', { menu, form, component})
   const returnComponent = () => {
     if (!component) return
-    return component && <Component
+    return component && <MyComponent
       name={component.name}
       slug={component.slug}
       params={component.params}

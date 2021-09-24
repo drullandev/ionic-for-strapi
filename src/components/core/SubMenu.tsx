@@ -2,36 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { IonList, IonLabel, IonListHeader } from '@ionic/react'
 import { restGet } from '../../data/strapi/app.calls'
 
+import { SubMenuProps } from './interfaces/SubMenuProps'
 
-import MenuRow from '../../components/core/MenuRow'
-
-interface SubMenuProps {
-  menu: {
-    slug: string
-    rows: {
-      area: any
-      areas: any
-      component: any
-      field: {
-        id: number
-        slug: string
-      }
-      form: any
-      id: number
-      menu: any
-      path: {
-        id: number,
-        slug: string,
-      }
-      section: any
-      title: string
-    }[]
-    title: string
-    menu: {
-      slug: string
-    }
-  }
-}
+import MenuRow from './MenuRow'
 
 const SubMenu: React.FC<SubMenuProps> = ({ menu }) => {
 
@@ -40,7 +13,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ menu }) => {
   useEffect(() => {
     restGet('menus', { slug: menu.menu.slug })
       .then(res => {
-        console.log('SubMenu', res.data[0])
+        //console.log('SubMenu::Res', res.data[0])
         if (res.data[0].rows) setMenus(res.data[0].rows)
       })
   }, [])
@@ -48,14 +21,14 @@ const SubMenu: React.FC<SubMenuProps> = ({ menu }) => {
   //console.log('SubMenu', { menus })
   return (
     <>
-      {/*<IonListHeader>
+      <IonListHeader>
         <IonLabel>{menu.title}</IonLabel>
       </IonListHeader>
       <IonList lines='none' key={menu.menu.slug}>
         {menus.map((row:any, i:number)=>(
-          <MenuRow key={i.toString()} row={row} label={row.title} slug={row.slug}/>
+          <MenuRow key={i.toString()} row={row}/>
         ))}
-        </IonList>*/}
+      </IonList>
     </>
   )
 

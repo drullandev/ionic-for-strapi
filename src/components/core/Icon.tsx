@@ -19,19 +19,19 @@ import { addIcons } from 'ionicons'
 
 // All the avilable ionicos on the app
 addIcons({
-  'logIn': logIn,
-  'logOut': logOut,
+  'login': logIn,
+  'logout': logOut,
   'person': person,
-  'personAdd': personAdd,
-  'calendarOutline': calendarOutline,
-  'peopleOutline': peopleOutline,
-  'mapOutline': mapOutline,
+  'personadd': personAdd,
+  'calendaroutline': calendarOutline,
+  'peopleoutline': peopleOutline,
+  'mapoutline': mapOutline,
   'location': location,
   'calendar': calendar,
   'people': people,
   'help': help,
-  'informationCircleOutline': informationCircleOutline,
-  'informationCircle': informationCircle,
+  'informationcircleoutline': informationCircleOutline,
+  'informationcircle': informationCircle,
 })
 
 export interface IconProps {
@@ -40,7 +40,7 @@ export interface IconProps {
 }
 
 const Icon: React.FC<IconProps> = ({ slot = 'start', name = 'person' }) => {
-  return <IonIcon slot={slot} name={name} ></IonIcon>
+  return <IonIcon slot={slot} name={name.toLowerCase()} ></IonIcon>
 }
 
 export default Icon

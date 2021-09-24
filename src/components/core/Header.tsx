@@ -9,14 +9,13 @@ import { HeaderProps } from './interfaces/HeaderProps'
  */
 const Header: React.FC<HeaderProps> = ({ label, slot }) => {
   //console.log('getting header', {label, slot})
-  return <IonHeader>
-    <IonToolbar>
+  return <IonToolbar>
       <IonButtons slot={slot ? slot : 'start'}>
         <IonMenuButton></IonMenuButton>
       </IonButtons>
       <IonTitle>{label}</IonTitle>
     </IonToolbar>
-  </IonHeader>
+
 }
 
 export default Header
