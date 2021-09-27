@@ -22,6 +22,16 @@ export const restPost = async (model:string, body:any) => {
   return axios.post(MyConst.RestAPI+'/'+model, body)
 }
 
+export const restPut = async (model:string, body:any) => {
+  if(testing) console.log('app.calls.restPut::'+model, body)
+  return axios.put(MyConst.RestAPI+'/'+model, body)
+}
+
+export const restDelete = async (model:string, body:any) => {
+  if(testing) console.log('app.calls.restDelete::'+model, body)
+  return axios.delete(MyConst.RestAPI+'/'+model, body)
+}
+
 export const setImage = (url:string) =>{
   return MyConst.RestAPI+url
 }

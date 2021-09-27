@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { restGet, restPost, setImage } from '../../data/strapi/strapi.calls'
+import { restGet, setImage } from '../../data/strapi/strapi.calls'
 import { editUserValue } from '../../data/user/user.calls'
-import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel, IonInput } from '@ionic/react'
+import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel } from '@ionic/react'
 
 import { setNickname, setUserEmail, } from '../../data/user/user.actions'
 import { connect } from '../../data/connect'

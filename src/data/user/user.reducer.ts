@@ -1,3 +1,5 @@
+import * as MyConst from '../../static/constants'
+
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
 
@@ -7,8 +9,8 @@ export function setUserReducer(
   state: UserState,
   action: UserActions
 ): UserState {
+
   if (testing) console.log('reducer.' + action.type)
-  //console.log(action)
 
   switch (action.type) {
     case 'userData':

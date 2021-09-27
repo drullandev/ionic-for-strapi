@@ -1,6 +1,4 @@
-import * as MyConst from './static/constants'
-
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
@@ -28,34 +26,17 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setNickname, loadUserData, setUserDarkMode, setAppIcon } from './data/user/user.actions'
-import { restGet } from './data/strapi/strapi.calls'
+import { setIsLoggedIn, setNickname, loadUserData, setUserDarkMode } from './data/user/user.actions'
 
 /* Core pages */
-import Account from './pages/core/Account'
-import Tutorial from './pages/extra/Tutorial'
 import Page from './components/core/main/Page'
-import HomeOrWelcome from './pages/core/HomeOrWelcome'
 
 /* Pages components */
 import Menu from './components/core/main/Menu'
-//import TabMenu from './components/core/main/TabButton'
 import RedirectToLogin from './pages/core/RedirectToLogin'
 
 /* Pages models */
 import { Schedule } from './models/Schedule'
-
-/*
-function setAvailableComponent(name: any, jsx: boolean = false) {
-  //console.log('compa', name)
-  switch (name) {
-    case 'HomeOrWelcome': return jsx ? <HomeOrWelcome /> : HomeOrWelcome
-    case 'Account': return Account
-    case 'Tutorial': return Tutorial
-    default: return Page
-  }
-}
-*/
 
 const App: React.FC = () => {
   return (
@@ -66,7 +47,7 @@ const App: React.FC = () => {
 }
 
 interface StateProps {
-  darkMode: boolean
+  userDarkMode: boolean
   schedule: Schedule
 }
 
@@ -76,24 +57,21 @@ interface DispatchProps {
   loadConfData: typeof loadConfData
   loadUserData: typeof loadUserData
   setUserDarkMode: typeof setUserDarkMode
-  setAppIcon: typeof setAppIcon
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
 const IonicApp: React.FC<IonicAppProps> = ({
-  darkMode,
+  userDarkMode,
   schedule,
   setIsLoggedIn,
   setNickname,
   loadConfData,
   loadUserData,
-  setUserDarkMode,
-  setAppIcon
+  setUserDarkMode
 }) => {
 
   //const [showLoading, setShowLoading] = useState(false)
-  //const [paths, setPaths] = useState([])
 
   useEffect(() => {
 
@@ -103,11 +81,11 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
     loadConfData()
 
-    restGet('settings').then(res => { 
-      console.log(res.data)
-    })
+    //restGet('settings').then(res => { 
+    //  console.log(res.data)
+    //})
 
-    //restGet('paths').then(res => { console.log(res.data); setPaths(res.data) })
+    //restGet('paths').then(res => { console.log(res.data) setPaths(res.data) })
 
     //setShowLoading(false)
 
@@ -139,7 +117,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   */
 
   return (
-    <IonApp className={darkMode ? 'dark-theme' : ''}>
+    <IonApp className={userDarkMode ? 'dark-theme' : ''}>
 
       <IonReactRouter>
 
@@ -177,8 +155,8 @@ export default App
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
-    darkMode: state.user.userDarkMode,
-    schedule: state.data.schedule
+    userDarkMode: true,
+    schedule: []
   }),
 
   mapDispatchToProps: {
@@ -186,8 +164,7 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
     loadUserData,
     setIsLoggedIn,
     setUserDarkMode,
-    setNickname,
-    setAppIcon
+    setNickname
   },
 
   component: IonicApp

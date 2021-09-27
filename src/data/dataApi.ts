@@ -1,40 +1,22 @@
-import { Plugins } from '@capacitor/core'
+import * as MyConst from '../static/constants'
+import { setStorage, getStorage, switchStorage } from './app/storage'
+
 import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 
-const { Storage } = Plugins
-
-const dataUrl           = '/assets/data/data.json'
-const locationsUrl      = '/assets/data/locations.json'
-
-const NICKNAME          = 'nickname'
-const USEREMAIL         = 'useremail'
-const USERJWT           = 'userjwt'
-const USERID            = 'userId'
-const HAS_LOGGED_IN     = 'hasLoggedIn'
-const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
-const USER_DARK_MODE    = 'userDarkMode'
-
 //----------------------------------------------------------------
 
-export const getStored = async (key: string ) => {
-  return await Promise.all([Storage.get({ key: key })])
-}
+export const loadUserExtra = async () => {
 
-export const getUserConf = async () => {
+  const response = await Promise.all([fetch(MyConst.dataUrl), fetch(MyConst.locationsUrl)])
 
-  const response = await Promise.all([
-    fetch(dataUrl),
-    fetch(locationsUrl)
-  ])
-
-  const responseData  = await response[0].json()
-  const schedule      = responseData.schedule[0] as Schedule
-  const sessions      = parseSessions(schedule)
-  const speakers      = responseData.speakers as Speaker[]
-  const locations     = await response[1].json() as Location[]
-  const allTracks     = sessions
+  const responseData = await response[0].json()
+  const schedule = responseData.schedule[0] as Schedule
+  const sessions = parseSessions(schedule)
+  const speakers = responseData.speakers as Speaker[]
+  const locations = (await response[1].json()) as Location[]
+  const allTracks = sessions
     .reduce((all, session) => all.concat(session.tracks), [] as string[])
     .filter((trackName, index, array) => array.indexOf(trackName) === index)
     .sort()
@@ -45,29 +27,24 @@ export const getUserConf = async () => {
     locations,
     speakers,
     allTracks,
-    filteredTracks: [...allTracks]
+    filteredTracks: [...allTracks],
   }
-
 }
 
-function parseSessions(schedule: Schedule) {
-  const sessions: Session[] = []
-  schedule.groups.forEach(g => {
-    g.sessions.forEach(s => sessions.push(s))
-  })
-  return sessions
+export const loadUserData = (data:any) => {
+
 }
 
 export const getUserData = async () => {
 
   const response = await Promise.all([
-    Storage.get({ key: NICKNAME }),
-    Storage.get({ key: USEREMAIL }),
-    Storage.get({ key: USERJWT }),
-    Storage.get({ key: USERID }),
-    Storage.get({ key: HAS_LOGGED_IN }),
-    Storage.get({ key: HAS_SEEN_TUTORIAL }),
-    Storage.get({ key: USER_DARK_MODE }),    
+    getStorage(MyConst.NICKNAME),
+    getStorage(MyConst.USEREMAIL),
+    getStorage(MyConst.USERJWT),
+    getStorage(MyConst.USERID),
+    getStorage(MyConst.HAS_LOGGED_IN),
+    getStorage(MyConst.HAS_SEEN_TUTORIAL),
+    getStorage(MyConst.USER_DARK_MODE),
   ])
 
   const nickname        = response[0].value || undefined
@@ -90,34 +67,38 @@ export const getUserData = async () => {
 
 }
 
+function parseSessions(schedule: Schedule) {
+  const sessions: Session[] = []
+  schedule.groups.forEach((g) => {
+    g.sessions.forEach((s) => sessions.push(s))
+  })
+  return sessions
+}
+
+
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  await Storage.set({ key: HAS_LOGGED_IN, value: JSON.stringify(isLoggedIn) })
+  return setStorage(MyConst.HAS_LOGGED_IN, JSON.stringify(isLoggedIn))
 }
 
 export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  await Storage.set({ key: HAS_SEEN_TUTORIAL, value: JSON.stringify(hasSeenTutorial) })
+  return setStorage(MyConst.HAS_SEEN_TUTORIAL, JSON.stringify(hasSeenTutorial))
 }
 
 export const setNicknameData = async (nickname?: string) => {
-  setOrRemove(NICKNAME, nickname)
+  return switchStorage(MyConst.NICKNAME, nickname)
 }
 
 export const setUserEmailData = async (useremail?: string) => {
-  setOrRemove(USEREMAIL, useremail)
+  return switchStorage(MyConst.USEREMAIL, useremail)
 }
 
 export const setUserJwtData = async (userjwt?: string) => {
-  setOrRemove(USERJWT, userjwt)
+  return switchStorage(MyConst.USERJWT, userjwt)
 }
 
 export const setUserIdData = async (userId?: string) => {
-  setOrRemove(USERID, userId)
+  return switchStorage(MyConst.USERID, userId)
 }
 
-export const  setOrRemove = async (key:string, value:any = null)=>{
-  if(!value){
-    await Storage.remove({ key: key })
-  }else{
-    await Storage.set({ key: key, value: value })
-  }
-}
+
+

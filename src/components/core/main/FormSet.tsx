@@ -7,9 +7,8 @@ import Form from '../forms/Form'
  * @param param0 
  * @returns 
  */
-const FormSet: React.FC<FormProps> = ({ slug }) => {
-  //console.log('Set Form:', slug)
-  return (<Form slug={slug} />)
-}
+const FormSet: React.FC<FormProps> = ({ slug }) => (
+  <Form slug={slug} />
+)
 
 export default FormSet

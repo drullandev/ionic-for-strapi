@@ -11,69 +11,101 @@ import {
 
 import axios from 'axios'
 
-export const set = async (action:string, form:React.FormEvent)=>{//}, history:any) => {
-  switch(action){
-    case 'login':     return login(form)//, history)
-    case 'signup':  return signup(form)//, history)
-    case 'recover':   return recover(form)//, history)
-    default: break;
+export const set = async (action: string, form: React.FormEvent) => {//}, history:any) => {
+  switch (action) {
+    case 'login': return login(form)//, history)
+    case 'signup': return signup(form)//, history)
+    case 'recover': return recover(form)//, history)
+    default: break
   }
 }
 
-function login(form: any){//}, history: any){
+function login(form: any) {//}, history: any){
 
-  if(typeof form.identifier === 'undefined') return
-  if(typeof form.password === 'undefined') return
-  if(typeof form.terms === 'undefined') return
-  if(typeof form.policy === 'undefined') return
+  console.log('Launch Login form ;);)', form)
 
-  const promise = axios.post(MyConst.RestAPI+'/auth/local', form)
-  const dataPromise = promise.then((res:any) => {    
-    setIsLoggedIn(true)
-    setUserEmail(res.data.user.mail)
-    setNickname(res.data.user.nickname)
-    setUserJwt(res.data.userjwt)
-    setUserId(res.data.user.id)
+  if (typeof form.identifier === 'undefined') return
+  if (typeof form.password === 'undefined') return
+  if (typeof form.terms === 'undefined') return
+  if (typeof form.policy === 'undefined') return
 
-    return {
-      history: {
-        push: '/tabs/schedule',
-        params: {
-          direction: 'none'
+  const promise = axios.post(MyConst.RestAPI + '/auth/local', form)
+  const dataPromise = promise.then((res: any) => {
+
+    if (res.status === 200) {
+
+      console.log('Login Call Result!!', res.data)
+
+      var userData = res.data.user
+      if (userData.confirmed && !userData.blocked) {
+
+        setIsLoggedIn(true)
+
+        setUserJwt(res.data.jwt)
+
+        setUserEmail(userData.mail)
+        setNickname(userData.nickname)
+        setUserId(userData.id)
+
+        return {
+          history: {
+            push: '/tabs/schedule',//TODO: Set home param!!
+            params: {
+              direction: 'none'
+            }
+          }
+        }
+
+      } else {
+
+        return {
+          error: {
+            type: 'toast',//TODO: Set home param!!
+            params: {
+              message: 'Strange rror login!??'
+            }
+          }
+        }
+
+      }
+
+    } else {
+
+      return {
+        error: {
+          type: 'toast',//TODO: Set home param!!
+          params: {
+            message: 'Strange rror login!??'
+          }
         }
       }
+
     }
 
   })
-  .catch((err:any) => {
-    logoutUser()
-    return {
-      error: {
-        toast: {
-          message: err.response.data.message[0].messages[0].message,
+    .catch((err: any) => {
+      logoutUser()
+      return {
+        error: {
+          type: 'toast',
+          params: {
+            message: err.response.data.message[0].messages[0].message,
+          }
         }
       }
-    }
-  })
+    })
+
   return dataPromise
 
 }
 
-function signup(form: any){//}, history: any){
-
-  if(typeof form.identifier === 'undefined') return
-  if(typeof form.password === 'undefined') return
-  if(typeof form.terms === 'undefined') return
-  if(typeof form.policy === 'undefined') return
-
-  const promise = axios.post(MyConst.RestAPI+'/auth/local', form)
-  const dataPromise = promise.then((res:any) => {    
-    setIsLoggedIn(true)
-    setUserEmail(res.data.user.mail)
-    setNickname(res.data.user.nickname)
-    setUserJwt(res.data.jwt)
-    setUserId(res.data.user.id)
-
+function signup(form: any) {//}, history: any){
+  if (typeof form.identifier === 'undefined') return
+  if (typeof form.password === 'undefined') return
+  if (typeof form.terms === 'undefined') return
+  if (typeof form.policy === 'undefined') return
+  const promise = axios.post(MyConst.RestAPI + '/auth/local', form)
+  const dataPromise = promise.then((res: any) => {
     return {
       history: {
         push: '/tabs/schedule',
@@ -82,37 +114,22 @@ function signup(form: any){//}, history: any){
         }
       }
     }
-
   })
-  .catch((err:any) => {
-    logoutUser()
-    return {
-      error: {
-        toast: {
-          message: err.response.data.message[0].messages[0].message,
+    .catch((err: any) => {
+      return {
+        error: {
+          toast: {
+            message: err.response.data.message[0].messages[0].message,
+          }
         }
       }
-    }
-  })
+    })
   return dataPromise
-
 }
 
-function recover(form: any){//}, history: any){
-
-  if(typeof form.identifier === 'undefined') return
-  if(typeof form.password === 'undefined') return
-  if(typeof form.terms === 'undefined') return
-  if(typeof form.policy === 'undefined') return
-
-  const promise = axios.post(MyConst.RestAPI+'/auth/local', form)
-  const dataPromise = promise.then((res:any) => {    
-    setIsLoggedIn(true)
-    setUserEmail(res.data.user.mail)
-    setNickname(res.data.user.nickname)
-    setUserJwt(res.data.jwt)
-    setUserId(res.data.user.id)
-
+function recover(form: any) {//}, history: any){
+  const promise = axios.post(MyConst.RestAPI + '/auth/local', form)
+  const dataPromise = promise.then((res: any) => {
     return {
       history: {
         push: '/tabs/schedule',
@@ -121,18 +138,15 @@ function recover(form: any){//}, history: any){
         }
       }
     }
-
   })
-  .catch((err:any) => {
-    logoutUser()
-    return {
-      error: {
-        toast: {
-          message: err.response.data.message[0].messages[0].message,
+    .catch((err: any) => {
+      return {
+        error: {
+          toast: {
+            message: err.response.data.message[0].messages[0].message,
+          }
         }
       }
-    }
-  })
+    })
   return dataPromise
-
 }

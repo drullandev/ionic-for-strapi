@@ -23,6 +23,7 @@ export interface PageProps extends RouteComponentProps<{ slug: string, id?: stri
 const Page: React.FC<PageProps> = ({ match }) => {
 
   const location = useLocation()
+  const testing = false
 
   //const [page, setPage] = useState<PageProps>()
   const [slugIn, setSlugIn] = useState('')
@@ -31,7 +32,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
   useEffect(() => {
     restGet('pages', { slug: match.params.slug })
       .then(res => {
-        console.log('rererere', res.data)
+        if(testing) console.log('Recovered page', res.data)
         setSlugIn(res.data[0].slug)
         if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
       })
