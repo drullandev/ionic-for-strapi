@@ -1,4 +1,4 @@
-export interface TabMenuButtonProps {
+export interface TabButtonProps {
   path: {
     slug: string
     value: string

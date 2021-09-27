@@ -1,4 +1,3 @@
-import * as MyConst from '../static/constants'
 import { Plugins } from '@capacitor/core'
 const { Storage } = Plugins
 
@@ -22,11 +21,6 @@ export const switchStorage = async (key: string, value: any, json: boolean = fal
   } else {
     await removeStorage(key)
   }  
-}
-
-export const validateEmail= async (email: string) => {
-  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
 }
 
 export const catchIt = (error:any) => {

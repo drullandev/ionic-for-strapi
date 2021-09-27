@@ -4,7 +4,7 @@ import { getMode } from '@ionic/core'
 import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon } from '@ionic/react'
 import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorPalette, construct, compass } from 'ionicons/icons'
 
-import './styles/SessionListFilter.css'
+import './styles/SessionListFilter.scss'
 
 import { connect } from '../../data/connect'
 import { updateFilteredTracks } from '../../data/sessions/sessions.actions'

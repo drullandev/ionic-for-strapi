@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormProps } from './interfaces/FormProps'
-import Form from './forms/Form'
+import Form from '../forms/Form'
+
 /**
  * Get a form settings using a slug
  * @param param0 

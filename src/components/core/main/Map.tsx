@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 
-import { Location } from '../../models/Location'
-import * as MyConst from '../../static/constants'
+import { Location } from '../../../models/Location'
+import * as MyConst from '../../../static/constants'
 
 interface MapProps {
   locations: Location[]

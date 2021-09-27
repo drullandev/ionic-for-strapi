@@ -1,6 +1,6 @@
 import { combineReducers } from './combineReducers'
 import { sessionsReducer } from './sessions/sessions.reducer'
-import { userReducer } from './user/user.reducer'
+import { setUserReducer } from './user/user.reducer'
 
 export const initialState: AppState = {
   data: {
@@ -27,7 +27,7 @@ export const initialState: AppState = {
 
 export const reducers = combineReducers({
   data: sessionsReducer,
-  user: userReducer
+  user: setUserReducer
 })
 
 export type AppState = ReturnType<typeof reducers>

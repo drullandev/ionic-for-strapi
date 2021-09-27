@@ -1,4 +1,4 @@
-//import * as MyConst from './static/constants'
+import * as MyConst from './static/constants'
 
 import React, { useEffect, useState } from 'react'
 import { Route, Redirect } from 'react-router-dom'
@@ -28,18 +28,18 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setUsername, loadUserData, setUserDarkMode, setAppIcon } from './data/user/user.actions'
-//import { restGet } from './data/strapi/app.calls'
+import { setIsLoggedIn, setNickname, loadUserData, setUserDarkMode, setAppIcon } from './data/user/user.actions'
+import { restGet } from './data/strapi/strapi.calls'
 
 /* Core pages */
 import Account from './pages/core/Account'
 import Tutorial from './pages/extra/Tutorial'
-import Page from './components/core/Page'
+import Page from './components/core/main/Page'
 import HomeOrWelcome from './pages/core/HomeOrWelcome'
 
 /* Pages components */
-import Menu from './components/core/Menu'
-import TabMenu from './components/core/MainTabs'
+import Menu from './components/core/main/Menu'
+//import TabMenu from './components/core/main/TabButton'
 import RedirectToLogin from './pages/core/RedirectToLogin'
 
 /* Pages models */
@@ -72,7 +72,7 @@ interface StateProps {
 
 interface DispatchProps {
   setIsLoggedIn: typeof setIsLoggedIn
-  setUsername: typeof setUsername
+  setNickname: typeof setNickname
   loadConfData: typeof loadConfData
   loadUserData: typeof loadUserData
   setUserDarkMode: typeof setUserDarkMode
@@ -85,7 +85,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   darkMode,
   schedule,
   setIsLoggedIn,
-  setUsername,
+  setNickname,
   loadConfData,
   loadUserData,
   setUserDarkMode,
@@ -103,7 +103,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
     loadConfData()
 
-    //restGet('settings').then(res => { parseSettings(res) })
+    restGet('settings').then(res => { 
+      console.log(res.data)
+    })
 
     //restGet('paths').then(res => { console.log(res.data); setPaths(res.data) })
 
@@ -157,7 +159,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
               <RedirectToLogin
                 key='rtl'
                 setIsLoggedIn={setIsLoggedIn}
-                setUsername={setUsername} />
+                setNickname={setNickname} />
             )} />
 
           </IonRouterOutlet>
@@ -173,17 +175,21 @@ const IonicApp: React.FC<IonicAppProps> = ({
 export default App
 
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
+
   mapStateToProps: (state) => ({
     darkMode: state.user.userDarkMode,
     schedule: state.data.schedule
   }),
+
   mapDispatchToProps: {
     loadConfData,
     loadUserData,
     setIsLoggedIn,
     setUserDarkMode,
-    setUsername,
+    setNickname,
     setAppIcon
   },
+
   component: IonicApp
+
 })

@@ -1,6 +1,6 @@
 import React from 'react'
 import Menu from './Menu'
-import Form from './forms/Form'
+import Form from '../forms/Form'
 import MyComponent from './MyComponent'
 
 import { PageRowProps } from './interfaces/PageRowProps'

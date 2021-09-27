@@ -2,7 +2,7 @@ import * as MyConst from '../../static/constants'
 
 import {
   setIsLoggedIn,
-  setUsername,
+  setNickname,
   setUserEmail,
   setUserJwt,
   setUserId,
@@ -31,7 +31,7 @@ function login(form: any){//}, history: any){
   const dataPromise = promise.then((res:any) => {    
     setIsLoggedIn(true)
     setUserEmail(res.data.user.mail)
-    setUsername(res.data.user.nickname)
+    setNickname(res.data.user.nickname)
     setUserJwt(res.data.userjwt)
     setUserId(res.data.user.id)
 
@@ -70,7 +70,7 @@ function signup(form: any){//}, history: any){
   const dataPromise = promise.then((res:any) => {    
     setIsLoggedIn(true)
     setUserEmail(res.data.user.mail)
-    setUsername(res.data.user.nickname)
+    setNickname(res.data.user.nickname)
     setUserJwt(res.data.jwt)
     setUserId(res.data.user.id)
 
@@ -109,7 +109,7 @@ function recover(form: any){//}, history: any){
   const dataPromise = promise.then((res:any) => {    
     setIsLoggedIn(true)
     setUserEmail(res.data.user.mail)
-    setUsername(res.data.user.nickname)
+    setNickname(res.data.user.nickname)
     setUserJwt(res.data.jwt)
     setUserId(res.data.user.id)
 

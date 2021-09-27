@@ -1,18 +1,18 @@
 import React from 'react'
 
-import Header from './Header'
+import Header from './ToolBar'
 import Icon from './Icon'
 import Page from './Page'
 
-import About from '../../pages/core/About'
-import Account from '../../pages/core/Account'
-import SessionDetail from '../../pages/extra/SessionDetail'
+import About from '../../../pages/core/About'
+import Account from '../../../pages/core/Account'
+import SessionDetail from '../../../pages/extra/SessionDetail'
 
-import Home from '../../pages/core/Home'
-import SpeakerList from '../../pages/extra/SpeakerList'
-import SpeakerDetail from '../../pages/extra/SpeakerDetail'
-import MapView from '../../pages/extra/MapView'
-import Tutorial from '../../pages/extra/Tutorial'
+import Home from '../../../pages/core/Home'
+import SpeakerList from '../../../pages/extra/SpeakerList'
+import SpeakerDetail from '../../../pages/extra/SpeakerDetail'
+import MapView from '../../../pages/extra/MapView'
+import Tutorial from '../../../pages/extra/Tutorial'
 
 import { MyComponentProps } from './interfaces/MyComponentProps'
 

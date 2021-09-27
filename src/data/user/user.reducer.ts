@@ -3,20 +3,29 @@ import { UserState } from './user.state'
 
 const testing = false
 
-export function userReducer(state: UserState, action: UserActions): UserState {
-
-  if(testing) console.log('reducer.'+action.type)
+export function setUserReducer(
+  state: UserState,
+  action: UserActions
+): UserState {
+  if (testing) console.log('reducer.' + action.type)
   //console.log(action)
 
   switch (action.type) {
-    case 'set-user-data':         return { ...state, ...action.data }    
-    case 'set-user-loading':      return { ...state, loading:         action.isLoading }
-    case 'set-nickname':          return { ...state, nickname:        action.nickname }
-    case 'set-useremail':         return { ...state, useremail:       action.email }
-    case 'set-userjwt':           return { ...state, userjwt:         action.userjwt }
-    case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
-    case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }
-    case 'set-is-loggedin':       return { ...state, isLoggedin:      action.loggedIn }
+    case 'userData':
+      return { ...state, ...action.data }
+    case 'isLoading':
+      return { ...state, loading: action.isLoading }
+    case 'nickname':
+      return { ...state, nickname: action.nickname }
+    case 'useremail':
+      return { ...state, useremail: action.email }
+    case 'userjwt':
+      return { ...state, userjwt: action.userjwt }
+    case 'hasSeenTutorial':
+      return { ...state, hasSeenTutorial: action.hasSeenTutorial }
+    case 'userDarkMode':
+      return { ...state, userDarkMode: action.userDarkMode }
+    case 'isLoggedin':
+      return { ...state, isLoggedin: action.loggedIn }
   }
-
 }

@@ -1,11 +1,11 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonPage } from '@ionic/react'
 
-import Map from '../../components/core/Map'
+import Map from '../../components/core/main/Map'
 import { Location } from '../../models/Location'
 import { connect } from '../../data/connect'
 import * as selectors from '../../data/selectors'
-import Header from '../../components/core/Header'
+import Header from '../../components/core/main/ToolBar'
 
 import '../../styles/MapView.scss'
 

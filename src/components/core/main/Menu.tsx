@@ -8,12 +8,12 @@ import { moonOutline
 } from 'ionicons/icons'
 
 // Functions
-import { connect } from '../../data/connect'
-import { setUserDarkMode } from '../../data/user/user.actions'
-import { restGet } from '../../data/strapi/app.calls'
+import { connect } from '../../../data/connect'
+import { setUserDarkMode } from '../../../data/user/user.actions'
+import { restGet } from '../../../data/strapi/strapi.calls'
 
 // Components
-import Header from './Header'
+import Header from './ToolBar'
 import SubMenu from './SubMenu'
 
 // Main interfaces
@@ -21,7 +21,7 @@ import SubMenu from './SubMenu'
 import { MenuRowProps } from './interfaces/MenuRowProps'
 
 // Style
-import './styles/Menu.css'
+import '../styles/Menu.scss'
 
 interface DispatchProps {
   setUserDarkMode: typeof setUserDarkMode
@@ -47,6 +47,7 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenti
   const [menu, setMenu] = useState<Menu2Props>()
   const [menus, setMenus] = useState<MenuProps[]>([])
   const [slot, setSlot] = useState('start')
+
   useEffect(() => {
     restGet('menus', { slug: slug })
       .then(res => {
@@ -94,13 +95,17 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenti
 }
 
 export default connect<{}, StateProps, {}>({
+
   mapStateToProps: (state) => ({
     userDarkMode: state.user.userDarkMode,
     isAuthenticated: state.user.isLoggedin,
     menuEnabled: state.data.menuEnabled
   }),
+
   mapDispatchToProps: ({
     setUserDarkMode
   }),
+
   component: withRouter(Menu)
+
 })

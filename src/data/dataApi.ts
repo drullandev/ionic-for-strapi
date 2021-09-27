@@ -30,14 +30,10 @@ export const getUserConf = async () => {
   ])
 
   const responseData  = await response[0].json()
-
   const schedule      = responseData.schedule[0] as Schedule
   const sessions      = parseSessions(schedule)
-
   const speakers      = responseData.speakers as Speaker[]
-
   const locations     = await response[1].json() as Location[]
-
   const allTracks     = sessions
     .reduce((all, session) => all.concat(session.tracks), [] as string[])
     .filter((trackName, index, array) => array.indexOf(trackName) === index)
@@ -102,7 +98,7 @@ export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
   await Storage.set({ key: HAS_SEEN_TUTORIAL, value: JSON.stringify(hasSeenTutorial) })
 }
 
-export const setUsernameData = async (nickname?: string) => {
+export const setNicknameData = async (nickname?: string) => {
   setOrRemove(NICKNAME, nickname)
 }
 

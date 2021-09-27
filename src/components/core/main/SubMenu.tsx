@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { IonList, IonLabel, IonListHeader } from '@ionic/react'
-import { restGet } from '../../data/strapi/app.calls'
+import { restGet } from '../../../data/strapi/strapi.calls'
 
 import { SubMenuProps } from './interfaces/SubMenuProps'
 

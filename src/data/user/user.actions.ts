@@ -1,7 +1,7 @@
 import {
   getUserData,
   setIsLoggedInData,
-  setUsernameData,
+  setNicknameData,
   setUserEmailData,
   setHasSeenTutorialData
 } from '../dataApi'
@@ -11,8 +11,13 @@ import { UserState } from './user.state'
 
 var testing = false
 
-export const userAction = () => {
+export const setUserValue = (type:string, data:any) => {
+  if(testing === true) console.log('user.actions.'+type+'::', data)
+  return ({ type: type, data } as const)
+}
 
+export const setData = (data: Partial<UserState>) => {
+  return setUserValue('userData', data)
 }
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
@@ -26,67 +31,55 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 export const setUserEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
   if(testing === true) console.log('user.actions.setUserEmail::', email)
   await setUserEmailData(email)
-  return ({ type: 'set-useremail', email } as const)
+  return setUserValue('useremail', email)
 }
 
-export const setUsername = (nickname?: string) => async (dispatch: React.Dispatch<any>) => {
+export const setNickname = (nickname?: string) => async (dispatch: React.Dispatch<any>) => {
   if(testing === true) console.log('user.actions.setUsername::', nickname)
-  await setUsernameData(nickname)
-  return ({ type: 'set-nickname', nickname } as const)
+  await setNicknameData(nickname)
+  return setUserValue('nickname', nickname)
 }
 
-export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
-  if(testing === true) console.log('user.actions.setIsLoggedIn::', loggedIn)
-  await setIsLoggedInData(loggedIn)
-  return ({ type: 'set-is-loggedin', loggedIn } as const)
+export const setIsLoggedIn = (isLoggedin: boolean) => async (dispatch: React.Dispatch<any>) => {
+  await setIsLoggedInData(isLoggedin)
+  return setUserValue('isLoggedin', isLoggedin)
 }
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   if(testing === true) console.log('user.actions.logoutUser')
   await setIsLoggedInData(false)
-  dispatch(setUsername())
+  dispatch(setNickname())
 }
 
 export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
-  if(testing === true) console.log('user.actions.setHasSeenTutorial::', hasSeenTutorial)
   await setHasSeenTutorialData(hasSeenTutorial)
-  return ({ type: 'set-has-seen-tutorial', hasSeenTutorial } as const)
+  return setUserValue('hasSeenTutorial', hasSeenTutorial)
 }
 
 export const setLoading = (isLoading: boolean) => {
-  if(testing === true) console.log('user.actions.setLoading::', isLoading)
-  return ({ type: 'set-user-loading', isLoading } as const)
-}
-
-export const setData = (data: Partial<UserState>) => {
-  if(testing === true) console.log('user.actions.setData::', JSON.stringify(data))
-  return ({ type: 'set-user-data', data } as const)
+  return setUserValue('isLoading', isLoading)
 }
 
 export const setUserDarkMode = (userDarkMode: boolean) => {
-  if(testing === true) console.log('user.actions.setUserDarkMode::', userDarkMode)
-  return ({ type: 'set-user-darkmode', userDarkMode } as const)
+  return setUserValue('userDarkMode', userDarkMode)
 }
 
 export const setUserJwt = (userjwt: string) => {
-  if(testing === true) console.log('user.actions.setJwt::', userjwt)
-  return ({ type: 'set-userjwt', userjwt } as const)
+  return setUserValue('userjwt', userjwt)
 }
 
 export const setUserId = (userId: number) => {
-  if(testing === true) console.log('user.actions.setUserId::', userId)
-  return ({ type: 'set-userid', userId } as const)
+  return setUserValue('userid', userId)
 }
 
 // MOVE TO APP ACTIONS!!
-export const setAppIcon = (icon: string) => {
-  if(testing === true) console.log('user.actions.setAppIcon::', icon)
-  return ({ type: 'set-app-icon', icon } as const)
+export const setAppIcon = (appIcon: string) => {
+  return setUserValue('appIcon', appIcon)
 }
 
 export type UserActions =
   | ActionType<typeof setUserEmail>
-  | ActionType<typeof setUsername>
+  | ActionType<typeof setNickname>
   | ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setHasSeenTutorial>
   | ActionType<typeof setLoading>

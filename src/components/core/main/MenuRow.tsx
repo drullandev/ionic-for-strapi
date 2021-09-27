@@ -6,12 +6,12 @@ import { IonItem, IonLabel } from '@ionic/react'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 
-import { restGet } from '../../data/strapi/app.calls'
+import { restGet } from '../../../data/strapi/strapi.calls'
 
 import { PathProps } from './interfaces/PathProps'
 
 // Style
-import './styles/Menu.css'
+import '../styles/Menu.scss'
 import Icon from './Icon'
 //import { componentOnReady } from '@ionic/core'
 

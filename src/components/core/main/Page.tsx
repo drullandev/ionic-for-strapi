@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { IonPage, IonHeader, IonContent, IonFooter} from '@ionic/react'
-
+import { IonPage, IonHeader, IonContent, IonFooter } from '@ionic/react'
 import { useLocation } from 'react-router-dom'
 
+import { restGet } from '../../../data/strapi/strapi.calls'
+
 import PageRow from './PageRow'
-import TabMenu from './MainTabs'
+import MainTabs from './MainTabs'
 
-import { getPageRows } from '../../data/strapi/page.utils'
+import '../styles/About.scss'
 
-export interface PageProps extends RouteComponentProps<{
-  slug: string,
-  id?: string
-}> {
+export interface PageProps extends RouteComponentProps<{ slug: string, id?: string }> {
   slug: string
-  id?:string
+  id?: string
 }
 
 /**
@@ -24,23 +22,19 @@ export interface PageProps extends RouteComponentProps<{
  */
 const Page: React.FC<PageProps> = ({ match }) => {
 
-  console.log('Load Page', match)
-
   const location = useLocation()
 
   //const [page, setPage] = useState<PageProps>()
   const [slugIn, setSlugIn] = useState('')
   const [pageRows, setPageRows] = useState([])
-  const [showMainTab, setShowMainTab] = useState(false)
 
   useEffect(() => {
-    getPageRows(match.params.slug).then(res => {
-      //setPage(res[0])
-      //console.log('res', res)
-      setSlugIn(res[0].slug)
-      setShowMainTab(res[0].show_main_tab)
-      if (typeof res[0].rows !== 'undefined') setPageRows(res[0].rows)
-    })
+    restGet('pages', { slug: match.params.slug })
+      .then(res => {
+        console.log('rererere', res.data)
+        setSlugIn(res.data[0].slug)
+        if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
+      })
   }, [match.params.slug])
 
   const setArea = (type: string) => {
@@ -61,13 +55,13 @@ const Page: React.FC<PageProps> = ({ match }) => {
       <IonContent>
         {setArea('content')}
       </IonContent>
-      { location.pathname.includes('tabs') && <TabMenu />} 
       <IonFooter>
         {setArea('footer')}
       </IonFooter>
+      {location.pathname.includes('/tabs/') && <MainTabs />}
     </IonPage>
   )
 
 }
 
-export default Page
+export default React.memo(Page)

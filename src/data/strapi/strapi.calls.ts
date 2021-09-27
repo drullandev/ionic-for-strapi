@@ -17,7 +17,11 @@ export const restGet = async (model:string, params:object = {}) => {
   return axios.get(MyConst.RestAPI+'/'+model+queryString)
 }
 
-export const restPost = async (model:string, params:any, body:any) => {
+export const restPost = async (model:string, body:any) => {
   if(testing) console.log('app.calls.restPost::'+model, body)
   return axios.post(MyConst.RestAPI+'/'+model, body)
+}
+
+export const setImage = (url:string) =>{
+  return MyConst.RestAPI+url
 }

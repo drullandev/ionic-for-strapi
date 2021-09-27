@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { IonItem, IonLabel, IonInput, IonCheckbox, useIonLoading } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-import { restGet } from '../../../data/strapi/app.calls'
+import { restGet } from '../../../data/strapi/strapi.calls'
 
 import Error from './Error'
 import Button from './Button'
