@@ -1,20 +1,11 @@
+import * as MyConst from '../static/constants'
+
 import { Plugins } from '@capacitor/core'
 import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 
 const { Storage } = Plugins
-
-const dataUrl           = '/assets/data/data.json'
-const locationsUrl      = '/assets/data/locations.json'
-
-const NICKNAME          = 'nickname'
-const USEREMAIL         = 'useremail'
-const USERJWT           = 'userjwt'
-const USERID            = 'userId'
-const HAS_LOGGED_IN     = 'hasLoggedIn'
-const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
-const USER_DARK_MODE    = 'userDarkMode'
 
 //----------------------------------------------------------------
 
@@ -25,8 +16,8 @@ export const getStored = async (key: string ) => {
 export const getUserConf = async () => {
 
   const response = await Promise.all([
-    fetch(dataUrl),
-    fetch(locationsUrl)
+    fetch(MyConst.dataUrl),
+    fetch(MyConst.locationsUrl)
   ])
 
   const responseData  = await response[0].json()
@@ -65,13 +56,13 @@ function parseSessions(schedule: Schedule) {
 export const getUserData = async () => {
 
   const response = await Promise.all([
-    Storage.get({ key: NICKNAME }),
-    Storage.get({ key: USEREMAIL }),
-    Storage.get({ key: USERJWT }),
-    Storage.get({ key: USERID }),
-    Storage.get({ key: HAS_LOGGED_IN }),
-    Storage.get({ key: HAS_SEEN_TUTORIAL }),
-    Storage.get({ key: USER_DARK_MODE }),    
+    Storage.get({ key: MyConst.NICKNAME }),
+    Storage.get({ key: MyConst.USEREMAIL }),
+    Storage.get({ key: MyConst.USERJWT }),
+    Storage.get({ key: MyConst.USERID }),
+    Storage.get({ key: MyConst.HAS_LOGGED_IN }),
+    Storage.get({ key: MyConst.HAS_SEEN_TUTORIAL }),
+    Storage.get({ key: MyConst.USER_DARK_MODE }),    
   ])
 
   const nickname        = response[0].value || undefined
@@ -95,33 +86,33 @@ export const getUserData = async () => {
 }
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  await Storage.set({ key: HAS_LOGGED_IN, value: JSON.stringify(isLoggedIn) })
+  await Storage.set({ key: MyConst.HAS_LOGGED_IN, value: JSON.stringify(isLoggedIn) })
 }
 
 export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  await Storage.set({ key: HAS_SEEN_TUTORIAL, value: JSON.stringify(hasSeenTutorial) })
+  await Storage.set({ key: MyConst.HAS_SEEN_TUTORIAL, value: JSON.stringify(hasSeenTutorial) })
 }
 
 export const setUsernameData = async (nickname?: string) => {
-  setOrRemove(NICKNAME, nickname)
+  setOrRemove(MyConst.NICKNAME, nickname)
 }
 
 export const setUserEmailData = async (useremail?: string) => {
-  setOrRemove(USEREMAIL, useremail)
+  setOrRemove(MyConst.USEREMAIL, useremail)
 }
 
 export const setUserJwtData = async (userjwt?: string) => {
-  setOrRemove(USERJWT, userjwt)
+  setOrRemove(MyConst.USERJWT, userjwt)
 }
 
 export const setUserIdData = async (userId?: string) => {
-  setOrRemove(USERID, userId)
+  setOrRemove(MyConst.USERID, userId)
 }
 
-export const  setOrRemove = async (key:string, value:any = null)=>{
-  if(!value){
-    await Storage.remove({ key: key })
-  }else{
+export const setOrRemove = async (key:string, value:any = null)=>{
+  if(value){
     await Storage.set({ key: key, value: value })
+  }else{
+    await Storage.remove({ key: key })
   }
 }
