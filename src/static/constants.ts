@@ -1,11 +1,3 @@
-// MAIN DEFAULTS !!
-import {
-  location,
-  calendar,
-  informationCircle,
-  people,
-} from 'ionicons/icons'
-
 // The default language for the app
 export const DefaultLanguage = 'en'
 
