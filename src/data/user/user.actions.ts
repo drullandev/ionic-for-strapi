@@ -1,7 +1,7 @@
 import {
   getUserData,
   setIsLoggedInData,
-  setUsernameData,
+  setNicknameData,
   setUserEmailData,
   setHasSeenTutorialData
 } from '../dataApi'
@@ -21,8 +21,8 @@ export const setUserEmail = (email?: string) => async (dispatch: React.Dispatch<
   return ({ type: 'set-useremail', email } as const)
 }
 
-export const setUsername = (nickname?: string) => async (dispatch: React.Dispatch<any>) => {
-  await setUsernameData(nickname)
+export const setNickname = (nickname?: string) => async (dispatch: React.Dispatch<any>) => {
+  await setNicknameData(nickname)
   return ({ type: 'set-nickname', nickname } as const)
 }
 
@@ -33,7 +33,7 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
   await setIsLoggedInData(false)
-  dispatch(setUsername())
+  dispatch(setNickname())
 }
 
 export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
@@ -49,7 +49,7 @@ export const setData = (data: Partial<UserState>) => {
   return ({ type: 'set-user-data', data } as const)
 }
 
-export const setUserDarkMode = (userDarkMode: boolean) => {
+export const setDarkMode = (userDarkMode: boolean) => {
   return ({ type: 'set-user-darkmode', userDarkMode } as const)
 }
 
@@ -68,11 +68,11 @@ export const setAppIcon = (icon: string) => {
 
 export type UserActions =
   | ActionType<typeof setUserEmail>
-  | ActionType<typeof setUsername>
+  | ActionType<typeof setNickname>
   | ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setHasSeenTutorial>
   | ActionType<typeof setLoading>
   | ActionType<typeof setData>
-  | ActionType<typeof setUserDarkMode>
+  | ActionType<typeof setDarkMode>
   | ActionType<typeof setUserJwt>
   | ActionType<typeof setAppIcon>

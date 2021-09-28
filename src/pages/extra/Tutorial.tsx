@@ -5,8 +5,7 @@ import { setMenuEnabled } from '../../data/sessions/sessions.actions'
 import { setHasSeenTutorial } from '../../data/user/user.actions'
 import '../../styles/Tutorial.scss'
 import { connect } from '../../data/connect'
-import { RouteComponentProps } from 'react-router'
-
+import { RouteComponentProps, withRouter } from 'react-router'
 import { useTranslation } from 'react-i18next'
 
 interface OwnProps extends RouteComponentProps { }
@@ -100,5 +99,5 @@ export default connect<OwnProps, {}, DispatchProps>({
     setHasSeenTutorial,
     setMenuEnabled
   }),
-  component: Tutorial
+  component: withRouter(Tutorial)
 })

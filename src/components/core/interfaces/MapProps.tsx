@@ -1,5 +1,5 @@
 export interface MapProps {
-  darkMode: boolean
+  userDarkMode: boolean
   isAuthenticated: boolean
   menuEnabled: boolean
 }

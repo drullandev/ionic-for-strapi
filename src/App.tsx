@@ -1,6 +1,6 @@
 //import * as MyConst from './static/constants'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
@@ -28,34 +28,17 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setUsername, loadUserData, setUserDarkMode, setAppIcon } from './data/user/user.actions'
-//import { restGet } from './data/strapi/app.calls'
+import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
 
 /* Core pages */
-import Account from './pages/core/Account'
-import Tutorial from './pages/extra/Tutorial'
-import Page from './components/core/Page'
-import HomeOrWelcome from './pages/core/HomeOrWelcome'
+import Page from './components/core/main/Page'
 
 /* Pages components */
-import Menu from './components/core/Menu'
-import TabMenu from './components/core/MainTabs'
+import Menu from './components/core/main/Menu'
 import RedirectToLogin from './pages/core/RedirectToLogin'
 
 /* Pages models */
 import { Schedule } from './models/Schedule'
-
-/*
-function setAvailableComponent(name: any, jsx: boolean = false) {
-  //console.log('compa', name)
-  switch (name) {
-    case 'HomeOrWelcome': return jsx ? <HomeOrWelcome /> : HomeOrWelcome
-    case 'Account': return Account
-    case 'Tutorial': return Tutorial
-    default: return Page
-  }
-}
-*/
 
 const App: React.FC = () => {
   return (
@@ -65,30 +48,31 @@ const App: React.FC = () => {
   )
 }
 
+//TODO: Merge with user state... is possible?
 interface StateProps {
-  darkMode: boolean
+  userDarkMode: boolean
   schedule: Schedule
 }
 
 interface DispatchProps {
   setIsLoggedIn: typeof setIsLoggedIn
-  setUsername: typeof setUsername
+  setNickname: typeof setNickname
   loadConfData: typeof loadConfData
   loadUserData: typeof loadUserData
-  setUserDarkMode: typeof setUserDarkMode
+  setDarkMode: typeof setDarkMode
   setAppIcon: typeof setAppIcon
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
 const IonicApp: React.FC<IonicAppProps> = ({
-  darkMode,
+  userDarkMode,
   schedule,
   setIsLoggedIn,
-  setUsername,
+  setNickname,
   loadConfData,
   loadUserData,
-  setUserDarkMode,
+  setDarkMode,
   setAppIcon
 }) => {
 
@@ -120,7 +104,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
     response.data.status.forEach((elem: any) => {
       switch (elem.key) {
         case 'Dark Mode - Default': {
-          setUserDarkMode(elem.value)
+          setDarkMode(elem.value)
         }
       }
     })
@@ -137,18 +121,14 @@ const IonicApp: React.FC<IonicAppProps> = ({
   */
 
   return (
-    <IonApp className={darkMode ? 'dark-theme' : ''}>
-
+    <IonApp className={userDarkMode ? 'dark-theme' : ''}>
       <IonReactRouter>
-
         <IonSplitPane contentId='main'>
-
+  
           <Menu key='mainMenu' slug={'sidenav'} />
-
+  
           <IonRouterOutlet id='main'>
-
-            {/* We use IonRoute here to keep the tabs state intact,
-            which makes transitions between tabs and non tab pages smooth */}
+            {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
             <Redirect path='/' to={'/home'} />
             <Route path='/:slug' component={Page} />
             <Route path='/tabs/:slug' component={Page} />
@@ -157,15 +137,11 @@ const IonicApp: React.FC<IonicAppProps> = ({
               <RedirectToLogin
                 key='rtl'
                 setIsLoggedIn={setIsLoggedIn}
-                setUsername={setUsername} />
+                setNickname={setNickname} />
             )} />
-
           </IonRouterOutlet>
-
         </IonSplitPane>
-
       </IonReactRouter>
-
     </IonApp>
   )
 }
@@ -173,17 +149,21 @@ const IonicApp: React.FC<IonicAppProps> = ({
 export default App
 
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
+
   mapStateToProps: (state) => ({
-    darkMode: state.user.userDarkMode,
+    userDarkMode: state.user.userDarkMode,
     schedule: state.data.schedule
   }),
+
   mapDispatchToProps: {
     loadConfData,
     loadUserData,
     setIsLoggedIn,
-    setUserDarkMode,
-    setUsername,
+    setDarkMode,
+    setNickname,
     setAppIcon
   },
+
   component: IonicApp
+  
 })

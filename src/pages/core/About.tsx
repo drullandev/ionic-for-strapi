@@ -3,8 +3,8 @@ import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, 
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 
-import Popover from '../../components/core/Popover'
-import Header from '../../components/core/Header'
+import Popover from '../../components/core/main/Popover'
+import Header from '../../components/core/main/Header'
 
 import './About.scss'
 

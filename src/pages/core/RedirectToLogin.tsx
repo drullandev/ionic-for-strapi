@@ -5,18 +5,18 @@ import * as MyConst from '../../static/constants'
 
 interface RedirectToLoginProps {
   setIsLoggedIn: Function
-  setUsername: Function
+  setNickname: Function
 }
 
-const RedirectToLogin: React.FC<RedirectToLoginProps> = ({ setIsLoggedIn, setUsername }) => {
+const RedirectToLogin: React.FC<RedirectToLoginProps> = ({ setIsLoggedIn, setNickname }) => {
 
   const ionRouterContext = useContext(IonRouterContext)
 
   useEffect(() => {
     setIsLoggedIn(false)
-    setUsername(undefined)
+    setNickname(undefined)
     ionRouterContext.push(MyConst.HOME)
-  }, [setIsLoggedIn, setUsername, ionRouterContext])
+  }, [setIsLoggedIn, setNickname, ionRouterContext])
 
   return null
 

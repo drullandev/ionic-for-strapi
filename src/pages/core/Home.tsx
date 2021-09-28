@@ -3,8 +3,8 @@ import React, { useState, useRef } from 'react'
 import { IonToolbar, IonContent, IonPage, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 import { options, search } from 'ionicons/icons'
 
-import SessionList from '../../components/core/SessionList'
-import SessionListFilter from '../../components/core/SessionListFilter'
+import SessionList from '../../components/core/main/SessionList'
+import SessionListFilter from '../../components/core/main/SessionListFilter'
 
 import ShareSocialFab from '../../components/extra/ShareSocialFab'
 
