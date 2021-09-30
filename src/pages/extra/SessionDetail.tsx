@@ -25,7 +25,7 @@ type SessionDetailProps = OwnProps & StateProps & DispatchProps
 
 const SessionDetail: React.FC<SessionDetailProps> = ({ session, addFavorite, removeFavorite, favoriteSessions }) => {
 
-  const { t } = useTranslation()
+  console.log('loadingSessionDetail')
 
   if (!session) {
     return <div>Session not found</div>
@@ -110,5 +110,5 @@ export default connect<OwnProps, StateProps, DispatchProps>({
   },
 
   component: withRouter(SessionDetail)
-  
+
 })

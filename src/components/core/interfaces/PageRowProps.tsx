@@ -1,4 +1,4 @@
-import { MenuProps } from './MenuProps'
+import { MenuProps } from '../MenuProps'
 import { FormProps } from '../forms/interfaces/FormProps'
 export interface PageRowProps {
   menu?: MenuProps[]
@@ -7,6 +7,10 @@ export interface PageRowProps {
     name: string
     slug: string
     params: string
+  }
+  content?: {
+    name: string
+    slug: string
   }
   params: string
 }

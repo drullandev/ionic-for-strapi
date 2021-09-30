@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { IonPage, IonHeader, IonContent, IonFooter} from '@ionic/react'
-
+import { restGet } from '../../../data/rest/rest.calls'
 import { useLocation } from 'react-router-dom'
 
 import PageRow from './PageRow'
-import TabMenu from './MainTabs'
-
-import { getPageRows } from '../../../data/_page.utils'
 
 export interface PageProps extends RouteComponentProps<{
   slug: string,
@@ -24,8 +21,6 @@ export interface PageProps extends RouteComponentProps<{
  */
 const Page: React.FC<PageProps> = ({ match }) => {
 
-  console.log('Load Page', match)
-
   const location = useLocation()
 
   //const [page, setPage] = useState<PageProps>()
@@ -34,14 +29,21 @@ const Page: React.FC<PageProps> = ({ match }) => {
   const [showMainTab, setShowMainTab] = useState(false)
 
   useEffect(() => {
-    getPageRows(match.params.slug).then(res => {
-      //setPage(res[0])
-      //console.log('res', res)
-      setSlugIn(res[0].slug)
-      setShowMainTab(res[0].show_main_tab)
-      if (typeof res[0].rows !== 'undefined') setPageRows(res[0].rows)
+    console.log('Load Page', match)
+    restGet('pages', { slug : match.params.slug})
+    .then(res => {
+      setSlugIn(res.data[0].slug)
+      setShowMainTab(res.data[0].show_main_tab)
+      if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
+    }).catch(res=>{
+      restGet('pages', { slug : '404'})
+      .then(res => {
+        setSlugIn(res.data[0].slug)
+        setShowMainTab(res.data[0].show_main_tab)
+        if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
+      })
     })
-  }, [match.params.slug])
+  }, [match])
 
   const setArea = (type: string) => {
     return pageRows ? pageRows.map((row: any, i: number) => (
@@ -50,7 +52,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
   }
 
   const getPageRow = (row: any, i: number) => (
-    <PageRow key={i} menu={row.menu} form={row.form} component={row.component} />
+    <PageRow key={i} menu={row.menu} form={row.form} component={row.component} content={row.content} />
   )
 
   return (
@@ -61,7 +63,6 @@ const Page: React.FC<PageProps> = ({ match }) => {
       <IonContent>
         {setArea('content')}
       </IonContent>
-      {/* location.pathname.includes('tabs') && <TabMenu />*/} 
       <IonFooter>
         {setArea('footer')}
       </IonFooter>

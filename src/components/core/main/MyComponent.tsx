@@ -13,12 +13,14 @@ import SpeakerList from '../../../pages/extra/SpeakerList'
 import SpeakerDetail from '../../../pages/extra/SpeakerDetail'
 import MapView from '../../../pages/extra/MapView'
 import Tutorial from '../../../pages/extra/Tutorial'
+import Content from '../../../pages/extra/Content'
 
 import { MyComponentProps } from '../interfaces/MyComponentProps'
 
-const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params }) => {
-  //console.log('setMyComponent', { name, slug, params })
+const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params, content }) => {
+  console.log('setMyComponent', { name, slug, params })
   const returnComponent = (slug: any, jsx: boolean = true) => {
+
     switch (slug) {
       case 'header': return <Header label={params.label} slot={params.slot} />
       case 'home': return jsx ? <Home /> : Home
@@ -29,6 +31,7 @@ const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params }) => {
       case 'about': return <About />
       case 'tutorial': return <Tutorial/>
       case 'account': return <Account/>
+      case 'content': return <Content row={content}/>
       case 'page': return Page
       default: <></>
     }

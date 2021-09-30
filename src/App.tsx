@@ -28,10 +28,8 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
 
-
-
-import SpeakerDetail from './pages/extra/SpeakerDetail';
-import SessionDetail from './pages/extra/SessionDetail';
+//import SpeakerDetail from './pages/extra/SpeakerDetail';
+//import SessionDetail from './pages/extra/SessionDetail';
 
 /* Core pages */
 import Page from './components/core/main/Page'
@@ -132,11 +130,10 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Menu key='mainMenu' slug={'sidenav'} />
   
           <IonRouterOutlet id='main'>
-
-            {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
-            {/*
-              <Redirect path='/' to={'/home'} />
-            */}
+              {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
+              {/*
+              */}
+              <Redirect path='/' to={'/tabs/home'} />
               <Route path='/tabs' render={() => <MainTabs />} />
               <Route path='/:slug' component={Page} />
                 <Route path='/tabs/speakers/:id' render={() => <MainTabs />} />
