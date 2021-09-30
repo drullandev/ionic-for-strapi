@@ -1,5 +1,3 @@
-//import * as MyConst from './static/constants'
-
 import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react'
@@ -30,8 +28,14 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
 
+
+
+import SpeakerDetail from './pages/extra/SpeakerDetail';
+import SessionDetail from './pages/extra/SessionDetail';
+
 /* Core pages */
 import Page from './components/core/main/Page'
+import MainTabs from './components/core/main/MainTabs'
 
 /* Pages components */
 import Menu from './components/core/main/Menu'
@@ -128,11 +132,18 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Menu key='mainMenu' slug={'sidenav'} />
   
           <IonRouterOutlet id='main'>
+
             {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
-            <Redirect path='/' to={'/home'} />
-            <Route path='/:slug' component={Page} />
-            <Route path='/tabs/:slug' component={Page} />
-            <Route path='/tabs/:slug/:id' component={Page} />
+            {/*
+              <Redirect path='/' to={'/home'} />
+            */}
+              <Route path='/tabs' render={() => <MainTabs />} />
+              <Route path='/:slug' component={Page} />
+                <Route path='/tabs/speakers/:id' render={() => <MainTabs />} />
+                <Route path='/tabs/home/:id'render={() => <MainTabs />} />
+                <Route path='/tabs/speakers/sessions/:id' render={() => <MainTabs />} />
+              <Route path='/tabs/:slug/:id'  render={() => <MainTabs />} />
+              <Route path='/tabs/:slug' render={() => <MainTabs />} />
             <Route key='main-logout' path='/logout' render={() => (
               <RedirectToLogin
                 key='rtl'

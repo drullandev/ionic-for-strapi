@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox, useIonLoading } from '@ionic/react'
+import { IonItem, IonLabel, IonInput, IonCheckbox } from '@ionic/react'
 import { Controller } from 'react-hook-form'
 import { restGet } from '../../../data/rest/rest.calls'
 

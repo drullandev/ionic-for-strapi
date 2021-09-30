@@ -18,7 +18,7 @@ export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 
 export const setUserEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
   await setUserEmailData(email)
-  return ({ type: 'set-useremail', email } as const)
+  return ({ type: 'set-user-email', email } as const)
 }
 
 export const setNickname = (nickname?: string) => async (dispatch: React.Dispatch<any>) => {

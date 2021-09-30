@@ -1,12 +1,16 @@
 import React, { useState, useRef } from 'react'
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonSlides, IonSlide, IonIcon, useIonViewWillEnter } from '@ionic/react'
+
 import { arrowForward } from 'ionicons/icons'
+
 import { setMenuEnabled } from '../../data/sessions/sessions.actions'
 import { setHasSeenTutorial } from '../../data/user/user.actions'
+
 import '../../styles/Tutorial.scss'
+
 import { connect } from '../../data/connect'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useTranslation } from 'react-i18next'
+//import { useTranslation } from 'react-i18next'
 
 interface OwnProps extends RouteComponentProps { }
 
@@ -19,7 +23,7 @@ interface TutorialProps extends OwnProps, DispatchProps { }
 
 const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMenuEnabled }) => {
 
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
 
   const [showSkip, setShowSkip] = useState(true)
   const slideRef = useRef<HTMLIonSlidesElement>(null)

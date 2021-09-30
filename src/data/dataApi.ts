@@ -50,7 +50,7 @@ function parseSessions(schedule: Schedule) {
 }
 
 export const getUserData = async () => {
-
+  
   const response = await Promise.all([
     //
     getStorage(MyConst.NICKNAME),
@@ -71,7 +71,7 @@ export const getUserData = async () => {
   //
   const isLoggedin      = response[4] === 'true'
   const hasSeenTutorial = response[5] === 'true'
-  const userDarkMode    = response[6] === 'true'
+  const userDarkMode    = response[6] === 'false'
 
   return {
     nickname,

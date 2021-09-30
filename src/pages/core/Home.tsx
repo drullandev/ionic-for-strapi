@@ -6,7 +6,7 @@ import { options, search } from 'ionicons/icons'
 import SessionList from '../../components/core/main/SessionList'
 import SessionListFilter from '../../components/core/main/SessionListFilter'
 
-import ShareSocialFab from '../../components/extra/ShareSocialFab'
+import ShareSocialFab from '../../components/core/main/ShareSocialFab'
 
 import * as selectors from '../../data/selectors'
 import { connect } from '../../data/connect'
