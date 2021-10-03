@@ -49,11 +49,12 @@ const About: React.FC<AboutProps> = () => {
   }
 
   return (
-    <IonPage id='about-page'>
+    <>
 
       <IonHeader className='ion-no-border'>
 
         <IonToolbar>
+
           <IonButtons slot='start'>
 
             <IonMenuButton></IonMenuButton>
@@ -81,7 +82,9 @@ const About: React.FC<AboutProps> = () => {
           <div className='about-image chicago' style={{ 'opacity': location === 'chicago' ? '1' : undefined }}></div>
           <div className='about-image seattle' style={{ 'opacity': location === 'seattle' ? '1' : undefined }}></div>
         </div>
+
         <div className='about-info'>
+
           <h3 className='ion-padding-top ion-padding-start'>About</h3>
 
           <p className='ion-padding-start ion-padding-end'>
@@ -112,49 +115,56 @@ const About: React.FC<AboutProps> = () => {
           <h3 className='ion-padding-top ion-padding-start'>Details</h3>
 
           <IonList lines='none'>
+
             <IonItem>
-              <IonLabel>
-                Location
-              </IonLabel>
+
+              <IonLabel>Location</IonLabel>
+
               <IonSelect value={location} interfaceOptions={selectOptions} onIonChange={(e) => setLocation(e.detail.value as any)}>
                 <IonSelectOption value='madison'>Madison, WI</IonSelectOption>
                 <IonSelectOption value='austin'>Austin, TX</IonSelectOption>
                 <IonSelectOption value='chicago'>Chicago, IL</IonSelectOption>
                 <IonSelectOption value='seattle'>Seattle, WA</IonSelectOption>
               </IonSelect>
+
             </IonItem>
+
             <IonItem>
-              <IonLabel>
-                Date
-              </IonLabel>
+
+              <IonLabel>Date</IonLabel>
+
               <IonDatetime
                 displayFormat='MMM DD, YYYY'
                 max='2056'
                 value={conferenceDate}
                 onIonChange={(e) => setConferenceDate(e.detail.value as any)}>
               </IonDatetime>
+
             </IonItem>
+
           </IonList>
 
           <h3 className='ion-padding-top ion-padding-start'>Internet</h3>
 
           <IonList lines='none'>
+
             <IonItem>
-              <IonLabel>
-                Wifi network
-              </IonLabel>
+
+              <IonLabel>Wifi network</IonLabel>
+
               <IonLabel className='ion-text-end'>
                 ica{displayDate(conferenceDate, 'y')}
               </IonLabel>
+
             </IonItem>
+
             <IonItem>
-              <IonLabel>
-                Password
-              </IonLabel>
-              <IonLabel className='ion-text-end'>
-                makegoodthings
-              </IonLabel>
+
+              <IonLabel>Password</IonLabel>
+              <IonLabel className='ion-text-end'>makegoodthings</IonLabel>
+
             </IonItem>
+
           </IonList>
 
         </div>
@@ -164,10 +174,11 @@ const About: React.FC<AboutProps> = () => {
         isOpen={showPopover}
         event={popoverEvent}
         onDidDismiss={() => setShowPopover(false)}
-      >
+      >        
         <Popover dismiss={() => setShowPopover(false)} />
       </IonPopover>
-    </IonPage>
+
+    </>
   )
 }
 

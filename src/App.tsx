@@ -32,7 +32,7 @@ import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } fro
 //import SessionDetail from './pages/extra/SessionDetail';
 
 /* Core pages */
-import Page from './components/core/main/Page'
+import Page from './pages/core/Page'
 import MainTabs from './components/core/main/MainTabs'
 
 /* Pages components */
@@ -130,23 +130,21 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Menu key='mainMenu' slug={'sidenav'} />
   
           <IonRouterOutlet id='main'>
-              {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
-              {/*
-              */}
-              <Redirect path='/' to={'/tabs/home'} />
-              <Route path='/tabs' render={() => <MainTabs />} />
-              <Route path='/:slug' component={Page} />
-                <Route path='/tabs/speakers/:id' render={() => <MainTabs />} />
-                <Route path='/tabs/home/:id'render={() => <MainTabs />} />
-                <Route path='/tabs/speakers/sessions/:id' render={() => <MainTabs />} />
-              <Route path='/tabs/:slug/:id'  render={() => <MainTabs />} />
-              <Route path='/tabs/:slug' render={() => <MainTabs />} />
-            <Route key='main-logout' path='/logout' render={() => (
+            {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
+            <Redirect path='/' to={'/tabs/home'} />
+            <Route path='/tabs' render={() => <MainTabs />} />
+            <Route path='/:slug' component={Page} />
+            <Route path='/tabs/home/:id'render={() => <MainTabs />} />
+            <Route path='/tabs/speakers/:id' render={() => <MainTabs />} />
+            <Route path='/tabs/speakers/sessions/:id' render={() => <MainTabs />} />
+            <Route path='/tabs/:slug/:id'  render={() => <MainTabs />} />
+            <Route path='/tabs/:slug' render={() => <MainTabs />} />
+            <Route path='/logout' render={() => (
               <RedirectToLogin
                 key='rtl'
                 setIsLoggedIn={setIsLoggedIn}
                 setNickname={setNickname} />
-            )} />
+            )}/>
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>

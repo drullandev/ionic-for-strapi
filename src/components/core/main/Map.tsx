@@ -50,9 +50,8 @@ const Map: React.FC<MapProps> = ({ mapCenter, locations }) => {
 
   }, [mapCenter, locations])
 
-  return (
-    <div ref={mapEle} className='map-canvas'></div>
-  )
+  return <div ref={mapEle} className='map-canvas'></div>
+
 }
 
 export default Map

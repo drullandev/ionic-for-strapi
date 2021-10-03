@@ -2,16 +2,16 @@ import * as MyConst from '../static/constants'
 import axios from 'axios'
 
 // Core pages
-import Page from '../components/core/main/Page'
+import Page from '../pages/core/Page'
 import Account from '../pages/core/Account'
 
 // Extra pages
 import Home from '../pages/core/Home'
 import About from '../pages/core/About'
-import MapView from '../pages/extra/MapView'
-import SpeakerList from '../pages/extra/SpeakerList'
-import SessionDetail from '../pages/extra/SessionDetail'
-import SpeakerDetail from '../pages/extra/SpeakerDetail'
+import MapView from '../components/core/main/extra/MapView'
+import SpeakerList from '../components/core/main/extra/SpeakerList'
+import SessionDetail from '../components/core/main/extra/SessionDetail'
+import SpeakerDetail from '../components/core/main/extra/SpeakerDetail'
 
 export const getModelRowBySlug = async (model:string, slug: string) => {
   let url = MyConst.RestAPI+'/'+model+'?slug='+slug

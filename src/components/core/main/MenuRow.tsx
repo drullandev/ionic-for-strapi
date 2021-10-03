@@ -1,4 +1,4 @@
-import * as MyConst from '../../../static/constants'
+//import * as MyConst from '../../../static/constants'
 
 import React, { useEffect, useState } from 'react'
 import { IonItem, IonLabel } from '@ionic/react'
@@ -9,25 +9,12 @@ import { useHistory } from 'react-router-dom'
 import { restGet } from '../../../data/rest/rest.calls'
 
 import { PathProps } from '../interfaces/PathProps'
+import { MenuRowProps } from '../interfaces/MenuRowProps'
 
 // Style
 import './styles/Menu.css'
 import Icon from './Icon'
 //import { componentOnReady } from '@ionic/core'
-
-export interface MenuRowProps {
-  row: {
-    title: string
-    component: {
-      component: {
-        id: number
-      }
-      icon: string
-    }
-    slug: string
-    path: PathProps
-  }
-}
 
 const MenuRow: React.FC<MenuRowProps> = ({ row }) => {
   let history = useHistory()

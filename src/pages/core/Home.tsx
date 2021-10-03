@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 
-import { IonToolbar, IonContent, IonPage, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
+import { IonToolbar, IonContent, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 import { options, search } from 'ionicons/icons'
 
 import SessionList from '../../components/core/main/SessionList'
@@ -12,8 +12,6 @@ import * as selectors from '../../data/selectors'
 import { connect } from '../../data/connect'
 import { setSearchText } from '../../data/sessions/sessions.actions'
 import { Schedule } from '../../models/Schedule'
-
-import '../../styles/Home.scss'
 
 interface OwnProps { }
 
@@ -48,121 +46,122 @@ const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText,
     }, 2500)
   }
 
-  return (
-    <IonPage ref={pageRef} id='schedule-page'>
+  return <>
 
-      <IonHeader translucent={true}>
+    <IonHeader translucent={true}>
 
-        <IonToolbar>
+      <IonToolbar>
 
-          {!showSearchbar &&
-            <IonButtons slot='start'>
-              <IonMenuButton />
-            </IonButtons>
-          }
+        {!showSearchbar &&
+          <IonButtons slot='start'>
+            <IonMenuButton />
+          </IonButtons>
+        }
 
-          {ios &&
-            <IonSegment value={segment} onIonChange={(e) => setSegment(e.detail.value as any)}>
-              <IonSegmentButton value='all'>
-                All
-              </IonSegmentButton>
-              <IonSegmentButton value='favorites'>
-                Favorites
-              </IonSegmentButton>
-            </IonSegment>
-          }
+        {ios &&
+          <IonSegment value={segment} onIonChange={(e) => setSegment(e.detail.value as any)}>
+            <IonSegmentButton value='all'>
+              All
+            </IonSegmentButton>
+            <IonSegmentButton value='favorites'>
+              Favorites
+            </IonSegmentButton>
+          </IonSegment>
+        }
+
+        {!ios && !showSearchbar &&
+          <IonTitle>Schedule</IonTitle>
+        }
+
+        {showSearchbar &&
+          <IonSearchbar showCancelButton='always' placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
+        }
+
+        <IonButtons slot='end'>
 
           {!ios && !showSearchbar &&
-            <IonTitle>Schedule</IonTitle>
+            <IonButton onClick={() => setShowSearchbar(true)}>
+              <IonIcon slot='icon-only' icon={search}></IonIcon>
+            </IonButton>
           }
 
-          {showSearchbar &&
-            <IonSearchbar showCancelButton='always' placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
+          {!showSearchbar &&
+            <IonButton onClick={() => setShowFilterModal(true)}>
+              {mode === 'ios' ? 'Filter' : <IonIcon icon={options} slot='icon-only' />}
+            </IonButton>
           }
 
-          <IonButtons slot='end'>
+        </IonButtons>
 
-            {!ios && !showSearchbar &&
-              <IonButton onClick={() => setShowSearchbar(true)}>
-                <IonIcon slot='icon-only' icon={search}></IonIcon>
-              </IonButton>
-            }
+      </IonToolbar>
 
-            {!showSearchbar &&
-              <IonButton onClick={() => setShowFilterModal(true)}>
-                {mode === 'ios' ? 'Filter' : <IonIcon icon={options} slot='icon-only' />}
-              </IonButton>
-            }
-
-          </IonButtons>
-
+      {!ios &&
+        <IonToolbar>
+          <IonSegment value={segment} onIonChange={(e) => setSegment(e.detail.value as any)}>
+            <IonSegmentButton value='all'>
+              All
+            </IonSegmentButton>
+            <IonSegmentButton value='favorites'>
+              Favorites
+            </IonSegmentButton>
+          </IonSegment>
         </IonToolbar>
+      }
+    </IonHeader>
 
-        {!ios &&
-          <IonToolbar>
-            <IonSegment value={segment} onIonChange={(e) => setSegment(e.detail.value as any)}>
-              <IonSegmentButton value='all'>
-                All
-              </IonSegmentButton>
-              <IonSegmentButton value='favorites'>
-                Favorites
-              </IonSegmentButton>
-            </IonSegment>
-          </IonToolbar>
-        }
+    <IonContent fullscreen={true}>
+
+      <IonHeader collapse='condense'>
+        <IonToolbar>
+          <IonTitle size='large'>Schedule</IonTitle>
+        </IonToolbar>
+        <IonToolbar>
+          <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
+        </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen={true}>
+      <IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={doRefresh}>
+        <IonRefresherContent />
+      </IonRefresher>
 
-        <IonHeader collapse='condense'>
-          <IonToolbar>
-            <IonTitle size='large'>Schedule</IonTitle>
-          </IonToolbar>
-          <IonToolbar>
-            <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
-          </IonToolbar>
-        </IonHeader>
+      <IonToast
+        isOpen={showCompleteToast}
+        message='Refresh complete'
+        duration={2000}
+        onDidDismiss={() => setShowCompleteToast(false)}
+      />
 
-        <IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={doRefresh}>
-          <IonRefresherContent />
-        </IonRefresher>
+      <SessionList
+        schedule={schedule}
+        listType={segment}
+        hide={segment === 'favorites'}
+      />
 
-        <IonToast
-          isOpen={showCompleteToast}
-          message='Refresh complete'
-          duration={2000}
-          onDidDismiss={() => setShowCompleteToast(false)}
-        />
+      <SessionList
+        // schedule={schedule}
+        schedule={favoritesSchedule}
+        listType={segment}
+        hide={segment === 'all'}
+      />
 
-        <SessionList
-          schedule={schedule}
-          listType={segment}
-          hide={segment === 'favorites'}
-        />
-        <SessionList
-          // schedule={schedule}
-          schedule={favoritesSchedule}
-          listType={segment}
-          hide={segment === 'all'}
-        />
-      </IonContent>
+    </IonContent>
 
-      <IonModal
-        isOpen={showFilterModal}
-        onDidDismiss={() => setShowFilterModal(false)}
-        swipeToClose={true}
-        presentingElement={pageRef.current!}
-        cssClass='session-list-filter'
-      >
-        <SessionListFilter
-          onDismissModal={() => setShowFilterModal(false)}
-        />
-      </IonModal>
+    <IonModal
+      isOpen={showFilterModal}
+      onDidDismiss={() => setShowFilterModal(false)}
+      swipeToClose={true}
+      presentingElement={pageRef.current!}
+      cssClass='session-list-filter'
+    >
+      <SessionListFilter
+        onDismissModal={() => setShowFilterModal(false)}
+      />
+    </IonModal>
 
-      <ShareSocialFab />
+    <ShareSocialFab />
 
-    </IonPage>
-  )
+  </>
+  
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({

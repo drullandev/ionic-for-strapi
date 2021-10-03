@@ -10,8 +10,9 @@ import { PageRowProps } from '../interfaces/PageRowProps'
  * @param param0 
  * @returns 
  */
+const testing = false
 const PageRow: React.FC<PageRowProps> = ({ menu, form, component, content }) => {
-  console.log('PageRowProps', { menu, form, component})
+  if(testing) console.log('PageRowProps', { menu, form, component})
   const returnComponent = () => {
     if (!component) return
     return component && <MyComponent

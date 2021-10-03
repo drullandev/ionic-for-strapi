@@ -44,7 +44,7 @@ const login = (form: any)=>{//}, history: any){
 
       console.log({
         history: {
-          push: '/tabs/schedule',//Home
+          push: MyConst.HOME,//Home
           params: {
             direction: 'none'
           }
@@ -101,7 +101,7 @@ function signup(form: any){//}, history: any){
 
     return {
       history: {
-        push: '/tabs/schedule',
+        push: MyConst.HOME,
         params: {
           direction: 'none'
         }
@@ -137,7 +137,7 @@ function recover(form: any){//}, history: any){
 
     return {
       history: {
-        push: '/tabs/schedule',
+        push: MyConst.HOME,
         params: {
           direction: 'none'
         }

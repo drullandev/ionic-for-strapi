@@ -9,15 +9,19 @@ interface StateProps {
   hasSeenTutorial: boolean
 }
 
-const HomeOrWelcome: React.FC<StateProps> = ({ hasSeenTutorial }) => {
-  return hasSeenTutorial
+const HomeOrWelcome: React.FC<StateProps> = ({ hasSeenTutorial }) => (
+  hasSeenTutorial
     ? <Redirect to={MyConst.HOME} />
     : <Redirect to={MyConst.LOGIN} />
-}
+)
+
 
 export default connect<{}, StateProps, {}>({
+
   mapStateToProps: (state) => ({
     hasSeenTutorial: state.user.hasSeenTutorial
   }),
+
   component: HomeOrWelcome
+  
 })

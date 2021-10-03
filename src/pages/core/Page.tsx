@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { IonPage, IonHeader, IonContent, IonFooter} from '@ionic/react'
-import { restGet } from '../../../data/rest/rest.calls'
+import { restGet } from '../../data/rest/rest.calls'
 import { useLocation } from 'react-router-dom'
 
-import PageRow from './PageRow'
+import PageRow from '../../components/core/main/PageRow'
+
+// TODO: TEMPORARY STYLES...
+import '../../styles/MapView.scss'
+import '../../styles/Home.scss'
+import '../../styles/SpeakerList.scss'
 
 export interface PageProps extends RouteComponentProps<{
   slug: string,
@@ -14,11 +19,6 @@ export interface PageProps extends RouteComponentProps<{
   id?:string
 }
 
-/**
- * Page Pager Pagerorum ;);););)
- * @param match 
- * @returns 
- */
 const Page: React.FC<PageProps> = ({ match }) => {
 
   const location = useLocation()
@@ -29,7 +29,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
   const [showMainTab, setShowMainTab] = useState(false)
 
   useEffect(() => {
-    console.log('Load Page', match)
+    //console.log('Load Page', match)
     restGet('pages', { slug : match.params.slug})
     .then(res => {
       setSlugIn(res.data[0].slug)
@@ -56,7 +56,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
   )
 
   return (
-    <IonPage id={slugIn}>
+    <IonPage id={slugIn+'-page'}>
       <IonHeader>
         {setArea('header')}
       </IonHeader>

@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 
-import '../../styles/SpeakerDetail.scss'
+import '../styles/SpeakerDetail.scss'
 
 import { ActionSheetButton } from '@ionic/core'
 import { IonActionSheet, IonChip, IonIcon, IonHeader, IonLabel, IonToolbar, IonButtons, IonContent, IonButton, IonBackButton, IonPage } from '@ionic/react'
 import { callOutline, callSharp, logoTwitter, logoGithub, logoInstagram, shareOutline, shareSharp } from 'ionicons/icons'
 
-import { connect } from '../../data/connect'
-import * as selectors from '../../data/selectors'
-import Header from '../../components/core/Header'
-import { Speaker } from '../../models/Speaker'
+import { connect } from '../../../../data/connect'
+import * as selectors from '../../../../data/selectors'
+//import Header from '../../components/core/Header'
+import { Speaker } from '../../../../models/Speaker'
 
 
 interface OwnProps extends RouteComponentProps {

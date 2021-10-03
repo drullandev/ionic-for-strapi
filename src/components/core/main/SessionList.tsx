@@ -45,57 +45,67 @@ const SessionList: React.FC<SessionListProps> = ({
     setShowAlert(true)
   }, [])
 
-  if (schedule.groups.length === 0 && !hide) {
-    return (
-      <IonList>
-        <IonListHeader>
-          No Sessions Found
-        </IonListHeader>
-      </IonList>
-    )
-  }
-
-  return (
-    <>
-      <IonList style={hide ? { display: 'none' } : {}}>
-        {schedule.groups.map((group, index: number) => (
-          <IonItemGroup key={`group-${index}`}>
-            <IonItemDivider sticky>
-              <IonLabel>
-                {group.time}
-              </IonLabel>
-            </IonItemDivider>
-            {group.sessions.map((session: Session, sessionIndex: number) => (
-              <SessionListItem
-                onShowAlert={handleShowAlert}
-                isFavorite={favoriteSessions.indexOf(session.id) > -1}
-                onAddFavorite={addFavorite}
-                onRemoveFavorite={removeFavorite}
-                key={`group-${index}-${sessionIndex}`}
-                session={session}
-                listType={listType}
-              />
-            ))}
-          </IonItemGroup>
-        ))}
-      </IonList>
-      <IonAlert
-        isOpen={showAlert}
-        header={alertHeader}
-        buttons={alertButtons}
-        onDidDismiss={() => setShowAlert(false)}
-      ></IonAlert>
-    </>
+  if (schedule.groups.length === 0 && !hide) (
+    <IonList>
+      <IonListHeader>
+        No Sessions Found
+      </IonListHeader>
+    </IonList>
   )
+
+  return <>
+    <IonList style={hide ? { display: 'none' } : {}}>
+
+      {schedule.groups.map((group, index: number) => (
+
+        <IonItemGroup key={`group-${index}`}>
+
+          <IonItemDivider sticky>
+            <IonLabel>
+              {group.time}
+            </IonLabel>
+          </IonItemDivider>
+
+          {group.sessions.map((session: Session, sessionIndex: number) => (
+            <SessionListItem
+              onShowAlert={handleShowAlert}
+              isFavorite={favoriteSessions.indexOf(session.id) > -1}
+              onAddFavorite={addFavorite}
+              onRemoveFavorite={removeFavorite}
+              key={`group-${index}-${sessionIndex}`}
+              session={session}
+              listType={listType}
+            />
+          ))}
+
+        </IonItemGroup>
+
+      ))}
+
+    </IonList>
+
+    <IonAlert
+      isOpen={showAlert}
+      header={alertHeader}
+      buttons={alertButtons}
+      onDidDismiss={() => setShowAlert(false)}
+    ></IonAlert>
+
+  </>
+
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({
+
   mapStateToProps: (state) => ({
     favoriteSessions: state.data.favorites
   }),
+
   mapDispatchToProps: ({
     addFavorite,
     removeFavorite
   }),
+
   component: SessionList
+  
 })

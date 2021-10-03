@@ -4,14 +4,16 @@ import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@io
 import { Redirect, Route } from 'react-router'
 import { restGet } from '../../../data/rest/rest.calls'
 
-import SpeakerDetail from '../../../pages/extra/SpeakerDetail';
-import SessionDetail from '../../../pages/extra/SessionDetail';
+import SpeakerDetail from './extra/SpeakerDetail';
+import SessionDetail from './extra/SessionDetail';
 
 import Home from '../../../pages/core/Home';
-import SpeakerList from '../../../pages/extra/SpeakerList';
+import SpeakerList from './extra/SpeakerList';
 
 import Icon from './Icon'
-import Page from './Page'
+import Page from '../../../pages/core/Page'
+
+const testing = false
 
 interface TabMenuProps { }
 
@@ -39,14 +41,14 @@ const TabMenu: React.FC<TabMenuProps> = () => {
   }, [])
 
   const TabButton = (tab:any) =>{
-      console.log('TabButton', tab)
-      var icon = restGet('paths', { slug: tab.path.slug })
-      .then(res => {
-        return res.data[0].component.icon
-      })
-      .catch(err => { console.log(err) })
+    if(testing) console.log('TabButton', tab)
+    var icon = restGet('paths', { slug: tab.path.slug })
+    .then(res => {
+      return res.data[0].component.icon
+    })
+    .catch(err => { console.log(err) })
 
-      console.log('icon', icon)
+    if(testing) console.log('icon', icon)
 
     return <IonTabButton key={tab.path.slug + '-tab'} tab={tab.path.slug} href={tab.path.value}>
       <Icon name={'person'} />
