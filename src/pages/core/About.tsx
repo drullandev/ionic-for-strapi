@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover } from '@ionic/react'
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
-import { useTranslation } from 'react-i18next'
 
 import Popover from '../../components/core/main/Popover'
 import Header from '../../components/core/main/Header'
@@ -11,8 +10,6 @@ import './About.scss'
 interface AboutProps { }
 
 const About: React.FC<AboutProps> = () => {
-
-  const { t } = useTranslation()
 
   const [showPopover, setShowPopover] = useState(false)
   const [popoverEvent, setPopoverEvent] = useState()

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@ionic/react'
 
 import { Redirect, Route } from 'react-router'
-import { restGet } from '../../../data/rest/rest.calls'
+import { restGet } from '../../../data/rest/rest.utils'
 
 import SpeakerDetail from './extra/SpeakerDetail';
 import SessionDetail from './extra/SessionDetail';
@@ -41,9 +41,11 @@ const TabMenu: React.FC<TabMenuProps> = () => {
   }, [])
 
   const TabButton = (tab:any) =>{
-    if(testing) console.log('TabButton', tab)
+    //if(testing) 
+    console.log('TabButton', tab)
     var icon = restGet('paths', { slug: tab.path.slug })
     .then(res => {
+      console.log('setIcon '+res.data[0].component.icon)
       return res.data[0].component.icon
     })
     .catch(err => { console.log(err) })
@@ -51,7 +53,7 @@ const TabMenu: React.FC<TabMenuProps> = () => {
     if(testing) console.log('icon', icon)
 
     return <IonTabButton key={tab.path.slug + '-tab'} tab={tab.path.slug} href={tab.path.value}>
-      <Icon name={'person'} />
+      <Icon name={tab.icon ? tab.icon : 'person'} />
       <IonLabel>{tab.title}</IonLabel>
     </IonTabButton>
   }

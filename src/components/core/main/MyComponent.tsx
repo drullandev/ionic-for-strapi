@@ -1,7 +1,6 @@
 import React from 'react'
 
 import Header from './Header'
-import Icon from './Icon'
 import Page from '../../../pages/core/Page'
 
 import About from '../../../pages/core/About'

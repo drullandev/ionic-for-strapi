@@ -1,12 +1,10 @@
-//import * as MyConst from '../../../static/constants'
-
 import React, { useEffect, useState } from 'react'
 import { IonItem, IonLabel } from '@ionic/react'
 
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 
-import { restGet } from '../../../data/rest/rest.calls'
+import { restGet } from '../../../data/rest/rest.utils'
 
 import { PathProps } from '../interfaces/PathProps'
 import { MenuRowProps } from '../interfaces/MenuRowProps'
@@ -14,7 +12,6 @@ import { MenuRowProps } from '../interfaces/MenuRowProps'
 // Style
 import './styles/Menu.css'
 import Icon from './Icon'
-//import { componentOnReady } from '@ionic/core'
 
 const MenuRow: React.FC<MenuRowProps> = ({ row }) => {
   let history = useHistory()
@@ -29,9 +26,10 @@ const MenuRow: React.FC<MenuRowProps> = ({ row }) => {
         .then(res => {
           setPath(res.data[0])
           if (res.data[0].component.icon) setIcon(res.data[0].component.icon)
-          if (location.pathname.startsWith(res.data[0].value)) {
+          if (location.pathname.startsWith(res.data[0].value)
+            || location.pathname.startsWith('/tabs' + res.data[0].value)) {
             setMenuClass('selected')
-          }else{
+          } else {
             setMenuClass('')
           }
         })

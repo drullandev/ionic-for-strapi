@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-import { restGet } from '../../../data/rest/rest.calls'
+import { restGet } from '../../../data/rest/rest.utils'
 
 import Error from './Error'
 import Button from './Button'

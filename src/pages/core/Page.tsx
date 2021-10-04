@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { IonPage, IonHeader, IonContent, IonFooter} from '@ionic/react'
-import { restGet } from '../../data/rest/rest.calls'
+import { restGet } from '../../data/rest/rest.utils'
 import { useLocation } from 'react-router-dom'
 
 import PageRow from '../../components/core/main/PageRow'
@@ -37,10 +37,10 @@ const Page: React.FC<PageProps> = ({ match }) => {
       if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
     }).catch(res=>{
       restGet('pages', { slug : '404'})
-      .then(res => {
-        setSlugIn(res.data[0].slug)
-        setShowMainTab(res.data[0].show_main_tab)
-        if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
+      .then(res2 => {
+        setSlugIn(res2.data[0].slug)
+        setShowMainTab(res2.data[0].show_main_tab)
+        if (typeof res2.data[0].rows !== 'undefined') setPageRows(res2.data[0].rows)
       })
     })
   }, [match])

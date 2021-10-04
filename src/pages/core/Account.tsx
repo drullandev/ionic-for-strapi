@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { restGet, setImage } from '../../data/rest/rest.calls'
+import { restGet, setImage } from '../../data/rest/rest.utils'
 import { editUserValue } from '../../data/user/user.calls'
 import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel } from '@ionic/react'
 

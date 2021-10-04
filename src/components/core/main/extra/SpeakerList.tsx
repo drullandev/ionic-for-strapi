@@ -1,5 +1,5 @@
 import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react'
+import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/react'
 
 import SpeakerItem from '../SpeakerItem'
 
@@ -8,8 +8,6 @@ import { Session } from '../../../../models/Schedule'
 
 import { connect } from '../../../../data/connect'
 import * as selectors from '../../../../data/selectors'
-
-//import Header from '../../components/core/main/Header'
 
 interface OwnProps { }
 
@@ -25,12 +23,6 @@ interface SpeakerListProps extends OwnProps, StateProps, DispatchProps { }
 const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, speakerSessions }) => {
 
   return <IonContent>
-
-    <IonHeader collapse='condense'>
-      <IonToolbar>
-        <IonTitle size='large'>Speakers</IonTitle>
-      </IonToolbar>
-    </IonHeader>
 
     <IonGrid fixed>
       <IonRow>

@@ -10,7 +10,7 @@ import { moonOutline
 // Functions
 import { connect } from '../../../data/connect'
 import { setDarkMode } from '../../../data/user/user.actions'
-import { restGet } from '../../../data/rest/rest.calls'
+import { restGet } from '../../../data/rest/rest.utils'
 
 // Components
 import Header from './Header'

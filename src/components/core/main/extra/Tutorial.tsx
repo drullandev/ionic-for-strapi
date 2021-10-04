@@ -10,7 +10,6 @@ import '../styles/Tutorial.scss'
 
 import { connect } from '../../../../data/connect'
 import { RouteComponentProps, withRouter } from 'react-router'
-//import { useTranslation } from 'react-i18next'
 
 interface OwnProps extends RouteComponentProps { }
 
@@ -22,8 +21,6 @@ interface DispatchProps {
 interface TutorialProps extends OwnProps, DispatchProps { }
 
 const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMenuEnabled }) => {
-
-  //const { t } = useTranslation()
 
   const [showSkip, setShowSkip] = useState(true)
   const slideRef = useRef<HTMLIonSlidesElement>(null)
