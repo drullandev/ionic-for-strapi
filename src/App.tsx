@@ -28,8 +28,8 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
 
-//import SpeakerDetail from './pages/extra/SpeakerDetail';
-//import SessionDetail from './pages/extra/SessionDetail';
+import SpeakerDetail from './pages/extra/SpeakerDetail';
+import SessionDetail from './pages/extra/SessionDetail';
 
 /* Core pages */
 import Page from './pages/core/Page'
@@ -79,6 +79,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
 }) => {
 
   //const [showLoading, setShowLoading] = useState(false)
+  //const [paths, setPaths] = useState([])
 
   useEffect(() => {
 
@@ -88,11 +89,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
     loadConfData()
 
-    //restGet('settings').then(res => { 
-    //  console.log(res.data)
-    //})
+    //restGet('settings').then(res => { parseSettings(res) })
 
-    //restGet('paths').then(res => { console.log(res.data) setPaths(res.data) })
+    //restGet('paths').then(res => { console.log(res.data); setPaths(res.data) })
 
     //setShowLoading(false)
 
@@ -132,13 +131,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
   
           <IonRouterOutlet id='main'>
             {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
-            <Redirect path='/' to={'/tabs/home'} />
+            <Redirect path='/' to={'/home'} />
             <Route path='/tabs' render={() => <MainTabs />} />
             <Route path='/:slug' component={Page} />
-            <Route path='/tabs/home/:id'render={() => <MainTabs />} />
-            <Route path='/tabs/speakers/:id' render={() => <MainTabs />} />
-            <Route path='/tabs/speakers/sessions/:id' render={() => <MainTabs />} />
-            <Route path='/tabs/:slug/:id'  render={() => <MainTabs />} />
             <Route path='/tabs/:slug' render={() => <MainTabs />} />
             <Route path='/logout' render={() => (
               <RedirectToLogin

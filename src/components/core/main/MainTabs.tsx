@@ -63,12 +63,13 @@ const TabMenu: React.FC<TabMenuProps> = () => {
       <IonRouterOutlet>
         {/*
           <Route path='/:slug' component={Page} />
-        */} 
         <Redirect exact path='/tabs' to='/tabs/home' />
+      */} 
+        <Redirect path='/tabs' to={'/tabs/home'} />
         <Route path='/tabs/speakers/sessions/:id' component={SessionDetail} />
         <Route path='/tabs/speakers/:id' component={SpeakerDetail}/>
         <Route path='/tabs/home/:id' component={SessionDetail} />
-        <Route path='/tabs/:slug' component={Page} />
+        <Route path='/tabs/:slug' component={Page} exact={true}/>
       </IonRouterOutlet>
       <IonTabBar slot='bottom'>
         {submenus && submenus.map((tab: any)=>( TabButton(tab) ))}
