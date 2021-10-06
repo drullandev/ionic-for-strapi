@@ -1,10 +1,6 @@
 import * as MyConst from '../../static/constants'
 import axios from 'axios'
 
-export const editUserValue = () => {
-  return false
-}
-
 export const registerUser = async (firstname: string, lastname: string, email: string, password: string) => {
   return await axios.post(MyConst.RestAPI+'/auth/local/register', {
     'nickname':         firstname,
