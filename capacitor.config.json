@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "ionic-react-conference-app",
+  "appName": "strapionic",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

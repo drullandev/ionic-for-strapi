@@ -1,7 +1,14 @@
-export interface MenuRowProps extends RouteComponentProps {
-  key:string
-  label:string
-  icon:string,
-  slot:string,
-  path?:string
+import { PathProps } from '../interfaces/PathProps'
+export interface MenuRowProps {
+  row: {
+    title: string
+    component: {
+      component: {
+        id: number
+      }
+      icon: string
+    }
+    slug: string
+    path: PathProps
+  }
 }

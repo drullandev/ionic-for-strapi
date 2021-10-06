@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { IonButton, IonItem } from '@ionic/react'
+import { IonButton } from '@ionic/react'
 import { ButtonProps } from './interfaces/ButtonProps'
 
 /**

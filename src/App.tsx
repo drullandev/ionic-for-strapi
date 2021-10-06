@@ -26,10 +26,14 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setNickname, loadUserData, setUserDarkMode } from './data/user/user.actions'
+import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
+
+//import SpeakerDetail from './pages/extra/SpeakerDetail';
+//import SessionDetail from './pages/extra/SessionDetail';
 
 /* Core pages */
-import Page from './components/core/main/Page'
+import Page from './pages/core/Page'
+import MainTabs from './components/core/main/MainTabs'
 
 /* Pages components */
 import Menu from './components/core/main/Menu'
@@ -46,6 +50,7 @@ const App: React.FC = () => {
   )
 }
 
+//TODO: Merge with user state... is possible?
 interface StateProps {
   userDarkMode: boolean
   schedule: Schedule
@@ -56,7 +61,8 @@ interface DispatchProps {
   setNickname: typeof setNickname
   loadConfData: typeof loadConfData
   loadUserData: typeof loadUserData
-  setUserDarkMode: typeof setUserDarkMode
+  setDarkMode: typeof setDarkMode
+  setAppIcon: typeof setAppIcon
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -68,7 +74,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
   setNickname,
   loadConfData,
   loadUserData,
-  setUserDarkMode
+  setDarkMode,
+  setAppIcon
 }) => {
 
   //const [showLoading, setShowLoading] = useState(false)
@@ -100,7 +107,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
     response.data.status.forEach((elem: any) => {
       switch (elem.key) {
         case 'Dark Mode - Default': {
-          setUserDarkMode(elem.value)
+          setDarkMode(elem.value)
         }
       }
     })
@@ -118,34 +125,30 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
   return (
     <IonApp className={userDarkMode ? 'dark-theme' : ''}>
-
       <IonReactRouter>
-
         <IonSplitPane contentId='main'>
-
+  
           <Menu key='mainMenu' slug={'sidenav'} />
-
+  
           <IonRouterOutlet id='main'>
-
-            {/* We use IonRoute here to keep the tabs state intact,
-            which makes transitions between tabs and non tab pages smooth */}
-            <Redirect path='/' to={'/home'} />
+            {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
+            <Redirect path='/' to={'/tabs/home'} />
+            <Route path='/tabs' render={() => <MainTabs />} />
             <Route path='/:slug' component={Page} />
-            <Route path='/tabs/:slug' component={Page} />
-            <Route path='/tabs/:slug/:id' component={Page} />
-            <Route key='main-logout' path='/logout' render={() => (
+            <Route path='/tabs/home/:id'render={() => <MainTabs />} />
+            <Route path='/tabs/speakers/:id' render={() => <MainTabs />} />
+            <Route path='/tabs/speakers/sessions/:id' render={() => <MainTabs />} />
+            <Route path='/tabs/:slug/:id'  render={() => <MainTabs />} />
+            <Route path='/tabs/:slug' render={() => <MainTabs />} />
+            <Route path='/logout' render={() => (
               <RedirectToLogin
                 key='rtl'
                 setIsLoggedIn={setIsLoggedIn}
                 setNickname={setNickname} />
-            )} />
-
+            )}/>
           </IonRouterOutlet>
-
         </IonSplitPane>
-
       </IonReactRouter>
-
     </IonApp>
   )
 }
@@ -155,18 +158,19 @@ export default App
 const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
-    userDarkMode: true,
-    schedule: []
+    userDarkMode: state.user.userDarkMode,
+    schedule: state.data.schedule
   }),
 
   mapDispatchToProps: {
     loadConfData,
     loadUserData,
     setIsLoggedIn,
-    setUserDarkMode,
-    setNickname
+    setDarkMode,
+    setNickname,
+    setAppIcon
   },
 
   component: IonicApp
-
+  
 })

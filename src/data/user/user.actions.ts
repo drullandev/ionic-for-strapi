@@ -1,84 +1,75 @@
-import * as MyConst from '../../static/constants'
+import {
+  getUserData,
+  setIsLoggedInData,
+  setNicknameData,
+  setUserEmailData,
+  setHasSeenTutorialData
+} from '../dataApi'
 
 import { setStorage } from '../app/storage'
 
 import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 
-var testing = false
-
-export const setUserValue = (type:string, data:any) => {
-  if(testing === true) console.log('user.actions.'+type+'::', data)
-  setStorage(type, data)
-  return ({ type: type, data } as const)
-}
-
-export const setUserData = (data: Partial<UserState>) => {
-  setUserValue(MyConst.USERDATA, data)
-}
-
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 
 
   dispatch(setLoading(true))
-
-
-  /*const data = await getUserData()
-
-
-  if(testing === true) console.log('user.actions.loadUserData::', JSON.stringify(data))
-
-
-  dispatch(setData(data))*/
-
-
+  const data = await getUserData()
+  dispatch(setData(data))
   dispatch(setLoading(false))
 
 
 }
 
-export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
-  setUserValue(MyConst.HAS_LOGGED_IN, false)
-  setNickname()
-  setUserEmail()
-  setUserJwt()
-  dispatch(setNickname())
-}
-
 export const setUserEmail = (email?: string) => async (dispatch: React.Dispatch<any>) => {
-  setUserValue(MyConst.USEREMAIL, email)
+  await setUserEmailData(email)
+  return ({ type: 'set-user-email', email } as const)
 }
 
 export const setNickname = (nickname?: string) => async (dispatch: React.Dispatch<any>) => {
-  setUserValue(MyConst.NICKNAME, nickname)
+  await setNicknameData(nickname)
+  return ({ type: 'set-nickname', nickname } as const)
 }
 
-export const setIsLoggedIn = (isLoggedin: boolean) => async (dispatch: React.Dispatch<any>) => {
-  setUserValue(MyConst.HAS_LOGGED_IN, isLoggedin)
+export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
+  await setIsLoggedInData(loggedIn)
+  return ({ type: 'set-is-loggedin', loggedIn } as const)
+}
+
+export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
+  await setIsLoggedInData(false)
+  dispatch(setNickname())
 }
 
 export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
-  setUserValue(MyConst.HAS_SEEN_TUTORIAL, hasSeenTutorial)
+  await setHasSeenTutorialData(hasSeenTutorial)
+  return ({ type: 'set-has-seen-tutorial', hasSeenTutorial } as const)
 }
 
-export const setLoading = (isLoading: boolean = false) => {
-  setUserValue(MyConst.IS_LOADING, isLoading)
+export const setLoading = (isLoading: boolean) => {
+  return ({ type: 'set-user-loading', isLoading } as const)
 }
 
-export const setUserDarkMode = (userDarkMode: boolean) => {
-  setUserValue(MyConst.USER_DARK_MODE, userDarkMode)
+export const setData = (data: Partial<UserState>) => {
+  return ({ type: 'set-user-data', data } as const)
 }
 
-export const setUserJwt = (userjwt?: string) => {
-  setUserValue(MyConst.USERJWT, userjwt)
+export const setDarkMode = (userDarkMode: boolean) => {
+  return ({ type: 'set-user-darkmode', userDarkMode } as const)
+}
+
+export const setUserJwt = (userjwt: string) => {
+  return ({ type: 'set-userjwt', userjwt } as const)
 }
 
 export const setUserId = (userId: number) => {
-  setUserValue(MyConst.USERID, userId)
+  return ({ type: 'set-userid', userId } as const)
 }
 
-export const setUserRole = (role: any) => {
-  setUserValue(MyConst.USER_ROLE, role)
+// MOVE TO APP ACTIONS!!
+export const setAppIcon = (icon: string) => {
+  return ({ type: 'set-app-icon', icon } as const)
 }
 
 export const setUserAvatar = (avatar: any) => {
@@ -96,5 +87,6 @@ export type UserActions =
   | ActionType<typeof setIsLoggedIn>
   | ActionType<typeof setHasSeenTutorial>
   | ActionType<typeof setLoading>
-  | ActionType<typeof setUserDarkMode>
+  | ActionType<typeof setData>
+  | ActionType<typeof setDarkMode>
   | ActionType<typeof setUserJwt>

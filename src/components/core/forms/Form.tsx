@@ -11,11 +11,11 @@ import FormRow from './FormRow'
 // FORM INTERFACES
 import { FormProps } from './interfaces/FormProps'
 
-import * as StrapiUtils from '../../../data/strapi/strapi.utils'
-import { restGet } from '../../../data/strapi/strapi.calls'
+import * as StrapiUtils from '../../../data/rest/rest.calls'
+import { restGet } from '../../../data/rest/rest.utils'
 
 // FORM STYLES
-import '../styles/Form.scss'
+import '../main/styles/Form.scss'
 
 const Form: FC<FormProps> = ({ slug }) => {
 

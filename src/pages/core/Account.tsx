@@ -1,6 +1,7 @@
+
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { restGet, setImage } from '../../data/strapi/strapi.calls'
+import { restGet, setImage } from '../../data/rest/rest.utils'
 import { editUserValue } from '../../data/user/user.calls'
 import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel } from '@ionic/react'
 
@@ -13,7 +14,7 @@ interface OwnProps extends RouteComponentProps { }
 
 interface StateProps {
   nickname?: string
-  useremail?: string
+  userEmail?: string
 }
 
 interface DispatchProps {
@@ -23,7 +24,7 @@ interface DispatchProps {
 
 interface AccountProps extends OwnProps, StateProps, DispatchProps { }
 
-const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, useremail }) => {
+const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, userEmail }) => {
 
   const user_id = 1
 

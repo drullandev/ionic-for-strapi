@@ -1,7 +1,6 @@
-import React, { useRef, useEffect } from 'react'
-
-import { Location } from '../../../models/Location'
 import * as MyConst from '../../../static/constants'
+import React, { useRef, useEffect } from 'react'
+import { Location } from '../../../models/Location'
 
 interface MapProps {
   locations: Location[]
@@ -9,6 +8,7 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ mapCenter, locations }) => {
+  
   const mapEle = useRef<HTMLDivElement>(null)
   const map = useRef<google.maps.Map>()
 
@@ -50,9 +50,8 @@ const Map: React.FC<MapProps> = ({ mapCenter, locations }) => {
 
   }, [mapCenter, locations])
 
-  return (
-    <div ref={mapEle} className='map-canvas'></div>
-  )
+  return <div ref={mapEle} className='map-canvas'></div>
+
 }
 
 export default Map

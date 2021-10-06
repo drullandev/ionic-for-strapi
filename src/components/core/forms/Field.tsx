@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox, useIonLoading } from '@ionic/react'
+import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-import { restGet } from '../../../data/strapi/strapi.calls'
+import { restGet } from '../../../data/rest/rest.utils'
 
 import Error from './Error'
 import Button from './Button'
@@ -32,7 +32,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
     switch (type) {
       case 'input':
         if (component.type === 'check') return renderCheckbox()
-        if (component.type === 'input') return renderInput()
+        if (component.type === 'textarea') return renderTextarea()
         return renderInput()
       case 'button':
         return renderButton()
@@ -55,6 +55,13 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
     <IonItem style={{ paddingTop: '25px' }}>
       {label && <IonLabel color='primary'>{label}</IonLabel>}
       <IonCheckbox slot='end' name={component.label} />
+    </IonItem>
+  )
+
+  const renderTextarea = () => (
+    <IonItem>
+      {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
+      <IonTextarea value={component.name}></IonTextarea>
     </IonItem>
   )
 

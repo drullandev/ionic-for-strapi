@@ -1,27 +1,20 @@
-//import * as MyConst from '../../../static/constants'
-
 import React, { useEffect, useState } from 'react'
 import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@ionic/react'
 
-//import { TabButtonProps } from '../interfaces/TabButtonProps'
+import { Redirect, Route } from 'react-router'
+import { restGet } from '../../../data/rest/rest.utils'
 
-import { Redirect } from 'react-router'
-import { restGet } from '../../../data/strapi/strapi.calls'
+import SpeakerDetail from './extra/SpeakerDetail';
+import SessionDetail from './extra/SessionDetail';
+
+import Home from '../../../pages/core/Home';
+import SpeakerList from './extra/SpeakerList';
 
 import Icon from './Icon'
-import TabButton from './TabButton'
-/*import Page from './Page'
+import Page from '../../../pages/core/Page'
 
-import About from '../../../pages/core/About'
-import Account from '../../../pages/core/Account'
-import SessionDetail from '../../../pages/extra/SessionDetail'
+const testing = false
 
-import Home from '../../../pages/core/Home'
-import SpeakerList from '../../../pages/extra/SpeakerList'
-import SpeakerDetail from '../../../pages/extra/SpeakerDetail'
-import MapView from '../../../pages/extra/MapView'
-import Tutorial from '../../../pages/extra/Tutorial'
-*/
 interface TabMenuProps { }
 
 const TabMenu: React.FC<TabMenuProps> = () => {
@@ -48,42 +41,34 @@ const TabMenu: React.FC<TabMenuProps> = () => {
   }, [])
 
   const TabButton = (tab:any) =>{
-      console.log('TabButton', tab)
-      var icon = 'person'
-      restGet('paths', { slug: tab.path.slug })
-      .then(res => {
-        icon =res.data[0].component.icon
-      })
-      .catch(err => { console.log(err) })
+    //if(testing) 
+    console.log('TabButton', tab)
+    var icon = restGet('paths', { slug: tab.path.slug })
+    .then(res => {
+      console.log('setIcon '+res.data[0].component.icon)
+      return res.data[0].component.icon
+    })
+    .catch(err => { console.log(err) })
+
+    if(testing) console.log('icon', icon)
 
     return <IonTabButton key={tab.path.slug + '-tab'} tab={tab.path.slug} href={tab.path.value}>
-      <Icon name={'person'} />
+      <Icon name={tab.icon ? tab.icon : 'person'} />
       <IonLabel>{tab.title}</IonLabel>
     </IonTabButton>
   }
 
-  /*function setAvailableComponent(comp: any, jsx: boolean = true) {
-    //console.log('setAvailableComponent', comp)
-    switch (comp) {
-      case 'Home': return jsx ? <Home /> : Home
-      case 'SpeakerList': return jsx ? <SpeakerList /> : SpeakerList
-      case 'SpeakerDetail': return jsx ? <SpeakerDetail /> : SpeakerDetail
-      case 'SessionDetail': return SessionDetail
-      case 'MapView': return jsx ? <MapView /> : MapView
-      case 'About': return jsx ? <About /> : About
-      case 'Tutorial': return Tutorial
-      case 'Account': return Account
-      case 'Page': return Page
-      default: return Home
-    }
-  }*/
-
   return (
     <IonTabs>
       <IonRouterOutlet>
-       {/*<Route path='/tabs/:slug' component={Page} />
-        <Route path='/tabs/:slug/:param' component={Page} />*/}
+        {/*
+          <Route path='/:slug' component={Page} />
+        */} 
         <Redirect exact path='/tabs' to='/tabs/home' />
+        <Route path='/tabs/speakers/sessions/:id' component={SessionDetail} />
+        <Route path='/tabs/speakers/:id' component={SpeakerDetail}/>
+        <Route path='/tabs/home/:id' component={SessionDetail} />
+        <Route path='/tabs/:slug' component={Page} />
       </IonRouterOutlet>
       <IonTabBar slot='bottom'>
         {submenus && submenus.map((tab: any)=>( TabButton(tab) ))}

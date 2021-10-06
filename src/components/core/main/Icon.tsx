@@ -36,13 +36,11 @@ addIcons({
 
 export interface IconProps {
   name: string
-  slot?:string
+  slot?: string
 }
 
-const Icon: React.FC<IconProps> = ({ slot, name = 'person' }) => (
-  slot
-    ? <IonIcon slot={slot} name={name.toLowerCase()}></IonIcon>
-    : <IonIcon name={name.toLowerCase()}></IonIcon>
+const Icon: React.FC<IconProps> = ({ slot, name }) => (
+  slot ? <IonIcon slot={slot} name={name.toLowerCase()} ></IonIcon> : <IonIcon name={name.toLowerCase()} ></IonIcon>
 )
 
 export default Icon

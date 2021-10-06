@@ -1,22 +1,31 @@
 import * as MyConst from '../static/constants'
-import { setStorage, getStorage, switchStorage } from './app/storage'
 
 import { Schedule, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 
+import { getStorage, setStorage, removeStorage } from './utils/storage'
+import { restGet } from './rest/rest.utils'
+
 //----------------------------------------------------------------
 
-export const loadUserExtra = async () => {
+export const getUserExtra = async () => {
 
-  const response = await Promise.all([fetch(MyConst.dataUrl), fetch(MyConst.locationsUrl)])
+  //TODO: Featurize more, is so simple, but comes from API now! // TODO: Must come by user!!! ^^
+  const extra  = await restGet('extra').then(res=>{ return res.data })
 
-  const responseData = await response[0].json()
-  const schedule = responseData.schedule[0] as Schedule
-  const sessions = parseSessions(schedule)
-  const speakers = responseData.speakers as Speaker[]
-  const locations = (await response[1].json()) as Location[]
-  const allTracks = sessions
+  const responseData  = extra.schedule  
+
+  const locations     = extra.locations as Location[]
+
+  // Speakers TODO Mates!
+  const speakers      = responseData.speakers as Speaker[]
+  
+  // Home
+  const schedule      = responseData.schedule[0] as Schedule
+
+  const sessions      = parseSessions(schedule)  
+  const allTracks     = sessions
     .reduce((all, session) => all.concat(session.tracks), [] as string[])
     .filter((trackName, index, array) => array.indexOf(trackName) === index)
     .sort()
@@ -36,24 +45,28 @@ export const loadUserData = (data:any) => {
 }
 
 export const getUserData = async () => {
-
+  
   const response = await Promise.all([
+    //
     getStorage(MyConst.NICKNAME),
     getStorage(MyConst.USEREMAIL),
     getStorage(MyConst.USERJWT),
     getStorage(MyConst.USERID),
+    //
     getStorage(MyConst.HAS_LOGGED_IN),
     getStorage(MyConst.HAS_SEEN_TUTORIAL),
-    getStorage(MyConst.USER_DARK_MODE),
+    getStorage(MyConst.USER_DARK_MODE),    
   ])
 
-  const nickname        = response[0].value || undefined
-  const useremail       = response[1].value || undefined
-  const userjwt         = response[2].value || undefined
-  const userId          = response[3].value || undefined
-  const isLoggedin      = response[4].value === 'true'
-  const hasSeenTutorial = response[5].value === 'true'
-  const userDarkMode    = response[6].value === 'true'
+  //
+  const nickname        = response[0] || undefined
+  const useremail       = response[1] || undefined
+  const userjwt         = response[2] || undefined
+  const userId          = response[3] || undefined
+  //
+  const isLoggedin      = response[4] === 'true'
+  const hasSeenTutorial = response[5] === 'true'
+  const userDarkMode    = response[6] === 'false'
 
   return {
     nickname,
@@ -77,28 +90,33 @@ function parseSessions(schedule: Schedule) {
 
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  return setStorage(MyConst.HAS_LOGGED_IN, JSON.stringify(isLoggedIn))
+  setStorage(MyConst.HAS_LOGGED_IN, isLoggedIn)
 }
 
 export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  return setStorage(MyConst.HAS_SEEN_TUTORIAL, JSON.stringify(hasSeenTutorial))
+  setStorage(MyConst.HAS_SEEN_TUTORIAL, hasSeenTutorial)
 }
 
 export const setNicknameData = async (nickname?: string) => {
-  return switchStorage(MyConst.NICKNAME, nickname)
+  setOrRemove(MyConst.NICKNAME, nickname)
 }
 
 export const setUserEmailData = async (useremail?: string) => {
-  return switchStorage(MyConst.USEREMAIL, useremail)
+  setOrRemove(MyConst.USEREMAIL, useremail)
 }
 
 export const setUserJwtData = async (userjwt?: string) => {
-  return switchStorage(MyConst.USERJWT, userjwt)
+  setOrRemove(MyConst.USERJWT, userjwt)
 }
 
 export const setUserIdData = async (userId?: string) => {
-  return switchStorage(MyConst.USERID, userId)
+  setOrRemove(MyConst.USERID, userId)
 }
 
-
-
+export const setOrRemove = async (key: string, value: any = null)=>{
+  if(value){
+    setStorage(key, value)
+  }else{
+    removeStorage(key)
+  }
+}

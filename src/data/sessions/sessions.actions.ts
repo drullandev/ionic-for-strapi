@@ -1,4 +1,4 @@
-import { loadUserExtra } from '../dataApi'
+import { getUserExtra } from '../dataApi'
 import { ActionType } from '../../util/types'
 import { ConfState } from './conf.state'
 const testing = false
@@ -6,7 +6,7 @@ const testing = false
 export const loadConfData = () => async (dispatch: React.Dispatch<any>) => {
   if(testing) console.log('session.actions.loadConfData')
   dispatch(setLoading(true))
-  const data = await loadUserExtra()
+  const data = await getUserExtra()
   dispatch(setData(data))
   dispatch(setLoading(false))
 }

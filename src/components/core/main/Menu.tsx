@@ -9,22 +9,22 @@ import { moonOutline
 
 // Functions
 import { connect } from '../../../data/connect'
-import { setUserDarkMode } from '../../../data/user/user.actions'
-import { restGet } from '../../../data/strapi/strapi.calls'
+import { setDarkMode } from '../../../data/user/user.actions'
+import { restGet } from '../../../data/rest/rest.utils'
 
 // Components
-import Header from './ToolBar'
+import Header from './Header'
 import SubMenu from './SubMenu'
 
 // Main interfaces
 //import { StateProps } from '../../models/StateProps'
-import { MenuRowProps } from './interfaces/MenuRowProps'
+import { MenuRowProps } from '../interfaces/MenuRowProps'
 
 // Style
-import '../styles/Menu.scss'
+import './styles/Menu.css'
 
 interface DispatchProps {
-  setUserDarkMode: typeof setUserDarkMode
+  setDarkMode: typeof setDarkMode
 }
 
 export interface StateProps {
@@ -42,12 +42,11 @@ interface Menu2Props {
   title: string
 }
 
-const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenticated, history, setUserDarkMode }) => {
+const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenticated, history, setDarkMode }) => {
 
   const [menu, setMenu] = useState<Menu2Props>()
   const [menus, setMenus] = useState<MenuProps[]>([])
   const [slot, setSlot] = useState('start')
-
   useEffect(() => {
     restGet('menus', { slug: slug })
       .then(res => {
@@ -72,7 +71,7 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenti
           <IonItem key={'sdfgsdf'} >
             <IonIcon slot={slot} icon={moonOutline} />
             <IonLabel>Dark Mode</IonLabel>
-            <IonToggle checked={userDarkMode} onClick={() => setUserDarkMode(!userDarkMode)} />
+            <IonToggle checked={userDarkMode} onClick={() => setDarkMode(!userDarkMode)} />
           </IonItem>
 
           {/*<IonItem key={'sdfgsdfgsdf'} >
@@ -98,14 +97,14 @@ export default connect<{}, StateProps, {}>({
 
   mapStateToProps: (state) => ({
     userDarkMode: state.user.userDarkMode,
-    isAuthenticated: state.user.isLoggedin,
+    isAuthenticated: state.user.hasLoggedIn,
     menuEnabled: state.data.menuEnabled
   }),
-
+  
   mapDispatchToProps: ({
-    setUserDarkMode
+    setDarkMode
   }),
 
   component: withRouter(Menu)
-
+  
 })
