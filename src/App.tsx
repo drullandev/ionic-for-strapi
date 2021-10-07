@@ -133,6 +133,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Redirect path='/' to={'/home'} />
             <Route path='/tabs' render={() => <MainTabs />} />
             <Route path='/:slug' component={Page} />
+            <Route path='/tabs/home/:id' render={() => <MainTabs />} />
             <Route path='/tabs/:slug' render={() => <MainTabs />} />
             <Route path='/logout' render={() => (
               <RedirectToLogin

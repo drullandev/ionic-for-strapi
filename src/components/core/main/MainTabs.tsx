@@ -5,7 +5,7 @@ import { Redirect, Route } from 'react-router'
 import { restGet } from '../../../data/rest/rest.utils'
 
 import MateDetail from '../../extra/MateDetail';
-import SpeakerDetail from '../../../pages/extra/SpeakerDetail';
+import SessionDetail from '../../extra/SessionDetail';
 
 import Icon from './Icon'
 import Page from '../../../pages/core/Page'
@@ -65,7 +65,7 @@ const TabMenu: React.FC<TabMenuProps> = () => {
         <Redirect path='/tabs' to={'/tabs/home'} />
         <Route path='/tabs/speakers/sessions/:id' component={MateDetail} />
         <Route path='/tabs/speakers/:id' component={MateDetail}/>
-        <Route path='/tabs/home/:id' component={SpeakerDetail} />
+        <Route path='/tabs/home/:id' component={SessionDetail} />
         <Route path='/tabs/:slug' component={Page} exact={true}/>
       </IonRouterOutlet>
       <IonTabBar slot='bottom'>
