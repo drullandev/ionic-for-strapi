@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/react'
 //import { Language } from '../models/Language'
-import { useTranslation } from 'react-i18next'
+//import { useTranslation } from 'react-i18next'
 
 const LanguageSelector = () => {
 

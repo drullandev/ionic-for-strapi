@@ -15,11 +15,6 @@ export interface PageProps extends RouteComponentProps<{ slug: string, id?: stri
   id?: string
 }
 
-/**
- * Page Pager Pagerorum ;);););)
- * @param match 
- * @returns 
- */
 const Page: React.FC<PageProps> = ({ match }) => {
 
   const location = useLocation()
@@ -59,7 +54,6 @@ const Page: React.FC<PageProps> = ({ match }) => {
       <IonFooter>
         {setArea('footer')}
       </IonFooter>
-      {location.pathname.includes('/tabs/') && <MainTabs />}
     </IonPage>
   )
 

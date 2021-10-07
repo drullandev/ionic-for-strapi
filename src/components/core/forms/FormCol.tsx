@@ -16,6 +16,7 @@ const FormCol: React.FC<FormColProps> = ({ row, control, errors }) => {
         label={row.label}
         control={control}
         errors={errors}
+        required={row.required}
       />}
     </IonCol>
   )

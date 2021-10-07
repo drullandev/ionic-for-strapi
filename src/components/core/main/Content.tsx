@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { IonContent } from '@ionic/react'
 
-import { restGet } from '../../../../data/rest/rest.utils'
+import { restGet } from '../../../data/rest/rest.utils'
 
 export interface ContentProps {
   row: {

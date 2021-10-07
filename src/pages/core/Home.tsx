@@ -3,10 +3,10 @@ import React, { useState, useRef } from 'react'
 import { IonToolbar, IonContent, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 import { options, search } from 'ionicons/icons'
 
-import SessionList from '../../components/core/main/SessionList'
-import SessionListFilter from '../../components/core/main/SessionListFilter'
+import SessionList from '../../components/extra/SessionList'
+import SessionListFilter from '../../components/extra/SessionListFilter'
 
-import ShareSocialFab from '../../components/core/main/ShareSocialFab'
+import ShareSocialFab from '../../components/extra/ShareSocialFab'
 
 import * as selectors from '../../data/selectors'
 import { connect } from '../../data/connect'

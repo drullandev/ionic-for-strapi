@@ -1,7 +1,7 @@
 import React from 'react'
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonMenuButton, IonGrid, IonRow, IonCol } from '@ionic/react'
 
-import SpeakerItem from '../../components/extra/SpeakerItem'
+import MatesItem from '../../components/extra/MatesItem'
 
 import { Speaker } from '../../models/Speaker'
 import { Session } from '../../models/Schedule'
@@ -28,7 +28,7 @@ const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, speakerSessions }) 
 
   return (
 
-    <IonPage id='speaker-list'>
+    <IonPage id='mate-list'>
 
       <IonHeader translucent={true}>
         <IonToolbar>
@@ -50,7 +50,7 @@ const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, speakerSessions }) 
           <IonRow>
             {speakers.map(speaker => (
               <IonCol size='12' size-md='6' key={speaker.id}>
-                <SpeakerItem
+                <MatesItem
                   key={speaker.id}
                   speaker={speaker}
                   sessions={speakerSessions[speaker.name]}

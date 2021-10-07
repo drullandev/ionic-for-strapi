@@ -1,4 +1,4 @@
-#speaker-detail {
+#mate-detail {
   /*
    * Speaker Background
    */
@@ -20,7 +20,7 @@
     --color: white;
   }
 
-  .speaker-background {
+  .mate-background {
     position: relative;
 
     display: flex;
@@ -34,16 +34,16 @@
 
     height: calc(250px + var(--ion-safe-area-top));
 
-    //background: center / cover url("/assets/img/speaker-background.png") no-repeat;
+    //background: center / cover url("/assets/img/mate-background.png") no-repeat;
   }
 
-  .speaker-background img {
+  .mate-background img {
     width: 70px;
     border-radius: 50%;
     margin-top: calc(-1 * var(--ion-safe-area-top));
   }
 
-  .speaker-background h2 {
+  .mate-background h2 {
     position: absolute;
 
     bottom: 10px;
@@ -51,11 +51,11 @@
     color: white;
   }
 
-  .md .speaker-background {
+  .md .mate-background {
     box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.14) 0 2px 2px 0px, rgba(0, 0, 0, 0.12) 0 1px 5px 0;
   }
 
-  .ios .speaker-background {
+  .ios .mate-background {
     box-shadow: rgba(0, 0, 0, 0.12) 0 4px 16px;
   }
 
@@ -63,12 +63,12 @@
    * Speaker Details
    */
 
-  .speaker-detail p {
+  .mate-detail p {
     margin-left: 6px;
     margin-right: 6px;
   }
 
-  .speaker-detail hr {
+  .mate-detail hr {
     margin-top: 20px;
     margin-bottom: 20px;
 

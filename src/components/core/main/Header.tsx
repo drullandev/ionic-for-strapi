@@ -1,6 +1,6 @@
 import React from 'react'
 import { IonToolbar, IonButtons, IonMenuButton, IonTitle, IonProgressBar } from '@ionic/react'
-import { HeaderProps } from '../interfaces/HeaderProps'
+import { HeaderProps } from './interfaces/HeaderProps'
 
 const Header: React.FC<HeaderProps> = ({ label, slot }) => (
   <IonToolbar>

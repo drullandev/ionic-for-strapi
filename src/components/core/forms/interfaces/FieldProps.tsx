@@ -3,6 +3,7 @@ export interface FieldProps {
   name: string
   label: string
   slug: string
+  required: boolean
   columns?: any[]
   control?: Control
   component?: JSX.Element

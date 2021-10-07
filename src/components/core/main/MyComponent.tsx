@@ -5,16 +5,15 @@ import Page from '../../../pages/core/Page'
 
 import About from '../../../pages/core/About'
 import Account from '../../../pages/core/Account'
-import SessionDetail from './extra/SessionDetail'
 
 import Home from '../../../pages/core/Home'
-import SpeakerList from './extra/SpeakerList'
-import SpeakerDetail from './extra/SpeakerDetail'
-import MapView from './extra/MapView'
-import Tutorial from './extra/Tutorial'
-import Content from './extra/Content'
+import SpeakerList from '../../extra/MatesList'
+import MateDetail from '../../extra/MateDetail'
+import MapView from '../../extra/MapView'
+import Tutorial from '../../extra/Tutorial'
+import Content from './Content'
 
-import { MyComponentProps } from '../interfaces/MyComponentProps'
+import { MyComponentProps } from './interfaces/MyComponentProps'
 
 const  testing = false
 
@@ -25,8 +24,7 @@ const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params, content }
       case 'header': return <Header label={params.label} slot={params.slot} />
       case 'home': return jsx ? <Home /> : Home
       case 'speakers': return <SpeakerList />
-      case 'speakerdetail': return jsx ? <SpeakerDetail /> : SpeakerDetail
-      case 'sessiondetail': return SessionDetail
+      case 'MateDetail': return jsx ? <MateDetail /> : MateDetail
       case 'map': return jsx ? <MapView /> : MapView
       case 'about': return <About />
       case 'tutorial': return <Tutorial/>

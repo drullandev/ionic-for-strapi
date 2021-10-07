@@ -4,11 +4,8 @@ import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@io
 import { Redirect, Route } from 'react-router'
 import { restGet } from '../../../data/rest/rest.utils'
 
-import SpeakerDetail from './extra/SpeakerDetail';
-import SessionDetail from './extra/SessionDetail';
-
-import Home from '../../../pages/core/Home';
-import SpeakerList from './extra/SpeakerList';
+import MateDetail from '../../extra/MateDetail';
+import SpeakerDetail from '../../../pages/extra/SpeakerDetail';
 
 import Icon from './Icon'
 import Page from '../../../pages/core/Page'
@@ -66,9 +63,9 @@ const TabMenu: React.FC<TabMenuProps> = () => {
         <Redirect exact path='/tabs' to='/tabs/home' />
       */} 
         <Redirect path='/tabs' to={'/tabs/home'} />
-        <Route path='/tabs/speakers/sessions/:id' component={SessionDetail} />
-        <Route path='/tabs/speakers/:id' component={SpeakerDetail}/>
-        <Route path='/tabs/home/:id' component={SessionDetail} />
+        <Route path='/tabs/speakers/sessions/:id' component={MateDetail} />
+        <Route path='/tabs/speakers/:id' component={MateDetail}/>
+        <Route path='/tabs/home/:id' component={SpeakerDetail} />
         <Route path='/tabs/:slug' component={Page} exact={true}/>
       </IonRouterOutlet>
       <IonTabBar slot='bottom'>

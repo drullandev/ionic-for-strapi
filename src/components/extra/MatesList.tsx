@@ -1,13 +1,13 @@
 import React from 'react'
 import { IonContent, IonGrid, IonRow, IonCol } from '@ionic/react'
 
-import SpeakerItem from '../SpeakerItem'
+import MatesItem from './MatesItem'
 
-import { Speaker } from '../../../../models/Speaker'
-import { Session } from '../../../../models/Schedule'
+import { Speaker } from '../../models/Speaker'
+import { Session } from '../../models/Schedule'
 
-import { connect } from '../../../../data/connect'
-import * as selectors from '../../../../data/selectors'
+import { connect } from '../../data/connect'
+import * as selectors from '../../data/selectors'
 
 interface OwnProps { }
 
@@ -28,7 +28,7 @@ const SpeakerList: React.FC<SpeakerListProps> = ({ speakers, speakerSessions }) 
       <IonRow>
         {speakers.map(speaker => (
           <IonCol size='12' size-md='6' key={speaker.id}>
-            <SpeakerItem
+            <MatesItem
               key={speaker.id}
               speaker={speaker}
               sessions={speakerSessions[speaker.name]}

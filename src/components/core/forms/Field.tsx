@@ -8,7 +8,7 @@ import Button from './Button'
 
 import { FieldProps } from './interfaces/FieldProps'
 
-const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
+const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required }) => {
 
   const [component, setComponent] = useState<any>()
   const [type, setType] = useState<any>()
@@ -43,11 +43,12 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors }) => {
   const renderInput = () => (
     <IonItem>
       {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
+      {required && <IonLabel slot='end' position='floating' color='primary' style={{fontWeigth: 'bold'}}>*</IonLabel>}
       <IonInput
         aria-invalid={errors && errors[component.name] ? 'true' : 'false'}
         aria-describedby={`${component.name}Error`}
         type={component.type}
-      />
+      />     
     </IonItem>
   )
 

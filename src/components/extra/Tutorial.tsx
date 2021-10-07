@@ -1,14 +1,14 @@
-import * as MyConst from '../../../../static/constants'
+import * as MyConst from '../../static/constants'
 import React, { useState, useRef } from 'react'
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonSlides, IonSlide, IonIcon, useIonViewWillEnter } from '@ionic/react'
 import { arrowForward } from 'ionicons/icons'
 
-import { setMenuEnabled } from '../../../../data/sessions/sessions.actions'
-import { setHasSeenTutorial } from '../../../../data/user/user.actions'
+import { setMenuEnabled } from '../../data/sessions/sessions.actions'
+import { setHasSeenTutorial } from '../../data/user/user.actions'
 
-import '../styles/Tutorial.scss'
+import './styles/Tutorial.scss'
 
-import { connect } from '../../../../data/connect'
+import { connect } from '../../data/connect'
 import { RouteComponentProps, withRouter } from 'react-router'
 
 interface OwnProps extends RouteComponentProps { }

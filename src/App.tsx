@@ -28,8 +28,7 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
 
-import SpeakerDetail from './pages/extra/SpeakerDetail';
-import SessionDetail from './pages/extra/SessionDetail';
+import MateDetail from './components/extra/MateDetail';
 
 /* Core pages */
 import Page from './pages/core/Page'

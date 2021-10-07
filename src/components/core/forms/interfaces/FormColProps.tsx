@@ -10,6 +10,7 @@ export interface FormColProps {
     name: string
     fieldType: string
     type: string
+    required: boolean
   }
   control?: Control
   errors?: NestDataObject<Record<string, any>, FieldError>

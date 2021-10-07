@@ -82,8 +82,8 @@ const SpeakerDetail: React.FC<SpeakerDetailProps> = ({ speaker }) => {
   }
 
   return (
-    <IonPage id='speaker-detail'>
-      <IonContent>
+    <IonContent id='mate-detail'>
+        <IonContent >
 
         <IonHeader className='ion-no-border'>
           <IonToolbar>
@@ -101,12 +101,12 @@ const SpeakerDetail: React.FC<SpeakerDetailProps> = ({ speaker }) => {
           </IonToolbar>
         </IonHeader>
 
-        <div className='speaker-background'>
+        <div className='mate-background'>
           <img src={speaker.profilePic} alt={speaker.name} />
           <h2>{speaker.name}</h2>
         </div>
 
-        <div className='ion-padding speaker-detail'>
+        <div className='ion-padding mate-detail'>
           <p>{speaker.about} Say hello on social media!</p>
 
           <hr />
@@ -133,7 +133,7 @@ const SpeakerDetail: React.FC<SpeakerDetailProps> = ({ speaker }) => {
         onDidDismiss={() => setShowActionSheet(false)}
         buttons={actionSheetButtons}
       />
-    </IonPage>
+    </IonContent>
   )
 }
 

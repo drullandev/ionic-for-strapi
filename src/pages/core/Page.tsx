@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
 import { IonPage, IonHeader, IonContent, IonFooter} from '@ionic/react'
+import { useLocation, useHistory } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router'
 import { restGet } from '../../data/rest/rest.utils'
-import { useLocation } from 'react-router-dom'
 
 import PageRow from '../../components/core/main/PageRow'
 
@@ -22,6 +22,7 @@ export interface PageProps extends RouteComponentProps<{
 const Page: React.FC<PageProps> = ({ match }) => {
 
   const location = useLocation()
+  const history = useHistory()
 
   //const [page, setPage] = useState<PageProps>()
   const [slugIn, setSlugIn] = useState('')
@@ -42,6 +43,9 @@ const Page: React.FC<PageProps> = ({ match }) => {
         setShowMainTab(res2.data[0].show_main_tab)
         if (typeof res2.data[0].rows !== 'undefined') setPageRows(res2.data[0].rows)
       })
+      setTimeout(()=>{
+        history.go(0)
+      },120)
     })
   }, [match])
 

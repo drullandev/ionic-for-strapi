@@ -1,12 +1,12 @@
 import React from 'react'
 import { IonContent } from '@ionic/react'
 
-import Map from '../Map'
+import Map from '../core/main/Map'
 
-import { Location } from '../../../../models/Location'
+import { Location } from '../../models/Location'
 
-import { connect } from '../../../../data/connect'
-import * as selectors from '../../../../data/selectors'
+import { connect } from '../../data/connect'
+import * as selectors from '../../data/selectors'
 
 
 interface OwnProps { }

@@ -1,13 +1,13 @@
-import * as MyConst from '../../../static/constants'
+import * as MyConst from '../../static/constants'
 
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Schedule, Session } from '../../../models/Schedule'
+import { Schedule, Session } from '../../models/Schedule'
 import SessionListItem from './SessionListItem'
 
-import { connect } from '../../../data/connect'
-import { addFavorite, removeFavorite } from '../../../data/sessions/sessions.actions'
+import { connect } from '../../data/connect'
+import { addFavorite, removeFavorite } from '../../data/sessions/sessions.actions'
 
 interface OwnProps {
   schedule: Schedule
