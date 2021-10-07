@@ -1,6 +1,6 @@
-import { IonText, IonGrid, useIonLoading } from '@ionic/react'
+import { IonText, IonGrid, useIonLoading, useIonToast } from '@ionic/react'
 import React, { FC, useState, useEffect } from 'react'
-
+import { useHistory } from 'react-router-dom'
 // ABOUT FORMS VALIDATION 
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -17,7 +17,11 @@ import { restGet } from '../../../data/rest/rest.utils'
 // FORM STYLES
 import '../main/styles/Form.scss'
 
+const validation = true
+
 const Form: FC<FormProps> = ({ slug }) => {
+
+  const history = useHistory()
 
   // Form Component settings...
   const [formTitle, setFormTitle] = useState([])
@@ -30,6 +34,7 @@ const Form: FC<FormProps> = ({ slug }) => {
 
   // Form and window actions
   const [setLoading, dismissLoading] = useIonLoading()
+  const [setToast, dismissToast] = useIonToast()
   useEffect(() => {
     setLoading({ message: 'Loading form...', duration: 345 })
     restGet('forms', { slug: slug })
@@ -37,7 +42,7 @@ const Form: FC<FormProps> = ({ slug }) => {
         if (data.status === 200) {
           setFormTitle(data.data[0].title)
           setFormRows(data.data[0].rows)
-          setValidations(data.data[0].rows)
+          if(validation) setValidations(data.data[0].rows)
         } else {
           console.error('call error', data)
         }
@@ -85,8 +90,40 @@ const Form: FC<FormProps> = ({ slug }) => {
     setFormValidation(Object.assign(formValidation, rules))
   }
 
-  const onSubmit: SubmitHandler<IFormValues> = (form: React.FormEvent<Element>) => {
-    return StrapiUtils.set(slug, form)
+  const onSubmit: SubmitHandler<IFormValues> = async (form: React.FormEvent<Element>) => {
+    setLoading({ message: 'Connecting...', duration: 345 })
+    await StrapiUtils.set(slug, form).then(result=>{
+
+      switch(result.type){
+        case 'history':
+          history.push(result.params.push)
+          break;
+        case 'toast':
+          setToast({
+            buttons: [{ text: 'hide', handler: () => dismissToast() }],
+            message: result.params.message,
+            onDidDismiss: () => console.log('dismissed'),
+            onWillDismiss: () => console.log('will dismiss'),
+          })
+          break;
+      }
+
+    })
+    //if(result.type !== undefined){
+
+    //}
+    /*if(result.history !== undefined){
+      history.push(result.history.push)
+    }else
+    if(result.toast !== undefined ){
+      setToast({
+        buttons: [{ text: 'hide', handler: () => dismissToast() }],
+        message: 'toast from hook, click hide to dismiss',
+        onDidDismiss: () => console.log('dismissed'),
+        onWillDismiss: () => console.log('will dismiss'),
+      })
+    }
+    */
   }
 
   return (

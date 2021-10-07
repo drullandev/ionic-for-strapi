@@ -20,20 +20,19 @@ export const set = async (action:string, form:React.FormEvent)=>{//}, history:an
   }
 }
 
-const login = (form: any)=>{//}, history: any){
-  console.log('doing login...', form)
-/*  if(typeof form.identifier === 'undefined') return
-  if(typeof form.password === 'undefined') return
-  if(form.terms !== 'on') return
-  if(form.policy !== 'on') return*/
+const login = async (form: any)=>{//}, history: any){
+  
+  //console.log('doing login...', form)
+  //if(typeof form.identifier === 'undefined') return
+  //if(typeof form.password === 'undefined') return
+  //if(form.terms !== 'on') return
+  //if(form.policy !== 'on') return
 
-  const promise = axios.post(MyConst.RestAPI+'/auth/local', {
+  var ret = await axios.post(MyConst.RestAPI+'/auth/local', {
     identifier: form.identifier,
     password: form.password
-  })
+  }).then((res:any) => {  
 
-  return promise.then((res:any) => {  
-    console.log(res)
     if(res.status === 200){
 
       setIsLoggedIn(true)
@@ -42,50 +41,41 @@ const login = (form: any)=>{//}, history: any){
       setUserJwt(res.data.jwt)
       setUserId(res.data.user.id)
 
-      console.log({
-        history: {
-          push: MyConst.HOME,//Home
-          params: {
-            direction: 'none'
-          }
+      return {
+        type: 'history',
+        params: {
+          push: MyConst.HOME,
+          direction: 'none'
         }
-      })
+      }
 
     }else{
 
       logoutUser()
 
-      console.log( {
-        error: {
-          type: 'toast',//Home
-          params: {
-            message: res.data.message[0].messages[0].message,
-            history: {
-              push: MyConst.HOME,//Home
-              timeout: 5,
-              params: {
-                direction: 'none'
-              }
-            }
-          }
+      return {
+        type: 'toast',
+        params: {
+          message: res.data.message[0].messages[0].message,
+          timeout: 3000
         }
-      })
+      }
 
     }   
 
   })
   .catch((err:any) => {
 
-    console.log({
-      error: {
-        type: 'toast',//Home
-        params: {
-          message: err.response.data.message[0].messages[0].message,
-        }
+    return {
+      type: 'toast',//Home
+      params: {
+        message: err.response.data.message[0].messages[0].message,
       }
-    })
+    }
 
   })
+
+  return ret
 
 }
 

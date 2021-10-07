@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom'
 import { restGet } from '../../../data/strapi/strapi.calls'
 
 import PageRow from './PageRow'
-import MainTabs from './MainTabs'
 
 import '../styles/About.scss'
 
