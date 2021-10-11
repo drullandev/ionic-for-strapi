@@ -1,4 +1,4 @@
-//import { SubmitHandler } from 'react-hook-form';
+//import { SubmitHandler } from 'react-hook-form'
 export interface ButtonProps {
   label: string
   button: {

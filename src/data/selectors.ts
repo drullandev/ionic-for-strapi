@@ -1,6 +1,6 @@
-import { createSelector } from 'reselect';
-import { Schedule, Session, ScheduleGroup } from '../models/Schedule';
-import { AppState } from './state';
+import { createSelector } from 'reselect'
+import { Schedule, Session, ScheduleGroup } from '../models/Schedule'
+import { AppState } from './state'
 
 const getSchedule = (state: AppState) => {
 

@@ -6,19 +6,17 @@ import {
   setHasSeenTutorialData
 } from '../dataApi'
 
-import { setStorage } from '../app/storage'
+//import { setStorage } from '../app/storage'
 
 import { ActionType } from '../../util/types'
 import { UserState } from './user.state'
 
 export const loadUserData = () => async (dispatch: React.Dispatch<any>) => {
 
-
   dispatch(setLoading(true))
   const data = await getUserData()
   dispatch(setData(data))
   dispatch(setLoading(false))
-
 
 }
 
@@ -38,8 +36,12 @@ export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispa
 }
 
 export const logoutUser = () => async (dispatch: React.Dispatch<any>) => {
-  await setIsLoggedInData(false)
+  await setIsLoggedInData(false)  
+  dispatch(setIsLoggedIn(true))
   dispatch(setNickname())
+  dispatch(setUserEmail())
+  dispatch(setUserJwt())
+  dispatch(setUserId())
 }
 
 export const setHasSeenTutorial = (hasSeenTutorial: boolean) => async (dispatch: React.Dispatch<any>) => {
@@ -59,16 +61,16 @@ export const setDarkMode = (userDarkMode: boolean) => {
   return ({ type: 'set-user-darkmode', userDarkMode } as const)
 }
 
-export const setUserJwt = (userjwt: string) => {
+export const setUserJwt = (userjwt?: string) => {
   return ({ type: 'set-userjwt', userjwt } as const)
 }
 
-export const setUserId = (userId: number) => {
+export const setUserId = (userId?: number) => {
   return ({ type: 'set-userid', userId } as const)
 }
 
 // MOVE TO APP ACTIONS!!
-export const setAppIcon = (icon: string) => {
+export const setAppIcon = (icon?: string) => {
   return ({ type: 'set-app-icon', icon } as const)
 }
 

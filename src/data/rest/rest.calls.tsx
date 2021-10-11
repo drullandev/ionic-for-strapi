@@ -22,7 +22,7 @@ export const set = async (action:string, form:React.FormEvent)=>{//}, history:an
 
 const login = async (form: any)=>{//}, history: any){
   
-  //console.log('doing login...', form)
+  console.log('doing login...', form)
   //if(typeof form.identifier === 'undefined') return
   //if(typeof form.password === 'undefined') return
   //if(form.terms !== 'on') return
@@ -57,7 +57,7 @@ const login = async (form: any)=>{//}, history: any){
         type: 'toast',
         params: {
           message: res.data.message[0].messages[0].message,
-          timeout: 3000
+          duration: 3000
         }
       }
 
@@ -70,6 +70,7 @@ const login = async (form: any)=>{//}, history: any){
       type: 'toast',//Home
       params: {
         message: err.response.data.message[0].messages[0].message,
+        duration: 3000
       }
     }
 

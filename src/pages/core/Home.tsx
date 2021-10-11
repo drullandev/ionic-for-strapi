@@ -69,9 +69,9 @@ const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText,
           </IonSegment>
         }
 
-        {!ios && !showSearchbar &&
+        {/*!ios && !showSearchbar &&
           <IonTitle>Schedule</IonTitle>
-        }
+        */}
 
         {showSearchbar &&
           <IonSearchbar showCancelButton='always' placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
@@ -112,9 +112,9 @@ const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText,
     <IonContent fullscreen={true}>
 
       <IonHeader collapse='condense'>
-        <IonToolbar>
+        {/*<IonToolbar>
           <IonTitle size='large'>Schedule</IonTitle>
-        </IonToolbar>
+        </IonToolbar>*/}
         <IonToolbar>
           <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
         </IonToolbar>

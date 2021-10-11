@@ -46,14 +46,15 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenti
 
   const [menu, setMenu] = useState<Menu2Props>()
   const [menus, setMenus] = useState<MenuProps[]>([])
-  const [slot, setSlot] = useState('start')
+  const [slot, setSlot] = useState('')
   useEffect(() => {
+    setSlot('start')
     restGet('menus', { slug: slug })
       .then(res => {
         setMenu(res.data[0])
         setMenus(res.data[0].rows)
       })
-  }, [])
+  }, [slug])
 
   return (
     <IonMenu key={slug} type='overlay' disabled={!menuEnabled} contentId='main'>

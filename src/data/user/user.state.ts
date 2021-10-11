@@ -3,7 +3,7 @@ export interface UserState {
   useremail?: string
   userjwt?: string
   userDarkMode?: boolean
-  isLoggedin?: boolean
+  isLoggedIn?: boolean
   hasSeenTutorial?: boolean
   loading?: boolean
 }

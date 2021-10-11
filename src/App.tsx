@@ -28,8 +28,6 @@ import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
 import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
 
-import MateDetail from './components/extra/MateDetail';
-
 /* Core pages */
 import Page from './pages/core/Page'
 import MainTabs from './components/core/main/MainTabs'
@@ -61,7 +59,6 @@ interface DispatchProps {
   loadConfData: typeof loadConfData
   loadUserData: typeof loadUserData
   setDarkMode: typeof setDarkMode
-  setAppIcon: typeof setAppIcon
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -73,15 +70,14 @@ const IonicApp: React.FC<IonicAppProps> = ({
   setNickname,
   loadConfData,
   loadUserData,
-  setDarkMode,
-  setAppIcon
+  setDarkMode
 }) => {
 
   //const [showLoading, setShowLoading] = useState(false)
   //const [paths, setPaths] = useState([])
 
   useEffect(() => {
-
+    setDarkMode(true)
     //setShowLoading(true)
 
     loadUserData()
@@ -162,8 +158,7 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
     loadUserData,
     setIsLoggedIn,
     setDarkMode,
-    setNickname,
-    setAppIcon
+    setNickname
   },
 
   component: IonicApp

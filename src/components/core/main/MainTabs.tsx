@@ -4,8 +4,8 @@ import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@io
 import { Redirect, Route } from 'react-router'
 import { restGet } from '../../../data/rest/rest.utils'
 
-import MateDetail from '../../extra/MateDetail';
-import SessionDetail from '../../extra/SessionDetail';
+import MateDetail from '../../extra/MateDetail'
+import SessionDetail from '../../extra/SessionDetail'
 
 import Icon from './Icon'
 import Page from '../../../pages/core/Page'

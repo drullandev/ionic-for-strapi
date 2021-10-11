@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea } from '@ionic/react'
+import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonButton} from '@ionic/react'
 import { Controller } from 'react-hook-form'
 import { restGet } from '../../../data/rest/rest.utils'
+import ContentCheck from '../../../components/core/forms/ContentCheck'
 
 import Error from './Error'
 import Button from './Button'
@@ -10,32 +11,33 @@ import { FieldProps } from './interfaces/FieldProps'
 
 const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required }) => {
 
-  const [component, setComponent] = useState<any>()
+  const [field, setField] = useState<any>()
   const [type, setType] = useState<any>()
 
   useEffect(() => {
     restGet('fields', { slug: slug })
       .then(res => {
         if (res.status === 200) {
-          setComponent(res.data[0])
+          setField(res.data[0])
           setType(res.data[0].fieldType)
         } else {
           console.error('call error', res)
         }
       })
       .catch(error => console.error(error))
-
   }, [slug])
 
-  const setComponentData = () => {
-    if (!component) return <></>
+  const setFieldData = () => {
+    if (!field) return <></>
     switch (type) {
       case 'input':
-        if (component.type === 'check') return renderCheckbox()
-        if (component.type === 'textarea') return renderTextarea()
-        return renderInput()
-      case 'button':
-        return renderButton()
+        switch(field.type){
+          case 'check':       return renderCheckbox()
+          case 'textarea':    return renderTextarea()
+          case 'check_modal': return renderConditionsCheckbox()
+          default:            return renderInput()
+        }
+      case 'button':          return renderButton()
     }
     return <></>
   }
@@ -43,11 +45,11 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
   const renderInput = () => (
     <IonItem>
       {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
-      {required && <IonLabel slot='end' position='floating' color='primary' style={{fontWeigth: 'bold'}}>*</IonLabel>}
+      {required && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
       <IonInput
-        aria-invalid={errors && errors[component.name] ? 'true' : 'false'}
-        aria-describedby={`${component.name}Error`}
-        type={component.type}
+        aria-invalid={errors && errors[field.name] ? 'true' : 'false'}
+        aria-describedby={`${field.name}Error`}
+        type={field.type}
       />     
     </IonItem>
   )
@@ -55,26 +57,33 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
   const renderCheckbox = () => (
     <IonItem style={{ paddingTop: '25px' }}>
       {label && <IonLabel color='primary'>{label}</IonLabel>}
-      <IonCheckbox slot='end' name={component.label} />
+      <IonCheckbox slot='end' name={field.label}/>
     </IonItem>
   )
 
+  const renderConditionsCheckbox = () => {
+    return<IonItem style={{ paddingTop: '25px' }}>
+      <ContentCheck name={field.label} label={label} slug={field.slug}/>
+      <IonCheckbox slot='end' name={field.label}/>
+    </IonItem>
+  }
+  
   const renderTextarea = () => (
     <IonItem>
       {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
-      <IonTextarea value={component.name}></IonTextarea>
+      <IonTextarea value={field.name}></IonTextarea>
     </IonItem>
   )
 
   const renderButton = () => (
-    component && <Button label={label} button={component} />
+    <Button label={label} button={field} />
   )
 
   return (
     <>
       {type === 'input'
         ? <Controller
-          as={(setComponentData())}
+          as={(setFieldData())}
           name={name}
           control={control}
           onChangeName='onIonChange'
@@ -83,6 +92,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
       {type !== 'button' && <Error label={label} name={name} errors={errors} />}
     </>
   )
+  
 }
 
 export default Field

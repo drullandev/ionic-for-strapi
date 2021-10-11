@@ -1,6 +1,6 @@
 import * as MyConst from '../static/constants'
 import React from 'react'
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client'
 
 interface PopoverProps {
   dismiss: () => void
@@ -22,7 +22,7 @@ const Settings: React.FC<PopoverProps> = ({ dismiss }) => {
     }
   `);
 
-  if (loading) return 'Loading...';
+  if (loading) return 'Loading...'
   if (error) return `Error! ${error.message}`;
 
   return (

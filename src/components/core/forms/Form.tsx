@@ -1,12 +1,15 @@
-import { IonText, IonGrid, useIonLoading, useIonToast } from '@ionic/react'
+import { IonText, IonGrid, useIonLoading, useIonToast, useIonAlert, getConfig } from '@ionic/react'
 import React, { FC, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import { connect } from '../../../data/connect'
 // ABOUT FORMS VALIDATION 
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 // Components
 import FormRow from './FormRow'
+import Modal from '../../../components/core/forms/Modal'
+
 
 // FORM INTERFACES
 import { FormProps } from './interfaces/FormProps'
@@ -18,6 +21,10 @@ import { restGet } from '../../../data/rest/rest.utils'
 import '../main/styles/Form.scss'
 
 const validation = true
+
+export interface StateProps {
+  mode: 'ios' | 'md'
+}
 
 const Form: FC<FormProps> = ({ slug }) => {
 
@@ -35,6 +42,10 @@ const Form: FC<FormProps> = ({ slug }) => {
   // Form and window actions
   const [setLoading, dismissLoading] = useIonLoading()
   const [setToast, dismissToast] = useIonToast()
+  //const [setModal, dismissModal] = useIonModal(<></>)
+  const [setAlert, dismissAlert] = useIonAlert()
+  const [showModal, setShowModal] = useState(false)
+
   useEffect(() => {
     setLoading({ message: 'Loading form...', duration: 345 })
     restGet('forms', { slug: slug })
@@ -51,7 +62,7 @@ const Form: FC<FormProps> = ({ slug }) => {
     dismissLoading()
   }, [slug])
 
-  function setValidations(rows: any) {
+  const setValidations = (rows: any) =>{
     var rules = []
     for (let i = 0; i < rows.length; i++) {
       var columns = rows[i].columns
@@ -62,10 +73,11 @@ const Form: FC<FormProps> = ({ slug }) => {
           var rule =
             type === 'text' ? yup.string() :
               type === 'email' ? yup.string().email() :
-                type === 'check' ? yup.boolean().oneOf([true], 'You must accept the ' + row.name) :
-                  type === 'password' ? yup.string() :
-                    type === 'number' ? yup.number()
-                      : yup.string()
+                type === 'check' ? yup.string().oneOf(['on'], 'You must accept the ' + row.name) :
+                  type === 'check_modal' ? yup.string().oneOf(['on'], 'You must accept the ' + row.name) :
+                    type === 'password' ? yup.string() :
+                      type === 'number' ? yup.number()
+                        : yup.string()
 
           if (type === 'number') {
             if (row.field.num_sign === 'positive') rule = rule.positive()
@@ -73,7 +85,7 @@ const Form: FC<FormProps> = ({ slug }) => {
           }
 
           if (row.field.regexp) {
-            rule = rule.matches(row.field.regexp, row.field.regexp_message)
+            //rule = rule.matches(row.field.regexp, row.field.regexp_message)
           }
 
           rule = (row.required === true)
@@ -92,38 +104,45 @@ const Form: FC<FormProps> = ({ slug }) => {
 
   const onSubmit: SubmitHandler<IFormValues> = async (form: React.FormEvent<Element>) => {
     setLoading({ message: 'Connecting...', duration: 345 })
-    await StrapiUtils.set(slug, form).then(result=>{
-
+    await StrapiUtils.set(slug, form).then((result:any)=>{
+      setLoading({ message: 'Getting data...', duration: 345 })
       switch(result.type){
+
         case 'history':
+          dismissLoading()
           history.push(result.params.push)
           break;
+
         case 'toast':
+          dismissLoading()
           setToast({
-            buttons: [{ text: 'hide', handler: () => dismissToast() }],
+            buttons: [{ text: 'x', handler: () => dismissToast() }],
+            message: result.params.message,
+            duration: result.params.duration ?  result.params.duration : 500,
+            animated: true,
+            onDidDismiss: () => console.log('dismissed'),
+            onWillDismiss: () => console.log('will dismiss'),
+          })
+          break;
+
+        /*case 'alert':
+          dismissLoading()
+          setAlert({
+            buttons: [{ text: 'x', handler: () => dismissAlert() }],
             message: result.params.message,
             onDidDismiss: () => console.log('dismissed'),
             onWillDismiss: () => console.log('will dismiss'),
           })
           break;
+
+        case 'modal':          
+          setShowModal(true)
+          break;*/
+
       }
 
     })
-    //if(result.type !== undefined){
 
-    //}
-    /*if(result.history !== undefined){
-      history.push(result.history.push)
-    }else
-    if(result.toast !== undefined ){
-      setToast({
-        buttons: [{ text: 'hide', handler: () => dismissToast() }],
-        message: 'toast from hook, click hide to dismiss',
-        onDidDismiss: () => console.log('dismissed'),
-        onWillDismiss: () => console.log('will dismiss'),
-      })
-    }
-    */
   }
 
   return (
@@ -137,10 +156,21 @@ const Form: FC<FormProps> = ({ slug }) => {
             <FormRow key={i} columns={row.columns} control={control} errors={errors} />
           ))}
         </IonGrid>
+        <Modal open={showModal} showButton={false} model='pages' slug='terms'/>
       </form>
     </div>
   )
 
 }
 
-export default Form
+export default connect<FormProps>({
+
+  mapStateToProps: (state) => ({
+    mode: getConfig()!.get('mode'),
+  }),
+
+  mapDispatchToProps: {},
+
+  component: Form
+
+})

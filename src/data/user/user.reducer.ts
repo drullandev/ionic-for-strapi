@@ -22,6 +22,6 @@ export function setUserReducer(
     //
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
     case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }
-    case 'set-is-loggedin':       return { ...state, isLoggedin:      action.loggedIn }
+    case 'set-is-loggedin':       return { ...state, isLoggedIn:      action.loggedIn }
   }
 }

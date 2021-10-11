@@ -1,12 +1,12 @@
-import React from 'react';
-import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, IonButton, IonIcon, IonText, IonList, IonItem, IonLabel } from '@ionic/react';
-import { connect } from '../../data/connect';
-import { withRouter, RouteComponentProps } from 'react-router';
-import * as selectors from '../../data/selectors';
-import { starOutline, star, share, cloudDownload } from 'ionicons/icons';
-import '../../styles/SessionDetail.scss';
-import { addFavorite, removeFavorite } from '../../data/sessions/sessions.actions';
-import { Session } from '../../models/Schedule';
+import React from 'react'
+import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonBackButton, IonButton, IonIcon, IonText, IonList, IonItem, IonLabel } from '@ionic/react'
+import { connect } from '../../data/connect'
+import { withRouter, RouteComponentProps } from 'react-router'
+import * as selectors from '../../data/selectors'
+import { starOutline, star, share, cloudDownload } from 'ionicons/icons'
+import '../../styles/SessionDetail.scss'
+import { addFavorite, removeFavorite } from '../../data/sessions/sessions.actions'
+import { Session } from '../../models/Schedule'
 
 interface OwnProps extends RouteComponentProps { };
 

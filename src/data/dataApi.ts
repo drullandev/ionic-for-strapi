@@ -64,7 +64,7 @@ export const getUserData = async () => {
   const userjwt         = response[2] || undefined
   const userId          = response[3] || undefined
   //
-  const isLoggedin      = response[4] === 'true'
+  const isLoggedIn      = response[4] === 'true'
   const hasSeenTutorial = response[5] === 'true'
   const userDarkMode    = response[6] === 'false'
 
@@ -73,7 +73,7 @@ export const getUserData = async () => {
     useremail,
     userjwt,
     userId,
-    isLoggedin,
+    isLoggedIn,
     hasSeenTutorial,
     userDarkMode,
   }

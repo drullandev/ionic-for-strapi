@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
 import { render, fireEvent, waitForElement } from '@testing-library/react'
 
 it('renders without crashing', () => {
