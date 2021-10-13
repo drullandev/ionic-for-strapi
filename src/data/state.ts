@@ -21,7 +21,7 @@ export const initialState: AppState = {
     isLoggedIn: false,
     hasSeenTutorial: false,
     loading: false,    
-    userjwt: '',
+    userJwt: '',
   }
 }
 

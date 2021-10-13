@@ -1,4 +1,4 @@
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 import React, { useState, useRef } from 'react'
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonSlides, IonSlide, IonIcon, useIonViewWillEnter } from '@ionic/react'
 import { arrowForward } from 'ionicons/icons'
@@ -32,7 +32,7 @@ const Tutorial: React.FC<TutorialProps> = ({ history, setHasSeenTutorial, setMen
   const startApp = async () => {
     setHasSeenTutorial(true)
     setMenuEnabled(true)
-    history.push(MyConst.HOME, { direction: 'none' })
+    history.push(AppConst.HOME, { direction: 'none' })
   }
 
   const handleSlideChangeStart = () => {

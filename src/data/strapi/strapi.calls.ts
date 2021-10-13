@@ -1,4 +1,4 @@
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 import axios from 'axios'
 
 const testing = false
@@ -14,24 +14,24 @@ export const restGet = async (model:string, params:object = {}) => {
   const queryString = (params)
     ? '?'+Object.keys(params).map(key => `${key}=${params[key]}`)
     : ''
-  return axios.get(MyConst.RestAPI+'/'+model+queryString)
+  return axios.get(AppConst.RestAPI+'/'+model+queryString)
 }
 
 export const restPost = async (model:string, body:any) => {
   if(testing) console.log('app.calls.restPost::'+model, body)
-  return axios.post(MyConst.RestAPI+'/'+model, body)
+  return axios.post(AppConst.RestAPI+'/'+model, body)
 }
 
 export const restPut = async (model:string, body:any) => {
   if(testing) console.log('app.calls.restPut::'+model, body)
-  return axios.put(MyConst.RestAPI+'/'+model, body)
+  return axios.put(AppConst.RestAPI+'/'+model, body)
 }
 
 export const restDelete = async (model:string, body:any) => {
   if(testing) console.log('app.calls.restDelete::'+model, body)
-  return axios.delete(MyConst.RestAPI+'/'+model, body)
+  return axios.delete(AppConst.RestAPI+'/'+model, body)
 }
 
 export const setImage = (url:string) =>{
-  return MyConst.RestAPI+url
+  return AppConst.RestAPI+url
 }

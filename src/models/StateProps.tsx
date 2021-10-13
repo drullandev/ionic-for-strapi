@@ -1,6 +1,6 @@
 
 export interface StateProps {
   userDarkMode: boolean
-  isAuthenticated: boolean
+  isLoggedIn: boolean
   menuEnabled: boolean
 }

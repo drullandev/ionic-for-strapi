@@ -6,12 +6,13 @@ import Page from '../../../pages/core/Page'
 import About from '../../../pages/core/About'
 import Account from '../../../pages/core/Account'
 
-import Home from '../../../pages/core/Home'
+import Home from '../../../pages/core/Schedule'
 import SpeakerList from '../../extra/MatesList'
 import MateDetail from '../../extra/MateDetail'
 import MapView from '../../extra/MapView'
 import Tutorial from '../../extra/Tutorial'
 import Content from './Content'
+import Main from './Main'
 
 import { MyComponentProps } from './interfaces/MyComponentProps'
 
@@ -29,6 +30,7 @@ const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params, content }
       case 'about': return <About />
       case 'tutorial': return <Tutorial/>
       case 'account': return <Account/>
+      case 'main': return <Main/>
       case 'content': return <Content row={content}/>
       case 'page': return Page
       default: <></>

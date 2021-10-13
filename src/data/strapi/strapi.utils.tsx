@@ -1,4 +1,4 @@
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 
 import {
   setIsLoggedIn,
@@ -29,7 +29,7 @@ function login(form: any) {//}, history: any){
   if (typeof form.terms === 'undefined') return
   if (typeof form.policy === 'undefined') return
 
-  const promise = axios.post(MyConst.RestAPI + '/auth/local', form)
+  const promise = axios.post(AppConst.RestAPI + '/auth/local', form)
   const dataPromise = promise.then((res: any) => {
 
     if (res.status === 200) {
@@ -104,7 +104,7 @@ function signup(form: any) {//}, history: any){
   if (typeof form.password === 'undefined') return
   if (typeof form.terms === 'undefined') return
   if (typeof form.policy === 'undefined') return
-  const promise = axios.post(MyConst.RestAPI + '/auth/local', form)
+  const promise = axios.post(AppConst.RestAPI + '/auth/local', form)
   const dataPromise = promise.then((res: any) => {
     return {
       history: {
@@ -128,7 +128,7 @@ function signup(form: any) {//}, history: any){
 }
 
 function recover(form: any) {//}, history: any){
-  const promise = axios.post(MyConst.RestAPI + '/auth/local', form)
+  const promise = axios.post(AppConst.RestAPI + '/auth/local', form)
   const dataPromise = promise.then((res: any) => {
     return {
       history: {

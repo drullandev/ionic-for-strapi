@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonButton} from '@ionic/react'
+import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea } from '@ionic/react'
 import { Controller } from 'react-hook-form'
 import { restGet } from '../../../data/rest/rest.utils'
 import ContentCheck from '../../../components/core/forms/ContentCheck'
@@ -31,13 +31,13 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
     if (!field) return <></>
     switch (type) {
       case 'input':
-        switch(field.type){
-          case 'check':       return renderCheckbox()
-          case 'textarea':    return renderTextarea()
+        switch (field.type) {
+          case 'check': return renderCheckbox()
+          case 'textarea': return renderTextarea()
           case 'check_modal': return renderConditionsCheckbox()
-          default:            return renderInput()
+          default: return renderInput()
         }
-      case 'button':          return renderButton()
+      case 'button': return renderButton()
     }
     return <></>
   }
@@ -46,32 +46,64 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
     <IonItem>
       {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
       {required && <IonLabel slot='end' position='stacked' color='primary'>*</IonLabel>}
-      <IonInput
-        aria-invalid={errors && errors[field.name] ? 'true' : 'false'}
-        aria-describedby={`${field.name}Error`}
-        type={field.type}
-      />     
+      <Controller
+        as={(
+          <IonInput
+            aria-invalid={errors && errors[field.name] ? 'true' : 'false'}
+            aria-describedby={`${field.name}Error`}
+            type={field.type}
+          />
+        )}
+        name={name}
+        control={control}
+        onChangeName='onIonChange'
+        onBlurName='onIonBlur'
+      />
     </IonItem>
   )
 
   const renderCheckbox = () => (
     <IonItem style={{ paddingTop: '25px' }}>
       {label && <IonLabel color='primary'>{label}</IonLabel>}
-      <IonCheckbox slot='end' name={field.label}/>
+      <Controller
+        as={(
+          <IonCheckbox slot='end' name={field.label} />
+        )}
+        name={name}
+        control={control}
+        onChangeName='onIonChange'
+        onBlurName='onIonBlur'
+      />
     </IonItem>
   )
 
-  const renderConditionsCheckbox = () => {
-    return<IonItem style={{ paddingTop: '25px' }}>
-      <ContentCheck name={field.label} label={label} slug={field.slug}/>
-      <IonCheckbox slot='end' name={field.label}/>
+  const renderConditionsCheckbox = () => (
+    <IonItem style={{ paddingTop: '25px' }}>
+      <ContentCheck name={field.label} label={label} slug={field.slug} />
+      <Controller
+        as={(
+          <IonCheckbox slot='end' name={field.label} onIonChange={(e) => { console.log(e.detail) }} />
+        )}
+        name={name}
+        control={control}
+        onBlurName='onIonBlur'
+      />
     </IonItem>
-  }
-  
+  )
+
+
   const renderTextarea = () => (
     <IonItem>
-      {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}
-      <IonTextarea value={field.name}></IonTextarea>
+      {label && <IonLabel position='floating' color='primary'>{label}</IonLabel>}      
+      <Controller
+        as={(
+          <IonTextarea value={field.name}></IonTextarea>
+        )}
+        name={name}
+        control={control}
+        onChangeName='onIonChange'
+        onBlurName='onIonBlur'
+      />
     </IonItem>
   )
 
@@ -79,20 +111,13 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
     <Button label={label} button={field} />
   )
 
-  return (
-    <>
-      {type === 'input'
-        ? <Controller
-          as={(setFieldData())}
-          name={name}
-          control={control}
-          onChangeName='onIonChange'
-        />
-        : renderButton()}
-      {type !== 'button' && <Error label={label} name={name} errors={errors} />}
-    </>
-  )
-  
+  return <>
+    {type === 'input'
+      ? setFieldData()
+      : renderButton()}
+    {type !== 'button' && <Error label={label} name={name} errors={errors} />}
+  </>
+
 }
 
 export default Field

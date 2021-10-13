@@ -1,4 +1,4 @@
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 import React, { useEffect, useState } from 'react'
 import { IonPage, IonHeader, IonContent, IonFooter, getConfig } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
@@ -35,9 +35,10 @@ const Page: React.FC<PageProps> = ({ match }) => {
   const [showMainTab, setShowMainTab] = useState(false)
 
   useEffect(() => {
-    console.log('Load Page', match)
+    console.log('Load Page', match.params.slug)
     restGet('pages', { slug : match.params.slug})
     .then(res => {
+      console.log('pinasfgasdgas', res.data[0])
       setSlugIn(res.data[0].slug)
       setShowMainTab(res.data[0].show_main_tab)
       if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
@@ -49,7 +50,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
         if (typeof res2.data[0].rows !== 'undefined') setPageRows(res2.data[0].rows)
       })
       setTimeout(()=>{
-        history.push(MyConst.HOME)
+        history.push(AppConst.HOME)
       },420)
     })
   }, [match])

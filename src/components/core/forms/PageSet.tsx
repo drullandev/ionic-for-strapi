@@ -1,4 +1,4 @@
-import * as MyConst from '../../../static/constants'
+import * as AppConst from '../../../static/constants'
 import React, { useEffect, useState } from 'react'
 import { IonPage, IonHeader, IonContent, IonFooter, getConfig } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
@@ -46,7 +46,7 @@ const PageSet: React.FC<PageProps> = ({ slug, id }) => {
         if (typeof res2.data[0].rows !== 'undefined') setPageRows(res2.data[0].rows)
       })
       setTimeout(()=>{
-        history.push(MyConst.HOME)
+        history.push(AppConst.HOME)
       },420)
     })
   }, [slug])

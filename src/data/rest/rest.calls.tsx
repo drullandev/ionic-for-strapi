@@ -1,4 +1,4 @@
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 
 import {
   setIsLoggedIn,
@@ -12,11 +12,20 @@ import {
 import axios from 'axios'
 
 export const set = async (action:string, form:React.FormEvent)=>{//}, history:any) => {
+  console.log('action', action)
   switch(action){
     case 'login':   return login(form)//, history)
     case 'signup':  return signup(form)//, history)
     case 'recover': return recover(form)//, history)
-    default: break;
+    default:
+      return {
+        type: 'toast',
+        params: {
+          message: "This action don't exist",
+          duration: 3000
+        }
+      }  
+    break;
   }
 }
 
@@ -28,7 +37,7 @@ const login = async (form: any)=>{//}, history: any){
   //if(form.terms !== 'on') return
   //if(form.policy !== 'on') return
 
-  var ret = await axios.post(MyConst.RestAPI+'/auth/local', {
+  return await axios.post(AppConst.RestAPI+'/auth/local', {
     identifier: form.identifier,
     password: form.password
   }).then((res:any) => {  
@@ -44,7 +53,7 @@ const login = async (form: any)=>{//}, history: any){
       return {
         type: 'history',
         params: {
-          push: MyConst.HOME,
+          push: AppConst.HOME,
           direction: 'none'
         }
       }
@@ -76,26 +85,24 @@ const login = async (form: any)=>{//}, history: any){
 
   })
 
-  return ret
-
 }
 
-function signup(form: any){//}, history: any){
+const signup = async (form: any) => {
 
-  if(typeof form.identifier === 'undefined') return
-  if(typeof form.password === 'undefined') return
-  if(typeof form.terms === 'undefined') return
-  if(typeof form.policy === 'undefined') return
+  var data = {
+    username: form.identifier,
+    password: form.password,
+    email: form.email
+  }
 
-  const promise = axios.post(MyConst.RestAPI+'/auth/local', form)
-  const dataPromise = promise.then((res:any) => {    
+  return await axios.post(AppConst.RestAPI+'/auth/local/register', data)
+  .then((res:any) => {    
 
     return {
-      history: {
-        push: MyConst.HOME,
-        params: {
-          direction: 'none'
-        }
+      type: 'history',
+      params: {
+        push: '/account',
+        direction: 'none'
       }
     }
 
@@ -103,32 +110,27 @@ function signup(form: any){//}, history: any){
   .catch((err:any) => {
 
     return {
-      error: {
-        type: 'toast',//Home
-        params: {
-          message: err.response.data.message[0].messages[0].message,
-        }
+      type: 'toast',
+      params: {
+        message: err.response.data.message[0].messages[0].message,
+        duration: 3000
       }
     }
     
   })
-  return dataPromise
 
 }
 
-function recover(form: any){//}, history: any){
+function recover(form: any){
 
-  if(typeof form.identifier === 'undefined') return
-  if(typeof form.password === 'undefined') return
-  if(typeof form.terms === 'undefined') return
-  if(typeof form.policy === 'undefined') return
+  if( typeof form.email === 'undefined' ) return
 
-  const promise = axios.post(MyConst.RestAPI+'/auth/local', form)
+  const promise = axios.post(AppConst.RestAPI+'/auth/forgot-password', form)
   const dataPromise = promise.then((res:any) => {    
 
     return {
       history: {
-        push: MyConst.HOME,
+        push: AppConst.HOME,
         params: {
           direction: 'none'
         }

@@ -1,4 +1,4 @@
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 
 import { UserActions } from './user.actions'
 import { UserState } from './user.state'
@@ -18,7 +18,7 @@ export function setUserReducer(
     case 'set-user-loading':      return { ...state, loading:         action.isLoading }
     case 'set-nickname':          return { ...state, nickname:        action.nickname }
     case 'set-user-email':         return { ...state, useremail:       action.email }
-    case 'set-userjwt':           return { ...state, userjwt:         action.userjwt }
+    case 'set-userJwt':           return { ...state, userJwt:         action.userJwt }
     //
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
     case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }

@@ -37,9 +37,10 @@ const TabMenu: React.FC<TabMenuProps> = () => {
     .catch(err => { console.log(err) })
   }, [])
 
-  const TabButton = (tab:any) =>{
+  const TabButton = (tab:any) => {
+    
     //if(testing) 
-    console.log('TabButton', tab)
+    /*console.log('TabButton', tab)
     var icon = restGet('paths', { slug: tab.path.slug })
     .then(res => {
       console.log('setIcon '+res.data[0].component.icon)
@@ -47,12 +48,13 @@ const TabMenu: React.FC<TabMenuProps> = () => {
     })
     .catch(err => { console.log(err) })
 
-    if(testing) console.log('icon', icon)
+    if(testing) console.log('icon', icon)*/
 
     return <IonTabButton key={tab.path.slug + '-tab'} tab={tab.path.slug} href={tab.path.value}>
       <Icon name={tab.icon ? tab.icon : 'person'} />
       <IonLabel>{tab.title}</IonLabel>
     </IonTabButton>
+    
   }
 
   return (

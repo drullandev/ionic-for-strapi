@@ -38,7 +38,7 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
   const [alertHeader, setAlertHeader] = useState('Edition form')
 
   useEffect(() => {
-    restGet('users', { id: user_id })
+    restGet('users', { id: user_id }) //TODO: Change with user/me when I i'm secure Bearer token is sending on each call ^_^
       .then(res => {
         console.log(res.data[0])
         setUserData(res.data[0])

@@ -77,7 +77,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   //const [paths, setPaths] = useState([])
 
   useEffect(() => {
-    setDarkMode(true)
+    setDarkMode(userDarkMode)
     //setShowLoading(true)
 
     loadUserData()
@@ -109,8 +109,8 @@ const IonicApp: React.FC<IonicAppProps> = ({
       console.log('Name:' + elem.name)
       switch (elem.name) {
         case 'app-icon': {
-          //console.log(MyConst.RestAPI + elem.image.url)
-          setAppIcon(MyConst.RestAPI + elem.image.url)
+          //console.log(AppConst.RestAPI + elem.image.url)
+          setAppIcon(AppConst.RestAPI + elem.image.url)
         }
       }
     })

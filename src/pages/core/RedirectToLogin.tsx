@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { IonRouterContext } from '@ionic/react'
 
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 
 interface RedirectToLoginProps {
   setIsLoggedIn: Function
@@ -15,7 +15,7 @@ const RedirectToLogin: React.FC<RedirectToLoginProps> = ({ setIsLoggedIn, setNic
   useEffect(() => {
     setIsLoggedIn(false)
     setNickname(undefined)
-    ionRouterContext.push(MyConst.HOME)
+    ionRouterContext.push(AppConst.HOME)
   }, [setIsLoggedIn, setNickname, ionRouterContext])
 
   return null

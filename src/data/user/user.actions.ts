@@ -61,27 +61,17 @@ export const setDarkMode = (userDarkMode: boolean) => {
   return ({ type: 'set-user-darkmode', userDarkMode } as const)
 }
 
-export const setUserJwt = (userjwt?: string) => {
-  return ({ type: 'set-userjwt', userjwt } as const)
+export const setUserJwt = (userJwt?: string) => {
+  return ({ type: 'set-userJwt', userJwt } as const)
 }
 
 export const setUserId = (userId?: number) => {
   return ({ type: 'set-userid', userId } as const)
 }
 
-// MOVE TO APP ACTIONS!!
-export const setAppIcon = (icon?: string) => {
-  return ({ type: 'set-app-icon', icon } as const)
-}
-
 export const setUserAvatar = (avatar: any) => {
-  setUserValue(MyConst.USER_AVATAR, avatar)
+  return ({ type: 'set-user-avatar', avatar } as const)
 }
-
-// MOVE TO APP ACTIONS!!
-//export const setAppIcon = (appIcon: string) => {
-//  setUserValue('appIcon', appIcon)
-//}
 
 export type UserActions =
   | ActionType<typeof setUserEmail>
@@ -92,3 +82,5 @@ export type UserActions =
   | ActionType<typeof setData>
   | ActionType<typeof setDarkMode>
   | ActionType<typeof setUserJwt>
+  | ActionType<typeof setUserId>
+  | ActionType<typeof setUserAvatar>

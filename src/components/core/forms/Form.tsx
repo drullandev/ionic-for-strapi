@@ -2,6 +2,7 @@ import { IonText, IonGrid, useIonLoading, useIonToast, useIonAlert, getConfig } 
 import React, { FC, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from '../../../data/connect'
+
 // ABOUT FORMS VALIDATION 
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -53,7 +54,7 @@ const Form: FC<FormProps> = ({ slug }) => {
         if (data.status === 200) {
           setFormTitle(data.data[0].title)
           setFormRows(data.data[0].rows)
-          if(validation) setValidations(data.data[0].rows)
+          if (validation) setValidations(data.data[0].rows)
         } else {
           console.error('call error', data)
         }
@@ -62,19 +63,21 @@ const Form: FC<FormProps> = ({ slug }) => {
     dismissLoading()
   }, [slug])
 
-  const setValidations = (rows: any) =>{
+  const setValidations = (rows: any) => {
     var rules = []
     for (let i = 0; i < rows.length; i++) {
       var columns = rows[i].columns
-      for (var ii = 0; ii < rows[i].columns.length; ii++) {
-        var row = rows[i].columns[ii]
+      for (var ii = 0; ii < columns.length; ii++) {
+
+        var row = columns[ii]
+
         if (row.field.fieldType === 'input') {
           var type = row.field.type
           var rule =
             type === 'text' ? yup.string() :
               type === 'email' ? yup.string().email() :
-                type === 'check' ? yup.string().oneOf(['on'], 'You must accept the ' + row.name) :
-                  type === 'check_modal' ? yup.string().oneOf(['on'], 'You must accept the ' + row.name) :
+                type === 'check' ? yup.boolean() :
+                  type === 'check_modal' ? yup.mixed().oneOf(['on'], 'You must accept the ' + row.field.name) :
                     type === 'password' ? yup.string() :
                       type === 'number' ? yup.number()
                         : yup.string()
@@ -84,12 +87,17 @@ const Form: FC<FormProps> = ({ slug }) => {
             if (row.field.num_type === 'integer') rule = rule.integer()
           }
 
-          if (row.field.regexp) {
-            //rule = rule.matches(row.field.regexp, row.field.regexp_message)
+          if (row.field.regexp ) {
+            rule = rule.matches(row.field.regexp, row.field.regexp_message)
           }
 
-          rule = (row.required === true)
-            ? rule.required() : rule.notRequired()
+          if(row.required === true ){
+            if(type === 'check' || type === 'check_modal'){
+              //rule = rule.oneOf([true], 'You must accept the ' + row.name)
+            }else{
+              //rule = rule.required()
+            }
+          }
 
           if (row.field.min) rule = rule.min(parseInt(row.field.min))
           if (row.field.max) rule = rule.max(parseInt(row.field.max))
@@ -103,10 +111,14 @@ const Form: FC<FormProps> = ({ slug }) => {
   }
 
   const onSubmit: SubmitHandler<IFormValues> = async (form: React.FormEvent<Element>) => {
+
     setLoading({ message: 'Connecting...', duration: 345 })
-    await StrapiUtils.set(slug, form).then((result:any)=>{
+
+    await StrapiUtils.set(slug, form).then((result: any) => {
+
       setLoading({ message: 'Getting data...', duration: 345 })
-      switch(result.type){
+
+      switch (result.type) {
 
         case 'history':
           dismissLoading()
@@ -118,26 +130,22 @@ const Form: FC<FormProps> = ({ slug }) => {
           setToast({
             buttons: [{ text: 'x', handler: () => dismissToast() }],
             message: result.params.message,
-            duration: result.params.duration ?  result.params.duration : 500,
+            duration: result.params.duration ? result.params.duration : 500,
             animated: true,
             onDidDismiss: () => console.log('dismissed'),
             onWillDismiss: () => console.log('will dismiss'),
           })
           break;
 
-        /*case 'alert':
-          dismissLoading()
-          setAlert({
-            buttons: [{ text: 'x', handler: () => dismissAlert() }],
-            message: result.params.message,
-            onDidDismiss: () => console.log('dismissed'),
-            onWillDismiss: () => console.log('will dismiss'),
-          })
-          break;
+        case 'alert':
 
-        case 'modal':          
-          setShowModal(true)
-          break;*/
+        default:
+          setToast({
+            buttons: [{ text: 'x', handler: () => dismissToast() }],
+            message: "There's some kind of problem with this function",
+            duration: 4000,
+            animated: true
+          })
 
       }
 
@@ -145,21 +153,19 @@ const Form: FC<FormProps> = ({ slug }) => {
 
   }
 
-  return (
-    <div className='ion-padding'>
-      <form noValidate name={slug} onSubmit={handleSubmit(onSubmit)}>
-        <IonText color='primary' style={{ textAlign: 'center' }}>
-          <h2>{formTitle}</h2>
-        </IonText>
-        <IonGrid>
-          {formRows.map((row: any, i: number) => (
-            <FormRow key={i} columns={row.columns} control={control} errors={errors} />
-          ))}
-        </IonGrid>
-        <Modal open={showModal} showButton={false} model='pages' slug='terms'/>
-      </form>
-    </div>
-  )
+  return <div className='ion-padding'>
+    <form noValidate name={slug} onSubmit={handleSubmit(onSubmit)}>
+      <IonText color='primary' style={{ textAlign: 'center' }}>
+        <h2>{formTitle}</h2>
+      </IonText>
+      <IonGrid>
+        {formRows.map((row: any, i: number) => (
+          <FormRow key={i} columns={row.columns} control={control} errors={errors} />
+        ))}
+      </IonGrid>
+      <Modal open={showModal} showButton={false} model='pages' slug='terms' />
+    </form>
+  </div>
 
 }
 

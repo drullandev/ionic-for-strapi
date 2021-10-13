@@ -15,29 +15,27 @@ import Icon from './Icon'
 import { toLower } from 'ionicons/dist/types/components/icon/utils'
 
 interface StateProps {
-  isAuthenticated: boolean;
+  isLoggedIn: boolean;
 }
 
 interface MenuRowProps2 extends MenuRowProps, StateProps {}
 
-const MenuRow: React.FC<MenuRowProps2> = ({ row, isAuthenticated }) => {
+const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
   let history = useHistory()
   const location = useLocation()
   const [path, setPath] = useState<PathProps>()
   const [menuClass, setMenuClass] = useState('')
-  const [icon, setIcon] = useState('person')
+  const [icon, setIcon] = useState('')
 
   useEffect(() => {
     if (row.path && row.path.slug) {
       restGet('paths', { slug: row.path.slug ? row.path.slug : '' })
         .then(res => {
-
-          console.log('path', res.data[0])
-
           if(!isAuth(res.data[0].roles)) return
-
           setPath(res.data[0])
-          if (res.data[0].component.icon) setIcon(res.data[0].component.icon)
+          if (res.data[0].component.icon){
+            setIcon(res.data[0].component.icon ? res.data[0].component.icon : 'person')
+          } 
           var selected = location.pathname.startsWith(res.data[0].value)
             || location.pathname.startsWith('/tabs' + res.data[0].value)
           setMenuClass(selected ? 'selected' : '')
@@ -48,8 +46,8 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isAuthenticated }) => {
 
   function isAuth(roles:any){
     if(roles.length === 1){
-      if ((roles[0].type === 'authenticated' && isAuthenticated )
-        ||(roles[0].type === 'public' && ! isAuthenticated  )){
+      if ((roles[0].type === 'authenticated' && isLoggedIn )
+        ||(roles[0].type === 'public' && ! isLoggedIn  )){
           return true
       }else{
         return false
@@ -76,7 +74,7 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isAuthenticated }) => {
 export default connect<{}, StateProps, {}>({
   mapStateToProps: (state) => ({
     darkMode: state.user.darkMode,
-    isAuthenticated: state.user.isLoggedin,
+    isLoggedIn: state.user.isLoggedin,
     menuEnabled: state.data.menuEnabled
   }),
   mapDispatchToProps: ({}),

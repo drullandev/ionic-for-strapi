@@ -1,4 +1,4 @@
-import * as MyConst from '../../static/constants'
+import * as AppConst from '../../static/constants'
 
 import React from 'react'
 import { Redirect } from 'react-router'
@@ -11,8 +11,8 @@ interface StateProps {
 
 const HomeOrWelcome: React.FC<StateProps> = ({ hasSeenTutorial }) => (
   hasSeenTutorial
-    ? <Redirect to={MyConst.HOME} />
-    : <Redirect to={MyConst.LOGIN} />
+    ? <Redirect to={AppConst.HOME} />
+    : <Redirect to={AppConst.LOGIN} />
 )
 
 
