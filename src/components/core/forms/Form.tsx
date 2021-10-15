@@ -63,7 +63,7 @@ const Form: FC<FormProps> = ({ slug }) => {
     dismissLoading()
   }, [slug])
 
-  const setValidations = (rows: any) => {
+  const setValidations = async (rows: any) => {
     var rules = []
     for (let i = 0; i < rows.length; i++) {
       var columns = rows[i].columns
@@ -77,10 +77,9 @@ const Form: FC<FormProps> = ({ slug }) => {
             type === 'text' ? yup.string() :
               type === 'email' ? yup.string().email() :
                 type === 'check' ? yup.boolean() :
-                  type === 'check_modal' ? yup.mixed().oneOf(['on'], 'You must accept the ' + row.field.name) :
+                  type === 'check_modal' ? yup.boolean().default(false).oneOf([true], 'You must accept the ' + row.name) :
                     type === 'password' ? yup.string() :
-                      type === 'number' ? yup.number()
-                        : yup.string()
+                      type === 'number' ? yup.number() : yup.string()
 
           if (type === 'number') {
             if (row.field.num_sign === 'positive') rule = rule.positive()
@@ -92,11 +91,7 @@ const Form: FC<FormProps> = ({ slug }) => {
           }
 
           if(row.required === true ){
-            if(type === 'check' || type === 'check_modal'){
-              //rule = rule.oneOf([true], 'You must accept the ' + row.name)
-            }else{
-              //rule = rule.required()
-            }
+            rule = rule.required()
           }
 
           if (row.field.min) rule = rule.min(parseInt(row.field.min))

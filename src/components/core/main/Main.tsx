@@ -64,12 +64,10 @@ const Main: React.FC<MainProps> = ({
 
       <IonToolbar>
 
-        {!showSearchbar &&
-          <IonButtons slot='start'>
-            <IonMenuButton />
-          </IonButtons>
-        }
-
+        <IonButtons slot='start'>
+          <IonMenuButton />
+        </IonButtons>
+ 
         {!ios && !showSearchbar &&
           <IonTitle>Home</IonTitle>
         }

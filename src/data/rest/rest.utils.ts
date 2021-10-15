@@ -28,6 +28,6 @@ export const restDelete = async (model:string, body:any) => {
   return axios.delete(AppConst.RestAPI+'/'+model, body)
 }
 
-export const setImage = (url:string) =>{
+export const setImage = (url:string = '') =>{
   return AppConst.RestAPI+url
 }

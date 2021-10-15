@@ -28,8 +28,9 @@ const PageRow: React.FC<PageRowProps> = ({ menu, form, component, content }) => 
     <>
       {menu ? <Menu {...menu} /> :
         form ? <Form {...form} /> :
-          component ? returnComponent()
-            : <></>}
+          content ? returnComponent() :
+            component ? returnComponent()
+              : <></>}
     </>
   )
 

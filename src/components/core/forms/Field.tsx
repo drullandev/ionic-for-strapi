@@ -82,10 +82,11 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
       <ContentCheck name={field.label} label={label} slug={field.slug} />
       <Controller
         as={(
-          <IonCheckbox slot='end' name={field.label} onIonChange={(e) => { console.log(e.detail) }} />
+          <IonCheckbox slot='end' name={field.label} />
         )}
         name={name}
         control={control}
+        onChangeName='onIonChange'
         onBlurName='onIonBlur'
       />
     </IonItem>
