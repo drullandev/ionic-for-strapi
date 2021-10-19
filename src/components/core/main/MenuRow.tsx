@@ -12,10 +12,11 @@ import { MenuRowProps } from './interfaces/MenuRowProps'
 // Style
 import './styles/Menu.css'
 import Icon from './Icon'
-import { toLower } from 'ionicons/dist/types/components/icon/utils'
+import { setDarkMode } from '../../../data/user/user.actions';
 
 interface StateProps {
-  isLoggedIn: boolean;
+  userDarkMode: boolean
+  isLoggedIn: boolean
 }
 
 interface MenuRowProps2 extends MenuRowProps, StateProps {}
@@ -31,23 +32,34 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
     if (row.path && row.path.slug) {
       restGet('paths', { slug: row.path.slug ? row.path.slug : '' })
         .then(res => {
-          if(!isAuth(res.data[0].roles)) return
-          setPath(res.data[0])
-          if (res.data[0].component.icon){
-            setIcon(res.data[0].component.icon ? res.data[0].component.icon : 'person')
-          } 
-          var selected = location.pathname.startsWith(res.data[0].value)
-            || location.pathname.startsWith('/tabs' + res.data[0].value)
+          var data = res.data[0]
+          // An access page without roles are skiped
+          if(!isAuth(data.roles)) return
+
+          setPath(data)
+
+          if (data.component.icon !== undefined){
+            setIcon(data.component.icon ? data.component.icon : 'person')
+          }
+
+          var selected = location.pathname.startsWith(data.value)
+            || location.pathname.startsWith('/tabs' + data.value)
           setMenuClass(selected ? 'selected' : '')
+
         })
         .catch(err => { console.log(err) })
     }
+    
+    // eslint-disable-next-line
   }, [location.pathname, row.path])
 
   function isAuth(roles:any){
+    console.log(roles)
+    //((roles[0].type === 'authenticated' && isLoggedIn )    ||
     if(roles.length === 1){
-      if ((roles[0].type === 'authenticated' && isLoggedIn )
-        ||(roles[0].type === 'public' && ! isLoggedIn  )){
+      if (roles[0].type === 'public' && ! isLoggedIn  ){
+          return true
+      }else if(roles[0].type === 'authenticated' && isLoggedIn ){
           return true
       }else{
         return false
@@ -71,12 +83,12 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
 
 }
 
-export default connect<{}, StateProps, {}>({
+export default connect<StateProps>({
   mapStateToProps: (state) => ({
-    darkMode: state.user.darkMode,
-    isLoggedIn: state.user.isLoggedin,
+    darkMode: state.user.userDarkMode,
+    isLoggedIn: state.user.isLoggedIn,
     menuEnabled: state.data.menuEnabled
   }),
-  mapDispatchToProps: ({}),
+  mapDispatchToProps: {},
   component: MenuRow
 })

@@ -1,6 +1,6 @@
 import * as AppConst from '../../../static/constants'
 import React, { useEffect, useState } from 'react'
-import { IonPage, IonHeader, IonContent, IonFooter, getConfig } from '@ionic/react'
+import { IonContent, IonFooter, getConfig } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
 //import { RouteComponentProps } from 'react-router'
 import { restGet } from '../../../data/rest/rest.utils'
@@ -22,15 +22,12 @@ export interface StateProps {
 
 const FormPage: React.FC<PageProps> = ({ slug }) => {
 
-  const location = useLocation()
-  const history = useHistory()
-
   //const [page, setPage] = useState<PageProps>()
   const [slugIn, setSlugIn] = useState('')
   const [pageRows, setPageRows] = useState([])
 
   useEffect(() => {
-    console.log('Load Page', slug)
+    console.log('Load FormPage:', slug)
     restGet('pages', { slug : slug})
     .then(res => {
       setSlugIn(res.data[0].slug)
@@ -64,7 +61,7 @@ export default connect<PageProps>({
     mode: getConfig()!.get('mode'),
   }),
 
-  mapDispatchToProps: {},
+  mapDispatchToProps: { },
 
   component: FormPage
 

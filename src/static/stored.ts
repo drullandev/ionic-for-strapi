@@ -7,7 +7,7 @@ export const USERID            = 'userId'
 export const USER_ROLE         = 'userRole'
 export const USER_AVATAR       = 'userAvatar'
 
-export const HAS_LOGGED_IN     = 'isLoggedIn'
+export const IS_LOGGED_IN     = 'isLoggedIn'
 export const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
 export const USER_DARK_MODE    = 'userDarkMode'
 

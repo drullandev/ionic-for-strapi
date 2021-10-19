@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
-
 import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonSegment, IonTitle, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
-import { options, search } from 'ionicons/icons'
 
-import MainList from './MainList'
-import MainListFilter from './MainListFilter'
-import ShareSocialFab from '../../extra/ShareSocialFab'
-import { connect } from '../../../data/connect'
+import { options, search } from 'ionicons/icons'
+import { restGet } from '../../../data/rest/rest.utils'
 import { setSearchText } from '../../../data/sessions/sessions.actions'
 
+import MainList from './MainList2'
+import MainListFilter from './MainListFilter'
+import { connect } from '../../../data/connect'
+
+/*
+import ShareSocialFab from '../../extra/ShareSocialFab'
 import * as selectors from '../../../data/selectors.wip'
 import { Home } from '../../../models/Schedule'
+*/
 
-import { restGet } from '../../../data/rest/rest.utils'
 
 interface OwnProps { }
 
@@ -30,17 +32,26 @@ type MainProps = OwnProps & StateProps & DispatchProps
 
 const Main: React.FC<MainProps> = ({ 
 
-  //favoritesHome, schedule,
-  setSearchText, mode }) => {
+  //favoritesHome,
+  //schedule,
+  setSearchText,
+  mode
+
+}) => {
 
   const ios = mode === 'ios'
+
+  //Default test!!
+  const model = 'matchs'
+  const dataCall = {user : 2}
     
-  const [segment, setSegment] = useState<'all' | 'favorites'>('all')
+  //const [segment, setSegment] = useState<'all' | 'favorites'>('all')
 
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
   const [showCompleteToast, setShowCompleteToast] = useState(false)
   
+  const [data, setData]= useState({})
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
   const pageRef = useRef<HTMLElement>(null)
 
@@ -52,9 +63,10 @@ const Main: React.FC<MainProps> = ({
   }
 
   useEffect(()=>{
-    restGet('matchs', { user: 2 })
+    restGet(model, dataCall)
     .then(res=>{
-      console.log('user 2 matchs',res)
+      console.log('main console res datra', res.data)
+      //setData(res.data[0])
     })
   },[])
 
@@ -98,6 +110,10 @@ const Main: React.FC<MainProps> = ({
 
     </IonHeader>
 
+
+
+
+
     <IonContent>
 
       <IonHeader collapse='condense'>
@@ -113,25 +129,7 @@ const Main: React.FC<MainProps> = ({
         <IonRefresherContent />
       </IonRefresher>
 
-      <IonToast
-        isOpen={showCompleteToast}
-        message='Refresh complete'
-        duration={2000}
-        onDidDismiss={() => setShowCompleteToast(false)}
-      />
-
-      {/*<MainList
-        schedule={}
-        listType={segment}
-        hide={segment === 'favorites'}
-      />
-
-      <MainList
-        // schedule={schedule}
-        schedule={}
-        listType={segment}
-        hide={segment === 'all'}
-      />*/}
+      {/*<MainList data={data}/>*/}
 
     </IonContent>
 

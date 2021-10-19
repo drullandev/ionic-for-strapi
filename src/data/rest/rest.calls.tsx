@@ -11,8 +11,9 @@ import {
 
 import axios from 'axios'
 
-export const set = async (action:string, form:React.FormEvent)=>{//}, history:any) => {
+export const set = async (action:string, form:React.FormEvent, func:Function)=>{//}, history:any) => {
   console.log('action', action)
+  func(true)
   switch(action){
     case 'login':   return login(form)//, history)
     case 'signup':  return signup(form)//, history)
@@ -29,7 +30,7 @@ export const set = async (action:string, form:React.FormEvent)=>{//}, history:an
   }
 }
 
-const login = async (form: any)=>{//}, history: any){
+const login = async (form: any) => {//}, history: any){
   
   console.log('doing login...', form)
   //if(typeof form.identifier === 'undefined') return

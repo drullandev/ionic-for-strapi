@@ -1,4 +1,6 @@
-import { IonText, IonGrid, useIonLoading, useIonToast, useIonAlert, getConfig } from '@ionic/react'
+import { IonText, IonGrid, useIonLoading, useIonToast, useIonAlert, IonItem, IonIcon, IonLabel, IonToggle, getConfig } from '@ionic/react'
+import * as AppConst from '../../../static/constants'
+import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setUserJwt } from '../../../data/user/user.actions'
 import React, { FC, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from '../../../data/connect'
@@ -6,6 +8,7 @@ import { connect } from '../../../data/connect'
 // ABOUT FORMS VALIDATION 
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import axios from 'axios'
 
 // Components
 import FormRow from './FormRow'
@@ -23,11 +26,33 @@ import '../main/styles/Form.scss'
 
 const validation = true
 
-export interface StateProps {
+interface StateProps {
   mode: 'ios' | 'md'
+  userJwt: string
+  userDarkMode: boolean
+  isLoggedIn: boolean
 }
 
-const Form: FC<FormProps> = ({ slug }) => {
+interface DispatchProps {
+  setIsLoggedIn: typeof setIsLoggedIn
+  setDarkMode: typeof setDarkMode
+  setUserJwt: typeof setUserJwt
+  //setNickname: typeof setNickname
+  //loadConfData: typeof loadConfData
+  //loadUserData: typeof loadUserData
+}
+
+interface MyFormProps extends FormProps, StateProps, DispatchProps { }
+
+const Form: FC<MyFormProps> = ({
+  slug,
+  mode,
+  userJwt, setUserJwt,
+  userDarkMode, setDarkMode,
+  isLoggedIn, setIsLoggedIn,
+}) => {
+
+  //console.log('userJwt', userJwt)
 
   const history = useHistory()
 
@@ -43,9 +68,6 @@ const Form: FC<FormProps> = ({ slug }) => {
   // Form and window actions
   const [setLoading, dismissLoading] = useIonLoading()
   const [setToast, dismissToast] = useIonToast()
-  //const [setModal, dismissModal] = useIonModal(<></>)
-  const [setAlert, dismissAlert] = useIonAlert()
-  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     setLoading({ message: 'Loading form...', duration: 345 })
@@ -61,6 +83,7 @@ const Form: FC<FormProps> = ({ slug }) => {
       })
       .catch(error => console.error(error))
     dismissLoading()
+    // eslint-disable-next-line
   }, [slug])
 
   const setValidations = async (rows: any) => {
@@ -73,24 +96,17 @@ const Form: FC<FormProps> = ({ slug }) => {
 
         if (row.field.fieldType === 'input') {
           var type = row.field.type
-          var rule =
-            type === 'text' ? yup.string() :
-              type === 'email' ? yup.string().email() :
-                type === 'check' ? yup.boolean() :
-                  type === 'check_modal' ? yup.boolean().default(false).oneOf([true], 'You must accept the ' + row.name) :
-                    type === 'password' ? yup.string() :
-                      type === 'number' ? yup.number() : yup.string()
-
+          var rule = setFieldValidation(type)
           if (type === 'number') {
             if (row.field.num_sign === 'positive') rule = rule.positive()
             if (row.field.num_type === 'integer') rule = rule.integer()
           }
 
-          if (row.field.regexp ) {
+          if (row.field.regexp) {
             rule = rule.matches(row.field.regexp, row.field.regexp_message)
           }
 
-          if(row.required === true ){
+          if (row.required === true) {
             rule = rule.required()
           }
 
@@ -105,11 +121,118 @@ const Form: FC<FormProps> = ({ slug }) => {
     setFormValidation(Object.assign(formValidation, rules))
   }
 
-  const onSubmit: SubmitHandler<IFormValues> = async (form: React.FormEvent<Element>) => {
+  const setFieldValidation = (type: string) => {
+    return type === 'text' ? yup.string() :
+      type === 'email' ? yup.string().email() :
+        type === 'check' ? yup.boolean() :
+          type === 'check_modal' ? yup.boolean().default(false).oneOf([true], 'You must accept this check...') :
+            type === 'password' ? yup.string() :
+              type === 'number' ? yup.number() : yup.string()
+  }
+
+  const onSubmit: SubmitHandler<any> = async (form: React.FormEvent<Element>) => {
 
     setLoading({ message: 'Connecting...', duration: 345 })
 
-    await StrapiUtils.set(slug, form).then((result: any) => {
+    switch(slug){
+
+      case 'login':
+
+        axios.post(AppConst.RestAPI+'/auth/local', {
+          identifier: form.identifier,
+          password: form.password
+        }).then((res:any) => {  
+      
+          if(res.status === 200){
+      
+            setIsLoggedIn(true)
+            setNickname(res.data.user.nickname)
+            setUserJwt(res.data.jwt)
+            //setUserEmail(res.data.user.mail)
+            //setUserId(res.data.user.id)
+            setTimeout(()=>{
+              history.push( AppConst.HOME, {direction: 'none'})
+            }, 3000)
+            launchToast(res.data.message[0].messages[0].message.message, 'success')  
+          }else{
+            setIsLoggedIn(false)
+            launchToast(res.data.message[0].messages[0].message.message, 'warning')      
+          }   
+      
+        })
+        .catch((err:any) => {
+          setIsLoggedIn(false)
+          launchToast(err.response.data.message[0].messages[0].message, 'danger')
+        })
+
+      break;
+
+      case 'signup':
+      
+        axios.post(AppConst.RestAPI+'/auth/local/register', {
+          username: form.identifier,
+          password: form.password,
+          email: form.email
+        })
+        .then((res:any) => {
+          if(res.status === 200){
+            launchToast('Registro exitoso!!!', 'success')  
+            setTimeout(()=>{
+              history.push( AppConst.HOME, {direction: 'none'})
+            }, 3000)         
+          }else{
+            launchToast(res.data.message[0].messages[0].message.message, 'success')      
+          } 
+          
+        })
+        .catch((err:any) => {
+                
+        })
+
+      break;
+
+     case 'recover':
+     
+        axios.post(AppConst.RestAPI+'/auth/forgot-password', {
+          email: form.email
+        })
+        .then((res:any) => {    
+          if(res.status === 200){
+            history.push( AppConst.HOME, {direction: 'none'})            
+          }else{
+            launchToast(res.data.message[0].messages[0].message.message)      
+          }
+        })
+        .catch((err:any) => {
+      
+        })
+      
+      break;
+
+    }
+
+
+
+
+
+    const launchToast = (message: string, color: string = 'light',position: string = 'bottom', duration: number = 3000) =>{
+      setToast({
+        buttons: [{ text: 'x', handler: () => dismissToast() }],
+        position: position, //'top' | 'bottom' | 'middle'
+        color: color,
+        "message": message,
+        duration: duration,
+        animated: true
+      })
+    }
+
+
+
+
+
+
+
+    /*await StrapiUtils.set(slug, form, {setUserJwt}).then((result: any) => {
 
       setLoading({ message: 'Getting data...', duration: 345 })
 
@@ -127,24 +250,22 @@ const Form: FC<FormProps> = ({ slug }) => {
             message: result.params.message,
             duration: result.params.duration ? result.params.duration : 500,
             animated: true,
-            onDidDismiss: () => console.log('dismissed'),
-            onWillDismiss: () => console.log('will dismiss'),
+            //onDidDismiss: () => console.log('dismissed'),
+            //onWillDismiss: () => console.log('will dismiss'),
           })
           break;
-
-        case 'alert':
 
         default:
           setToast({
             buttons: [{ text: 'x', handler: () => dismissToast() }],
-            message: "There's some kind of problem with this function",
+            message: "There's some kind of problem launching this operation...",
             duration: 4000,
             animated: true
           })
-
+          break;
       }
 
-    })
+    })*/
 
   }
 
@@ -158,7 +279,13 @@ const Form: FC<FormProps> = ({ slug }) => {
           <FormRow key={i} columns={row.columns} control={control} errors={errors} />
         ))}
       </IonGrid>
-      <Modal open={showModal} showButton={false} model='pages' slug='terms' />
+
+      <IonItem key='dark-mode-item' >
+        <IonIcon slot={'start'} icon={'person'} />
+        <IonLabel>Dark Mode {userDarkMode ? 'true' : 'false'}</IonLabel>
+        <IonToggle checked={userDarkMode} onClick={() => setDarkMode(!userDarkMode)} />
+      </IonItem>
+
     </form>
   </div>
 
@@ -168,9 +295,16 @@ export default connect<FormProps>({
 
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
+    userJwt: state.user.userJwt,
+    userDarkMode: state.user.userDarkMode,
+    isLoggedIn: state.user.isLoggedIn,
   }),
 
-  mapDispatchToProps: {},
+  mapDispatchToProps: {
+    setUserJwt,
+    setDarkMode,
+    setIsLoggedIn,
+  },
 
   component: Form
 

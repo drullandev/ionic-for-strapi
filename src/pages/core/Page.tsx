@@ -38,11 +38,12 @@ const Page: React.FC<PageProps> = ({ match }) => {
     console.log('Load Page', match.params.slug)
     restGet('pages', { slug : match.params.slug})
     .then(res => {
-      console.log('pinasfgasdgas', res.data[0])
+      //console.log('Loaded Page', res.data[0])
       setSlugIn(res.data[0].slug)
       setShowMainTab(res.data[0].show_main_tab)
       if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
     }).catch(res=>{
+      console.log('Error loading Page', match.params.slug)
       restGet('pages', { slug : '404'})
       .then(res2 => {
         setSlugIn(res2.data[0].slug)

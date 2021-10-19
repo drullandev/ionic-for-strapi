@@ -18,6 +18,9 @@ export interface SubMenuProps {
   }[]
   title: string
   menu: {
-    slug: string
+    menu: {
+      slug: string
+      title: string
+    }
   }
 }

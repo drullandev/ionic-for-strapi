@@ -44,8 +44,8 @@ export const getApiValue = async (key:string) => {
   const response = await Promise.all([
     getStorage(key),
   ])
-  const value        = response[0]
-  return { value }
+  const value = response[0]
+  return value
 }
 
 export const getUserData = async () => {
@@ -57,7 +57,7 @@ export const getUserData = async () => {
     getStorage(stored.USERJWT),
     getStorage(stored.USERID),
     //
-    getStorage(stored.HAS_LOGGED_IN),
+    getStorage(stored.IS_LOGGED_IN),
     getStorage(stored.HAS_SEEN_TUTORIAL),
     getStorage(stored.USER_DARK_MODE),    
   ])
@@ -94,7 +94,7 @@ function parseSessions(schedule: Home) {
 
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  setStorage(stored.HAS_LOGGED_IN, isLoggedIn)
+  setStorage(stored.IS_LOGGED_IN, isLoggedIn)
 }
 
 export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {

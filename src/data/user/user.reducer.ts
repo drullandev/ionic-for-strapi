@@ -8,7 +8,7 @@ const testing = false
 export function setUserReducer(
   state: UserState,
   action: UserActions
-): UserState {
+) : UserState {
 
   if (testing) console.log('reducer.' + action.type)
 
@@ -16,12 +16,14 @@ export function setUserReducer(
     //
     case 'set-user-data':         return { ...state, ...action.data }    
     case 'set-user-loading':      return { ...state, loading:         action.isLoading }
+
     case 'set-nickname':          return { ...state, nickname:        action.nickname }
-    case 'set-user-email':         return { ...state, useremail:       action.email }
+    case 'set-user-email':        return { ...state, useremail:       action.email }
+    case 'set-is-loggedin':       return { ...state, isLoggedIn:      action.loggedIn }
     case 'set-userJwt':           return { ...state, userJwt:         action.userJwt }
+    case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }
     //
     case 'set-has-seen-tutorial': return { ...state, hasSeenTutorial: action.hasSeenTutorial }
-    case 'set-user-darkmode':     return { ...state, userDarkMode:    action.userDarkMode }
-    case 'set-is-loggedin':       return { ...state, isLoggedIn:      action.loggedIn }
   }
+
 }

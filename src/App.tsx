@@ -26,7 +26,7 @@ import './theme/variables.css'
 import { connect } from './data/connect'
 import { AppContextProvider } from './data/AppContext'
 import { loadConfData } from './data/sessions/sessions.actions'
-import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setAppIcon } from './data/user/user.actions'
+import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setUserJwt } from './data/user/user.actions'
 
 /* Core pages */
 import Page from './pages/core/Page'
@@ -37,7 +37,7 @@ import Menu from './components/core/main/Menu'
 import RedirectToLogin from './pages/core/RedirectToLogin'
 
 /* Pages models */
-import { Schedule } from './models/Schedule'
+//import { Schedule } from './models/Schedule'
 
 const App: React.FC = () => {
   return (
@@ -47,42 +47,47 @@ const App: React.FC = () => {
   )
 }
 
-//TODO: Merge with user state... is possible?
 interface StateProps {
   userDarkMode: boolean
-  schedule: Schedule
+  //schedule: Schedule
 }
 
 interface DispatchProps {
-  setIsLoggedIn: typeof setIsLoggedIn
-  setNickname: typeof setNickname
-  loadConfData: typeof loadConfData
-  loadUserData: typeof loadUserData
+  //setIsLoggedIn: typeof setIsLoggedIn
+  //setNickname: typeof setNickname
+  //loadConfData: typeof loadConfData
+  //loadUserData: typeof loadUserData
   setDarkMode: typeof setDarkMode
+  setUserJwt: typeof setUserJwt
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
 
 const IonicApp: React.FC<IonicAppProps> = ({
   userDarkMode,
-  schedule,
-  setIsLoggedIn,
-  setNickname,
-  loadConfData,
-  loadUserData,
-  setDarkMode
+  //schedule,
+  //setIsLoggedIn,
+  //setNickname,
+  //loadConfData,
+  //loadUserData,
+  setDarkMode,
+  setUserJwt
 }) => {
 
   //const [showLoading, setShowLoading] = useState(false)
   //const [paths, setPaths] = useState([])
 
   useEffect(() => {
-    setDarkMode(userDarkMode)
-    //setShowLoading(true)
 
+    //setDarkMode(false)
+
+
+    
     loadUserData()
 
-    loadConfData()
+    //loadUserData()
+
+    //loadConfData()
 
     //restGet('settings').then(res => { parseSettings(res) })
 
@@ -135,7 +140,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
               <RedirectToLogin
                 key='rtl'
                 setIsLoggedIn={setIsLoggedIn}
-                setNickname={setNickname} />
+                setNickname={setNickname}
+                setDarkMode={setDarkMode} 
+              />
             )}/>
           </IonRouterOutlet>
         </IonSplitPane>
@@ -150,7 +157,7 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
     userDarkMode: state.user.userDarkMode,
-    schedule: state.data.schedule
+    //schedule: state.data.schedule
   }),
 
   mapDispatchToProps: {
@@ -158,7 +165,8 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
     loadUserData,
     setIsLoggedIn,
     setDarkMode,
-    setNickname
+    setNickname,
+    setUserJwt
   },
 
   component: IonicApp
