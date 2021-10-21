@@ -79,48 +79,16 @@ const IonicApp: React.FC<IonicAppProps> = ({
 
   useEffect(() => {
 
-    //setDarkMode(false)
-
-
-    
-    loadUserData()
-
+    //setDarkMode(false)    
     //loadUserData()
-
+    //loadUserData()
     //loadConfData()
-
     //restGet('settings').then(res => { parseSettings(res) })
-
     //restGet('paths').then(res => { console.log(res.data); setPaths(res.data) })
-
     //setShowLoading(false)
 
     // eslint-disable-next-line
   }, [])
-
-  /**
-   * Allows to get the App Settings
-   * @param response 
-   *   
-  function parseSettings(response: any) {
-    response.data.status.forEach((elem: any) => {
-      switch (elem.key) {
-        case 'Dark Mode - Default': {
-          setDarkMode(elem.value)
-        }
-      }
-    })
-    response.data.app_images.forEach((elem: any) => {
-      console.log('Name:' + elem.name)
-      switch (elem.name) {
-        case 'app-icon': {
-          //console.log(AppConst.RestAPI + elem.image.url)
-          setAppIcon(AppConst.RestAPI + elem.image.url)
-        }
-      }
-    })
-  }
-  */
 
   return (
     <IonApp className={userDarkMode ? 'dark-theme' : ''}>

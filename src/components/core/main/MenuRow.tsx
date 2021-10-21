@@ -12,7 +12,6 @@ import { MenuRowProps } from './interfaces/MenuRowProps'
 // Style
 import './styles/Menu.css'
 import Icon from './Icon'
-import { setDarkMode } from '../../../data/user/user.actions';
 
 interface StateProps {
   userDarkMode: boolean
@@ -30,7 +29,7 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
 
   useEffect(() => {
     if (row.path && row.path.slug) {
-      restGet('paths', { slug: row.path.slug ? row.path.slug : '' })
+      restGet('paths', { slug: row.path.slug })
         .then(res => {
           var data = res.data[0]
           // An access page without roles are skiped
@@ -54,13 +53,13 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
   }, [location.pathname, row.path])
 
   function isAuth(roles:any){
-    console.log(roles)
-    //((roles[0].type === 'authenticated' && isLoggedIn )    ||
+    //console.log(roles)
+
     if(roles.length === 1){
       if (roles[0].type === 'public' && ! isLoggedIn  ){
-          return true
+        return true
       }else if(roles[0].type === 'authenticated' && isLoggedIn ){
-          return true
+        return true
       }else{
         return false
       }

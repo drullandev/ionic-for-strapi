@@ -21,7 +21,8 @@ export interface PageProps extends RouteComponentProps<{
 }
 
 export interface StateProps {
-  mode: 'ios' | 'md'
+  mode: 'ios' | 'md',
+  
 }
 
 const Page: React.FC<PageProps> = ({ match }) => {

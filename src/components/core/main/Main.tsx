@@ -22,6 +22,7 @@ interface StateProps {
   //schedule: Home
   //favoritesHome: Home
   mode: 'ios' | 'md'
+
 }
 
 interface DispatchProps {
@@ -65,7 +66,7 @@ const Main: React.FC<MainProps> = ({
   useEffect(()=>{
     restGet(model, dataCall)
     .then(res=>{
-      console.log('main console res datra', res.data)
+      //console.log('main console res datra', res.data)
       //setData(res.data[0])
     })
   },[])

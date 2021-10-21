@@ -1,4 +1,4 @@
-import { IonText, IonGrid, useIonLoading, useIonToast, useIonAlert, IonItem, IonIcon, IonLabel, IonToggle, getConfig } from '@ionic/react'
+import { IonText, IonGrid, useIonLoading, useIonToast, IonItem, IonIcon, IonLabel, IonToggle, getConfig } from '@ionic/react'
 import * as AppConst from '../../../static/constants'
 import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setUserJwt } from '../../../data/user/user.actions'
 import React, { FC, useState, useEffect } from 'react'
@@ -12,13 +12,13 @@ import axios from 'axios'
 
 // Components
 import FormRow from './FormRow'
-import Modal from '../../../components/core/forms/Modal'
+//import Modal from '../../../components/core/forms/Modal'
 
 
 // FORM INTERFACES
 import { FormProps } from './interfaces/FormProps'
 
-import * as StrapiUtils from '../../../data/rest/rest.calls'
+//import * as StrapiUtils from '../../../data/rest/rest.calls'
 import { restGet } from '../../../data/rest/rest.utils'
 
 // FORM STYLES
@@ -52,7 +52,7 @@ const Form: FC<MyFormProps> = ({
   isLoggedIn, setIsLoggedIn,
 }) => {
 
-  //console.log('userJwt', userJwt)
+  console.log('userJwt', userJwt)
 
   const history = useHistory()
 
@@ -150,19 +150,22 @@ const Form: FC<MyFormProps> = ({
             setUserJwt(res.data.jwt)
             //setUserEmail(res.data.user.mail)
             //setUserId(res.data.user.id)
+            setLoading({message:'Redirecting to loading zone', duration: 3000})  
             setTimeout(()=>{
               history.push( AppConst.HOME, {direction: 'none'})
             }, 3000)
-            launchToast(res.data.message[0].messages[0].message.message, 'success')  
+
           }else{
             setIsLoggedIn(false)
-            launchToast(res.data.message[0].messages[0].message.message, 'warning')      
+          
+            //launchToast(res.data.message[0].messages[0].message.message, 'warning')      
           }   
       
         })
-        .catch((err:any) => {
-          setIsLoggedIn(false)
-          launchToast(err.response.data.message[0].messages[0].message, 'danger')
+        .catch((res:any) => {
+          console.log(res)
+          /*setIsLoggedIn(false)
+          launchToast(err.response.data.message[0].messages[0].message, 'danger')*/
         })
 
       break;
