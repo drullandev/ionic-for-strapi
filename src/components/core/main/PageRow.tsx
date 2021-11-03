@@ -1,4 +1,6 @@
 import React from 'react'
+import { IonSpinner } from '@ionic/react'
+
 import Menu from './Menu'
 import Form from '../forms/Form'
 import MyComponent from './MyComponent'
@@ -28,8 +30,9 @@ const PageRow: React.FC<PageRowProps> = ({ menu, form, component, content }) => 
     <>
       {menu ? <Menu {...menu} /> :
         form ? <Form {...form} /> :
-          component ? returnComponent()
-            : <></>}
+          content ? returnComponent() :
+            component ? returnComponent()
+              : <IonSpinner name='dots' />}
     </>
   )
 

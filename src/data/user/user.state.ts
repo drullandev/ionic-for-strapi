@@ -1,9 +1,9 @@
 export interface UserState {
   nickname?: string
   useremail?: string
-  userjwt?: string
+  userJwt?: string
   userDarkMode?: boolean
-  isLoggedin?: boolean
+  isLoggedIn?: boolean
   hasSeenTutorial?: boolean
   loading?: boolean
 }

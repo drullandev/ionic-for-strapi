@@ -3,9 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonToggle } from '@ionic/react'
 
 // Extras
-import { moonOutline
-  //, personAdd, hammer
-} from 'ionicons/icons'
+import { moonOutline } from 'ionicons/icons'
 
 // Functions
 import { connect } from '../../../data/connect'
@@ -29,8 +27,8 @@ interface DispatchProps {
 
 export interface StateProps {
   userDarkMode: boolean
-  isAuthenticated: boolean
   menuEnabled: boolean
+  isLoggedIn: boolean
 }
 
 interface MenuProps extends RouteComponentProps, StateProps, DispatchProps {
@@ -42,18 +40,19 @@ interface Menu2Props {
   title: string
 }
 
-const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenticated, history, setDarkMode }) => {
+const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isLoggedIn, history, setDarkMode }) => {
 
   const [menu, setMenu] = useState<Menu2Props>()
   const [menus, setMenus] = useState<MenuProps[]>([])
-  const [slot, setSlot] = useState('start')
+  const [slot, setSlot] = useState('')
   useEffect(() => {
+    setSlot('start')
     restGet('menus', { slug: slug })
       .then(res => {
         setMenu(res.data[0])
         setMenus(res.data[0].rows)
       })
-  }, [])
+  }, [slug])
 
   return (
     <IonMenu key={slug} type='overlay' disabled={!menuEnabled} contentId='main'>
@@ -66,23 +65,13 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isAuthenti
           <SubMenu menu={menu} />
         ))}
 
-        <IonList lines='none' key='sdafasdfasftgh'>
+        <IonList lines='none' key='dark-mode'>
 
-          <IonItem key={'sdfgsdf'} >
+          <IonItem key='dark-mode-item' >
             <IonIcon slot={slot} icon={moonOutline} />
-            <IonLabel>Dark Mode</IonLabel>
+            <IonLabel>Dark Mode {userDarkMode ? 'true' : 'false'}</IonLabel>
             <IonToggle checked={userDarkMode} onClick={() => setDarkMode(!userDarkMode)} />
           </IonItem>
-
-          {/*<IonItem key={'sdfgsdfgsdf'} >
-            <IonIcon slot={slot} icon={personAdd} />
-            <IonLabel>Select language</IonLabel>
-          </IonItem>
-
-          <IonItem key={'dswert'} button onClick={() => { history.push('/tutorial') }}>
-            <IonIcon slot={slot} icon={hammer} />
-            <IonLabel>Show Tutorial</IonLabel>
-          </IonItem>*/}
 
         </IonList>
 
@@ -97,8 +86,8 @@ export default connect<{}, StateProps, {}>({
 
   mapStateToProps: (state) => ({
     userDarkMode: state.user.userDarkMode,
-    isAuthenticated: state.user.hasLoggedIn,
-    menuEnabled: state.data.menuEnabled
+    menuEnabled: state.data.menuEnabled,
+    isLoggedIn: state.user.isLoggedIn,
   }),
   
   mapDispatchToProps: ({

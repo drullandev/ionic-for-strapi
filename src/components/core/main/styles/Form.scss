@@ -91,3 +91,9 @@ ion-menu.ios ion-item.selected ion-icon {
 * IonCkeck
 */
 
+.content-modal .modal-wrapper {
+  height: 80%;
+  top: 20%;
+  position: absolute; 
+  display: block;  
+}

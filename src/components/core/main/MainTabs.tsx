@@ -4,9 +4,9 @@ import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@io
 import { Redirect, Route } from 'react-router'
 import { restGet } from '../../../data/rest/rest.utils'
 
-import MateDetail from '../../extra/MateDetail';
-import SessionDetail from '../../extra/SessionDetail';
-
+import MateDetail from '../../extra/MateDetail'
+import SessionDetail from '../../extra/SessionDetail'
+import Main from './Main'
 import Icon from './Icon'
 import Page from '../../../pages/core/Page'
 
@@ -37,8 +37,8 @@ const TabMenu: React.FC<TabMenuProps> = () => {
     .catch(err => { console.log(err) })
   }, [])
 
-  const TabButton = (tab:any) =>{
-    //if(testing) 
+  const TabButton = (tab:any) => {
+    /*
     console.log('TabButton', tab)
     var icon = restGet('paths', { slug: tab.path.slug })
     .then(res => {
@@ -48,11 +48,13 @@ const TabMenu: React.FC<TabMenuProps> = () => {
     .catch(err => { console.log(err) })
 
     if(testing) console.log('icon', icon)
+    */
 
     return <IonTabButton key={tab.path.slug + '-tab'} tab={tab.path.slug} href={tab.path.value}>
       <Icon name={tab.icon ? tab.icon : 'person'} />
       <IonLabel>{tab.title}</IonLabel>
     </IonTabButton>
+    
   }
 
   return (
@@ -63,6 +65,7 @@ const TabMenu: React.FC<TabMenuProps> = () => {
         <Redirect exact path='/tabs' to='/tabs/home' />
       */} 
         <Redirect path='/tabs' to={'/tabs/home'} />
+        <Route path='/list' render={() => <Main />} />
         <Route path='/tabs/speakers/sessions/:id' component={MateDetail} />
         <Route path='/tabs/speakers/:id' component={MateDetail}/>
         <Route path='/tabs/home/:id' component={SessionDetail} />

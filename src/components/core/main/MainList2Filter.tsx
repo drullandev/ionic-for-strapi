@@ -1,4 +1,4 @@
-import * as AppConst from '../../static/constants'
+import * as AppConst from '../../../static/constants'
 import React from 'react'
 import { getMode } from '@ionic/core'
 import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon } from '@ionic/react'
@@ -6,8 +6,8 @@ import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorP
 
 //import '../../../main/styles/SessionListFilter.scss'
 
-import { connect } from '../../data/connect'
-import { updateFilteredTracks } from '../../data/sessions/sessions.actions'
+import { connect } from '../../../data/connect'
+import { updateFilteredTracks } from '../../../data/sessions/sessions.actions'
 
 interface OwnProps {
   onDismissModal: () => void
@@ -69,7 +69,7 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
 
           </IonButtons>
 
-          <IonTitle>Filter Sessions</IonTitle>
+          <IonTitle>Filter</IonTitle>
 
           <IonButtons slot='end'>
             <IonButton onClick={onDismissModal} strong>Done</IonButton>
@@ -83,7 +83,7 @@ const SessionListFilter: React.FC<SessionListFilterProps> = ({ allTracks, filter
 
         <IonList lines={ios ? 'inset' : 'full'}>
 
-          <IonListHeader>Tracks</IonListHeader>
+          <IonListHeader>Main Filter</IonListHeader>
 
           {allTracks.map((track, index) => (
             <IonItem key={track}>

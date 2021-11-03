@@ -1,31 +1,27 @@
-import * as AppConst from '../../static/constants'
+import * as AppConst from '../../../static/constants'
 import React, { useEffect, useState } from 'react'
-import { IonPage, IonHeader, IonContent, IonFooter, IonSpinner, getConfig } from '@ionic/react'
+import { IonPage, IonHeader, IonContent, IonFooter, getConfig, IonSpinner } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { RouteComponentProps } from 'react-router'
-import { restGet } from '../../data/rest/rest.utils'
-import { connect } from '../../data/connect'
-import PageRow from '../../components/core/main/PageRow'
+//import { RouteComponentProps } from 'react-router'
+import { restGet } from '../../../data/rest/rest.utils'
+import { connect } from '../../../data/connect'
+import PageRow from '../../../components/core/main/PageRow'
 
 // TODO: TEMPORARY STYLES...
-import '../../styles/MapView.scss'
-import '../../styles/Home.scss'
-import '../../styles/SpeakerList.scss'
+import '../../../styles/MapView.scss'
+import '../../../styles/Home.scss'
+import '../../../styles/SpeakerList.scss'
 
-export interface PageProps extends RouteComponentProps<{
-  slug: string,
-  id?: string
-}> {
+export interface PageProps {
   slug: string
   id?:string
 }
 
 export interface StateProps {
-  mode: 'ios' | 'md',
-  
+  mode: 'ios' | 'md'
 }
 
-const Page: React.FC<PageProps> = ({ match }) => {
+const PageSet: React.FC<PageProps> = ({ slug, id }) => {
 
   const location = useLocation()
   const history = useHistory()
@@ -36,15 +32,13 @@ const Page: React.FC<PageProps> = ({ match }) => {
   const [showMainTab, setShowMainTab] = useState(false)
 
   useEffect(() => {
-    console.log('Load Page', match.params.slug)
-    restGet('pages', { slug : match.params.slug})
+    console.log('Load Page', slug)
+    restGet('pages', { slug : slug})
     .then(res => {
-      //console.log('Loaded Page', res.data[0])
       setSlugIn(res.data[0].slug)
       setShowMainTab(res.data[0].show_main_tab)
       if (typeof res.data[0].rows !== 'undefined') setPageRows(res.data[0].rows)
     }).catch(res=>{
-      console.log('Error loading Page', match.params.slug)
       restGet('pages', { slug : '404'})
       .then(res2 => {
         setSlugIn(res2.data[0].slug)
@@ -55,7 +49,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
         history.push(AppConst.HOME)
       },420)
     })
-  }, [match])
+  }, [slug])
 
   const setArea = (type: string) => {
     return pageRows ? pageRows.map((row: any, i: number) => (
@@ -91,6 +85,6 @@ export default connect<PageProps>({
 
   mapDispatchToProps: {},
 
-  component: Page
+  component: PageSet
 
 })

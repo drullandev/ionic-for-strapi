@@ -17,7 +17,7 @@ interface OwnProps { }
 
 interface StateProps {
   schedule: Schedule
-  favoritesSchedule: Schedule
+  favoritesHome: Home
   mode: 'ios' | 'md'
 }
 
@@ -27,7 +27,7 @@ interface DispatchProps {
 
 type HomeProps = OwnProps & StateProps & DispatchProps
 
-const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText, mode }) => {
+const Home: React.FC<HomeProps> = ({ favoritesHome, schedule, setSearchText, mode }) => {
 
   const [segment, setSegment] = useState<'all' | 'favorites'>('all')
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
@@ -69,9 +69,9 @@ const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText,
           </IonSegment>
         }
 
-        {!ios && !showSearchbar &&
-          <IonTitle>Schedule</IonTitle>
-        }
+        {/*!ios && !showSearchbar &&
+          <IonTitle>Home</IonTitle>
+        */}
 
         {showSearchbar &&
           <IonSearchbar showCancelButton='always' placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
@@ -112,9 +112,9 @@ const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText,
     <IonContent fullscreen={true}>
 
       <IonHeader collapse='condense'>
-        <IonToolbar>
-          <IonTitle size='large'>Schedule</IonTitle>
-        </IonToolbar>
+        {/*<IonToolbar>
+          <IonTitle size='large'>Home</IonTitle>
+        </IonToolbar>*/}
         <IonToolbar>
           <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
         </IonToolbar>
@@ -139,7 +139,7 @@ const Home: React.FC<HomeProps> = ({ favoritesSchedule, schedule, setSearchText,
 
       <SessionList
         // schedule={schedule}
-        schedule={favoritesSchedule}
+        schedule={favoritesHome}
         listType={segment}
         hide={segment === 'all'}
       />
@@ -168,8 +168,8 @@ export default connect<OwnProps, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
-    schedule: selectors.getSearchedSchedule(state),
-    favoritesSchedule: selectors.getGroupedFavorites(state),
+    schedule: selectors.getSearchedHome(state),
+    favoritesHome: selectors.getGroupedFavorites(state),
   }),
 
   mapDispatchToProps: {

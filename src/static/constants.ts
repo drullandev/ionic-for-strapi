@@ -24,26 +24,26 @@ export const menusOrigin = RestAPI + '/menus?slug='
 
 // OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
 
-export const HOME = '/tabs/home'
+export const HOME = '/tabs/main'
+export const ADD_DATA = '/add-user-data'
+export const APP_ICON = '/add-user-data'
 export const TUTORIAL = '/tutorial'
 export const LOGIN = '/login'
+
+export const Timeout = {
+  'buttonSpinner' : 123,
+  'loadingPopup' : 123,
+  'redirect' : 123,
+  
+}
 
 
 export const dataUrl           = '/assets/data/data.json'
 export const locationsUrl      = '/assets/data/locations.json'
 
-// Stored constants...
-export const NICKNAME          = 'nickname'
-export const USERDATA          = 'userData'
-export const USEREMAIL         = 'userEmail'
-export const USERJWT           = 'userJwt'
-export const USERID            = 'userId'
-export const USER_ROLE         = 'userRole'
-export const USER_AVATAR       = 'userAvatar'
-
-export const HAS_LOGGED_IN     = 'hasLoggedIn'
-export const HAS_SEEN_TUTORIAL = 'hasSeenTutorial'
-export const USER_DARK_MODE    = 'userDarkMode'
-
-export const IS_LOADING        = 'isLoading'
-export const APP_ICON          = 'appIcon'
+export const messages = {
+  'Auth.form.error.invalid'           : { message: 'Identifier or password invalid.' },
+  'Auth.form.error.email.provide'     : { message: 'Please provide your username or your e-mail.' },
+  'Auth.form.error.password.provide'  : { message: 'Please provide your password.' },
+  'Auth.form.error.username.taken'    : { message: 'Username already taken' }
+}

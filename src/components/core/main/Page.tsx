@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { IonPage, IonHeader, IonContent, IonFooter } from '@ionic/react'
+import { IonPage, IonHeader, IonContent, IonFooter, IonSpinner } from '@ionic/react'
 import { useLocation } from 'react-router-dom'
 
 import { restGet } from '../../../data/strapi/strapi.calls'
@@ -35,7 +35,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
   const setArea = (type: string) => {
     return pageRows ? pageRows.map((row: any, i: number) => (
       row.section === type && getPageRow(row, i)
-    )) : (<></>)
+    )) : <IonSpinner name='dots' />
   }
 
   const getPageRow = (row: any, i: number) => (

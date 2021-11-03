@@ -13,7 +13,11 @@ import {
   calendar,
   informationCircle,
   people,
-  help
+  help,
+  home,
+  homeOutline,
+  bug,
+  mailUnread
 } from 'ionicons/icons'
 import { addIcons } from 'ionicons'
 
@@ -30,8 +34,12 @@ addIcons({
   'calendar': calendar,
   'people': people,
   'help': help,
+  'home': home,
+  'homeoutline': homeOutline,
+  'bug': bug,
   'informationcircleoutline': informationCircleOutline,
   'informationcircle': informationCircle,
+  'mailunread' : mailUnread,
 })
 
 export interface IconProps {
