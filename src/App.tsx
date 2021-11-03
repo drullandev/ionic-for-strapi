@@ -31,13 +31,14 @@ import { setIsLoggedIn, setNickname, loadUserData, setDarkMode, setUserJwt } fro
 /* Core pages */
 import Page from './pages/core/Page'
 import MainTabs from './components/core/main/MainTabs'
+import Main from './components/core/main/Main'
 
 /* Pages components */
 import Menu from './components/core/main/Menu'
 import RedirectToLogin from './pages/core/RedirectToLogin'
 
 /* Pages models */
-//import { Schedule } from './models/Schedule'
+import { Schedule } from './models/Schedule'
 
 const App: React.FC = () => {
   return (
@@ -49,16 +50,16 @@ const App: React.FC = () => {
 
 interface StateProps {
   userDarkMode: boolean
-  //schedule: Schedule
+  schedule: Schedule
 }
 
 interface DispatchProps {
   //setIsLoggedIn: typeof setIsLoggedIn
   //setNickname: typeof setNickname
-  //loadConfData: typeof loadConfData
+  loadConfData: typeof loadConfData
   //loadUserData: typeof loadUserData
   setDarkMode: typeof setDarkMode
-  setUserJwt: typeof setUserJwt
+  //setUserJwt: typeof setUserJwt
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -71,7 +72,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   //loadConfData,
   //loadUserData,
   setDarkMode,
-  setUserJwt
+  //setUserJwt
 }) => {
 
   //const [showLoading, setShowLoading] = useState(false)
@@ -100,6 +101,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <IonRouterOutlet id='main'>
             {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
             <Redirect path='/' to={'/home'} />
+            <Route path='/list' render={() => <Main />} />
             <Route path='/tabs' render={() => <MainTabs />} />
             <Route path='/:slug' component={Page} />
             <Route path='/tabs/home/:id' render={() => <MainTabs />} />
@@ -130,11 +132,11 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
 
   mapDispatchToProps: {
     loadConfData,
-    loadUserData,
-    setIsLoggedIn,
+    //loadUserData,
+    //setIsLoggedIn,
     setDarkMode,
-    setNickname,
-    setUserJwt
+    //setNickname,
+    //setUserJwt
   },
 
   component: IonicApp

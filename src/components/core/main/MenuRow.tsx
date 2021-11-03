@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { IonItem, IonLabel } from '@ionic/react'
+import { IonItem, IonLabel, IonSpinner } from '@ionic/react'
 import { connect } from '../../../data/connect'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
@@ -53,8 +53,6 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
   }, [location.pathname, row.path])
 
   function isAuth(roles:any){
-    //console.log(roles)
-
     if(roles.length === 1){
       if (roles[0].type === 'public' && ! isLoggedIn  ){
         return true
@@ -77,7 +75,7 @@ const MenuRow: React.FC<MenuRowProps2> = ({ row, isLoggedIn }) => {
         <Icon slot={'start'} name={icon} />
         <IonLabel>{row.title}</IonLabel>
       </IonItem>
-      : <></>
+      : <IonSpinner name='dots' />
   )
 
 }

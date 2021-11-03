@@ -1,4 +1,4 @@
-import * as stored from '../static/stored'
+import * as Stored from '../static/stored'
 
 import { Home, Session } from '../models/Schedule'
 import { Speaker } from '../models/Speaker'
@@ -52,14 +52,14 @@ export const getUserData = async () => {
   
   const response = await Promise.all([
     //
-    getStorage(stored.NICKNAME),
-    getStorage(stored.USEREMAIL),
-    getStorage(stored.USERJWT),
-    getStorage(stored.USERID),
+    getStorage(Stored.NICKNAME),
+    getStorage(Stored.USEREMAIL),
+    getStorage(Stored.USERJWT),
+    getStorage(Stored.USERID),
     //
-    getStorage(stored.IS_LOGGED_IN),
-    getStorage(stored.HAS_SEEN_TUTORIAL),
-    getStorage(stored.USER_DARK_MODE),    
+    getStorage(Stored.IS_LOGGED_IN),
+    getStorage(Stored.HAS_SEEN_TUTORIAL),
+    getStorage(Stored.USER_DARK_MODE),    
   ])
 
   //
@@ -94,27 +94,31 @@ function parseSessions(schedule: Home) {
 
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {
-  setStorage(stored.IS_LOGGED_IN, isLoggedIn)
+  setStorage(Stored.IS_LOGGED_IN, isLoggedIn)
+}
+
+export const setLoading = async (loading: boolean) => {
+  setStorage(Stored.IS_LOADING, loading)
 }
 
 export const setHasSeenTutorialData = async (hasSeenTutorial: boolean) => {
-  setStorage(stored.HAS_SEEN_TUTORIAL, hasSeenTutorial)
+  setStorage(Stored.HAS_SEEN_TUTORIAL, hasSeenTutorial)
 }
 
 export const setNicknameData = async (nickname?: string) => {
-  setOrRemove(stored.NICKNAME, nickname)
+  setOrRemove(Stored.NICKNAME, nickname)
 }
 
 export const setUserEmailData = async (useremail?: string) => {
-  setOrRemove(stored.USEREMAIL, useremail)
+  setOrRemove(Stored.USEREMAIL, useremail)
 }
 
 export const setUserJwtData = async (userJwt?: string) => {
-  setOrRemove(stored.USERJWT, userJwt)
+  setOrRemove(Stored.USERJWT, userJwt)
 }
 
 export const setUserIdData = async (userId?: string) => {
-  setOrRemove(stored.USERID, userId)
+  setOrRemove(Stored.USERID, userId)
 }
 
 export const setOrRemove = async (key: string, value: any = null)=>{

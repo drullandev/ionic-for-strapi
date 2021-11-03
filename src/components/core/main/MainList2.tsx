@@ -1,10 +1,10 @@
 import * as AppConst from '../../../static/constants'
 
-import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
+import { IonList, IonItemDivider, IonItemGroup, IonLabel, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
 import { Home, Session } from '../../../models/Schedule'
-import SessionListItem from './MainListItem'
+import SessionListItem from './MainList2Item'
 
 import { connect } from '../../../data/connect'
 import { addFavorite, removeFavorite } from '../../../data/sessions/sessions.actions'
@@ -14,9 +14,7 @@ interface PingaProps {
 }
 
 interface OwnProps {
-  data: PingaProps[]
-  //listType: 'all' | 'favorites'
-  //hide: boolean
+  data: PingaProps []
 }
 
 interface StateProps {
@@ -42,6 +40,7 @@ const SessionList: React.FC<ListProps> = ({
   listType*/
 }) => {
 
+  console.log(data)
   /*
   const [showAlert, setShowAlert] = useState(false)
   const [alertHeader, setAlertHeader] = useState('')
@@ -62,56 +61,29 @@ const SessionList: React.FC<ListProps> = ({
   )
   */
 
+  /* 
+      onShowAlert={handleShowAlert}
+      isFavorite={favoriteSessions.indexOf(session.id) > -1}
+      onAddFavorite={addFavorite}
+      onRemoveFavorite={removeFavorite}
+      session={session}
+      listType={listType}            
+  */
 
-            // style={hide ? { display: 'none' } : {}}
-  return <>
-    <IonList>
+  // style={hide ? { display: 'none' } : {}}
 
-      {data.map((row:any)=>console.log(row.id))}
-
-      {/*schedule.groups.map((group, index: number) => (
-
-        <IonItemGroup key={`group-${index}`}>
-
-          <IonItemDivider sticky>
-            <IonLabel>
-              {group.time}
-            </IonLabel>
-          </IonItemDivider>
-
-          {group.sessions.map((session: Session, sessionIndex: number) => (
-            <SessionListItem
-              onShowAlert={handleShowAlert}
-              isFavorite={favoriteSessions.indexOf(session.id) > -1}
-              onAddFavorite={addFavorite}
-              onRemoveFavorite={removeFavorite}
-              key={`group-${index}-${sessionIndex}`}
-              session={session}
-              listType={listType}
-            />
-          ))}
-
-        </IonItemGroup>
-
-      ))*/}
-
-    </IonList>
-
-    {/*<IonAlert
-      isOpen={showAlert}
-      header={alertHeader}
-      buttons={alertButtons}
-      onDidDismiss={() => setShowAlert(false)}
-    ></IonAlert>*/}
-
-  </>
+  return <IonList>
+    {Object.keys(data).map((row:any, index: number)=>{          
+      return <SessionListItem key={index} row={data[index]}/>
+    })}
+  </IonList>
 
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
-    favoriteSessions: state.data.favorites
+    //favoriteSessions: state.data.favorites
   }),
 
   mapDispatchToProps: ({

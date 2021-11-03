@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea } from '@ionic/react'
+import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner} from '@ionic/react'
 import { Controller } from 'react-hook-form'
 import { restGet } from '../../../data/rest/rest.utils'
 import ContentCheck from '../../../components/core/forms/ContentCheck'
@@ -14,21 +14,25 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
   const [field, setField] = useState<any>()
   const [type, setType] = useState<any>()
 
+  // Get the field settings
   useEffect(() => {
     restGet('fields', { slug: slug })
       .then(res => {
-        if (res.status === 200) {
-          setField(res.data[0])
-          setType(res.data[0].fieldType)
-        } else {
-          console.error('call error', res)
-        }
-      })
+        switch(res.status) {
+          case 200:
+            setField(res.data[0])
+            setType(res.data[0].fieldType)
+          break
+          default:
+            console.error('call error', res)
+          break
+        }})
       .catch(error => console.error(error))
   }, [slug])
 
+  // Set the data field to the desired component
   const setFieldData = () => {
-    if (!field) return <></>
+    if (!field) return <IonSpinner name='dots' />
     switch (type) {
       case 'input':
         switch (field.type) {
@@ -38,8 +42,8 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
           default: return renderInput()
         }
       case 'button': return renderButton()
+      default: return <IonSpinner name='dots' />
     }
-    return <></>
   }
 
   const renderInput = () => (
@@ -91,7 +95,6 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
       />
     </IonItem>
   )
-
 
   const renderTextarea = () => (
     <IonItem>

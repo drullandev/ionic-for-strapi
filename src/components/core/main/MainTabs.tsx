@@ -6,7 +6,7 @@ import { restGet } from '../../../data/rest/rest.utils'
 
 import MateDetail from '../../extra/MateDetail'
 import SessionDetail from '../../extra/SessionDetail'
-
+import Main from './Main'
 import Icon from './Icon'
 import Page from '../../../pages/core/Page'
 
@@ -65,6 +65,7 @@ const TabMenu: React.FC<TabMenuProps> = () => {
         <Redirect exact path='/tabs' to='/tabs/home' />
       */} 
         <Redirect path='/tabs' to={'/tabs/home'} />
+        <Route path='/list' render={() => <Main />} />
         <Route path='/tabs/speakers/sessions/:id' component={MateDetail} />
         <Route path='/tabs/speakers/:id' component={MateDetail}/>
         <Route path='/tabs/home/:id' component={SessionDetail} />

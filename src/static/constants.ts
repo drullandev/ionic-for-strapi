@@ -24,10 +24,26 @@ export const menusOrigin = RestAPI + '/menus?slug='
 
 // OVERRIDE FROM THE CMS!!!! TODO TODO TODO TODO
 
-export const HOME = '/tabs/home'
+export const HOME = '/tabs/main'
+export const ADD_DATA = '/add-user-data'
+export const APP_ICON = '/add-user-data'
 export const TUTORIAL = '/tutorial'
 export const LOGIN = '/login'
+
+export const Timeout = {
+  'buttonSpinner' : 123,
+  'loadingPopup' : 123,
+  'redirect' : 123,
+  
+}
 
 
 export const dataUrl           = '/assets/data/data.json'
 export const locationsUrl      = '/assets/data/locations.json'
+
+export const messages = {
+  'Auth.form.error.invalid'           : { message: 'Identifier or password invalid.' },
+  'Auth.form.error.email.provide'     : { message: 'Please provide your username or your e-mail.' },
+  'Auth.form.error.password.provide'  : { message: 'Please provide your password.' },
+  'Auth.form.error.username.taken'    : { message: 'Username already taken' }
+}

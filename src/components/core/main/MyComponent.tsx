@@ -1,4 +1,5 @@
 import React from 'react'
+import { IonSpinner } from '@ionic/react'
 
 import Header from './Header'
 import Page from '../../../pages/core/Page'
@@ -19,10 +20,12 @@ import { MyComponentProps } from './interfaces/MyComponentProps'
 const  testing = false
 
 const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params, content }) => {
-  if(testing) console.log('setMyComponent', { name, slug, params })
+  if(testing) console.log('setMyComponent', { name, slug, params, content })
   const returnComponent = (slug: any, jsx: boolean = true) => {
     switch (slug) {
-      case 'header': return <Header label={params.label} slot={params.slot} />
+      case 'header': 
+        console.log({ name, slug, params, content })        
+        return <Header label={params.label} slot={params.slot}/>
       case 'home': return jsx ? <Home /> : Home
       case 'speakers': return <SpeakerList />
       case 'MateDetail': return jsx ? <MateDetail /> : MateDetail
@@ -33,7 +36,7 @@ const MyComponent: React.FC<MyComponentProps> = ({ name, slug, params, content }
       case 'main': return <Main/>
       case 'content': return <Content row={content}/>
       case 'page': return Page
-      default: <></>
+      default: <IonSpinner name='dots' />
     }
   }
   return (returnComponent(slug))

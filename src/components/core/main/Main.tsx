@@ -1,28 +1,22 @@
+import * as AppConst from '../../../static/constants'
+
 import React, { useState, useEffect, useRef } from 'react'
-import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonSegment, IonTitle, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
+import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonLabel, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 
 import { options, search } from 'ionicons/icons'
 import { restGet } from '../../../data/rest/rest.utils'
 import { setSearchText } from '../../../data/sessions/sessions.actions'
 
 import MainList from './MainList2'
-import MainListFilter from './MainListFilter'
+import MainListFilter from './MainList2Filter'
 import { connect } from '../../../data/connect'
-
-/*
-import ShareSocialFab from '../../extra/ShareSocialFab'
-import * as selectors from '../../../data/selectors.wip'
-import { Home } from '../../../models/Schedule'
-*/
 
 
 interface OwnProps { }
 
 interface StateProps {
-  //schedule: Home
-  //favoritesHome: Home
-  mode: 'ios' | 'md'
-
+  mode: 'ios' | 'md',
+  userId: string
 }
 
 interface DispatchProps {
@@ -31,28 +25,23 @@ interface DispatchProps {
 
 type MainProps = OwnProps & StateProps & DispatchProps
 
-const Main: React.FC<MainProps> = ({ 
-
-  //favoritesHome,
-  //schedule,
+const Main: React.FC<MainProps> = ({
   setSearchText,
-  mode
-
+  mode,
+  userId
 }) => {
 
-  const ios = mode === 'ios'
-
-  //Default test!!
-  const model = 'matchs'
-  const dataCall = {user : 2}
-    
-  //const [segment, setSegment] = useState<'all' | 'favorites'>('all')
+  const ios = ( mode === 'ios' )
+  const model = 'user-contents'
+  const dataCall = { user : userId, _limit: 10 }
 
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
   const [showCompleteToast, setShowCompleteToast] = useState(false)
   
   const [data, setData]= useState({})
+  const [count, setCount] = useState(0)
+
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
   const pageRef = useRef<HTMLElement>(null)
 
@@ -63,11 +52,19 @@ const Main: React.FC<MainProps> = ({
     }, 2500)
   }
 
+  // count
+  useEffect(()=>{
+    restGet(model+'/count')
+    .then(res=>{
+      setCount(res.data)
+    })
+  },[])
+
+  // list data
   useEffect(()=>{
     restGet(model, dataCall)
     .then(res=>{
-      //console.log('main console res datra', res.data)
-      //setData(res.data[0])
+      setData(res.data)
     })
   },[])
 
@@ -81,9 +78,7 @@ const Main: React.FC<MainProps> = ({
           <IonMenuButton />
         </IonButtons>
  
-        {!ios && !showSearchbar &&
-          <IonTitle>Home</IonTitle>
-        }
+        {!ios && !showSearchbar && <IonTitle>Home</IonTitle> }
 
         {showSearchbar &&
           <IonSearchbar
@@ -111,11 +106,9 @@ const Main: React.FC<MainProps> = ({
 
     </IonHeader>
 
-
-
-
-
     <IonContent>
+
+      <IonLabel></IonLabel>
 
       <IonHeader collapse='condense'>
         {/*<IonToolbar>
@@ -130,7 +123,7 @@ const Main: React.FC<MainProps> = ({
         <IonRefresherContent />
       </IonRefresher>
 
-      {/*<MainList data={data}/>*/}
+      <MainList data={data}/>
 
     </IonContent>
 
@@ -141,9 +134,7 @@ const Main: React.FC<MainProps> = ({
       presentingElement={pageRef.current!}
       cssClass='session-list-filter'
     >
-      <MainListFilter
-        onDismissModal={() => setShowFilterModal(false)}
-      />
+      <MainListFilter onDismissModal={() => setShowFilterModal(false)}/>
     </IonModal>
 
     {/*<ShareSocialFab />*/}
@@ -156,6 +147,7 @@ export default connect<OwnProps, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
+    userId: 1
     /*schedule: selectors.getSearchedHome(state),
     favoritesHome: selectors.getGroupedFavorites(state),*/
   }),

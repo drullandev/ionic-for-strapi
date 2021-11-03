@@ -1,6 +1,6 @@
 import * as AppConst from '../../../static/constants'
 import React, { useEffect, useState } from 'react'
-import { IonPage, IonHeader, IonContent, IonFooter, getConfig } from '@ionic/react'
+import { IonPage, IonHeader, IonContent, IonFooter, getConfig, IonSpinner } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
 //import { RouteComponentProps } from 'react-router'
 import { restGet } from '../../../data/rest/rest.utils'
@@ -54,7 +54,7 @@ const PageSet: React.FC<PageProps> = ({ slug, id }) => {
   const setArea = (type: string) => {
     return pageRows ? pageRows.map((row: any, i: number) => (
       row.section === type && getPageRow(row, i)
-    )) : (<></>)
+    )) : <IonSpinner name='dots' />
   }
 
   const getPageRow = (row: any, i: number) => (
