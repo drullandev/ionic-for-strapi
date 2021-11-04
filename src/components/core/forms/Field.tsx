@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner} from '@ionic/react'
+import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner, IonSkeletonText} from '@ionic/react'
 import { Controller } from 'react-hook-form'
 import { restGet } from '../../../data/rest/rest.utils'
 import ContentCheck from '../../../components/core/forms/ContentCheck'
@@ -32,7 +32,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
 
   // Set the data field to the desired component
   const setFieldData = () => {
-    if (!field) return <IonSpinner name='dots' />
+    if (!field) return
     switch (type) {
       case 'input':
         switch (field.type) {

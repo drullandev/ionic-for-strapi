@@ -1,7 +1,7 @@
 import * as AppConst from '../../../static/constants'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSpinner, AlertButton } from '@ionic/react'
+import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSpinner, AlertButton, IonList, IonListHeader, IonSkeletonText, IonAvatar, IonThumbnail } from '@ionic/react'
 
 import { restGet } from '../../../data/rest/rest.utils';
 
@@ -89,20 +89,34 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
   */
 
   return line 
-    ? <IonItemSliding ref={ionItemSlidingRef} class={'track-'+row.id} >    
-        <IonItem routerLink={`/tabs/list/asdfasdfas/${line.id}`}>
-          <IonLabel>
-            <h3>{line.content}</h3>
-            <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
-          </IonLabel>
-        </IonItem>
-        <IonItemOptions>
-          <IonItemOption color="danger">Remove</IonItemOption>
-          <IonItemOption color="favorite">Favorite</IonItemOption>
-        </IonItemOptions>
-      </IonItemSliding>
-    : <IonSpinner name='dots' />
-
+  ? <IonItemSliding ref={ionItemSlidingRef} class={'track-'+row.id} >    
+      <IonItem routerLink={`/tabs/list/asdfasdfas/${line.id}`}>
+        <IonLabel>
+          <h3>{line.content}</h3>
+          <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
+        </IonLabel>
+      </IonItem>
+      <IonItemOptions>
+        <IonItemOption color="danger">Remove</IonItemOption>
+        <IonItemOption color="favorite">Favorite</IonItemOption>
+      </IonItemOptions>
+    </IonItemSliding>
+  : <IonItem>
+      <IonThumbnail slot="start">
+        <IonSkeletonText animated />
+      </IonThumbnail>
+      <IonLabel>
+        <h3>
+          <IonSkeletonText animated style={{ width: '50%' }} />
+        </h3>
+        <p>
+          <IonSkeletonText animated style={{ width: '80%' }} />
+        </p>
+        <p>
+          <IonSkeletonText animated style={{ width: '60%' }} />
+        </p>
+      </IonLabel>
+    </IonItem>      
 }
 
 export default SessionListItem

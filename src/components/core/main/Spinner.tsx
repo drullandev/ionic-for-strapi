@@ -5,10 +5,10 @@ import { IonSpinner } from '@ionic/react'
 import { Location } from '../../../models/Location'
 
 interface MapProps {
-  name: 'dots' | 'bubbles' | 'circles' | 'circular'
+  name: "bubbles" | "circles" | "circular" | "crescent" | "dots" | "lines" | "lines-small"
 }
 
-const Map: React.FC<MapProps> = ({ name = 'dots' }) => (
+const Map: React.FC<MapProps> = ({ name = 'circular' }) => (
   <IonSpinner name={name}/>
 )
 

@@ -38,33 +38,15 @@ const Main: React.FC<MainProps> = ({
   const ios = ( mode === 'ios' )
 
   const [page, setPage] = useState(0)
-
-  const dataCall = {
-    model: 'userContents',
-    filter : {
-      limit: AppConst.paginator.size,
-      start: AppConst.paginator.size*page
-    },
-    struct: {
-      id: null
-    }
-  }
-
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
-  
+  const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
   const [data, setData]= useState({})
   const [timestamp, setTimestamp] = useState(Date.now())
 
-  const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
   const pageRef = useRef<HTMLElement>(null)
 
-  const refreshList = (event: CustomEvent<RefresherEventDetail>) => {
-    setTimestamp(Date.now())
-    setTimeout(() => {
-      ionRefresherRef.current!.complete()
-    }, AppConst.timeout.refresh)
-  }
+
 
   return <>
 
@@ -75,8 +57,8 @@ const Main: React.FC<MainProps> = ({
         <IonButtons slot='start'>
           <IonMenuButton />
         </IonButtons>
- 
-        {!ios && !showSearchbar && <IonTitle>Home</IonTitle> }
+
+        {!ios && <IonTitle>Main friend</IonTitle> }
 
         {showSearchbar &&
           <IonSearchbar
@@ -89,7 +71,8 @@ const Main: React.FC<MainProps> = ({
 
         <IonButtons slot='end'>
 
-          {!showSearchbar && !ios && <IonButton onClick={() => setShowSearchbar(true)}>
+          {showSearchbar && !ios && 
+            <IonButton onClick={() => setShowSearchbar(true)}>
               <Icon slot='icon-only' name='search' />
             </IonButton>
           }
@@ -107,23 +90,18 @@ const Main: React.FC<MainProps> = ({
     <IonContent>
 
       <IonHeader collapse='condense'>
-        {/*<IonToolbar>
-          <IonTitle size='large'>Home</IonTitle>
-        </IonToolbar>*/}
         <IonToolbar>
           <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
         </IonToolbar>
       </IonHeader>
 
-      <IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={refreshList}>
-        <IonRefresherContent />
-      </IonRefresher>
+
 
       <MainList timestamp={timestamp}/>
 
     </IonContent>
 
-    <IonModal
+    {/*<IonModal
       isOpen={showFilterModal}
       onDidDismiss={() => setShowFilterModal(false)}
       swipeToClose={true}
@@ -131,7 +109,7 @@ const Main: React.FC<MainProps> = ({
       cssClass='session-list-filter'
     >
       <MainListFilter onDismissModal={() => setShowFilterModal(false)}/>
-    </IonModal>
+    </IonModal>*/}
 
     {/*<ShareSocialFab />*/}
 

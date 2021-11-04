@@ -36,7 +36,7 @@ const Page: React.FC<PageProps> = ({ match }) => {
   const [showMainTab, setShowMainTab] = useState(false)
 
   useEffect(() => {
-    console.log('Load Page', match.params.slug)
+    //console.log('Load Page', match.params.slug)
     restGet('pages', { slug : match.params.slug})
     .then(res => {
       //console.log('Loaded Page', res.data[0])

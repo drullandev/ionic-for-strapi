@@ -9,7 +9,6 @@ export const restPost = async (model:string, body:any = {}, headers: any = {}) =
   return axios.post(AppConst.RestAPI+'/'+model, body, headers)
 }
 
-
 export const getGQL = async ( model: string, filter: any = {}, struct: any = {}) => {
   var query = `query `+model+` {\n\t`+model+`(`
      +JSON.stringify(filter).replace(/["{}]/g,'')+`) {\n\t\t`

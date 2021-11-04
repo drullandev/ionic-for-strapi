@@ -38,7 +38,7 @@ export const timeout = {
 }
 
 export const paginator = {
-  'size' : 10
+  'size' : 14
 }
 
 
