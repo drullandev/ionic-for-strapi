@@ -17,6 +17,7 @@ export function setUserReducer(
     case 'set-user-data':         return { ...state, ...action.data }    
     case 'set-user-loading':      return { ...state, loading:         action.isLoading }
 
+    case 'set-user-id':           return { ...state, userId:          action.userId }
     case 'set-nickname':          return { ...state, nickname:        action.nickname }
     case 'set-user-email':        return { ...state, useremail:       action.email }
     case 'set-is-loggedin':       return { ...state, isLoggedIn:      action.loggedIn }

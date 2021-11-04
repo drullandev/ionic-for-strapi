@@ -31,12 +31,13 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
   const dismissAlert = () => {
     ionItemSlidingRef.current && ionItemSlidingRef.current.close()
   }
-  //{id:'*', content:'', created_at:'', published_at:''}
+
   const [line, setLine] = useState<LineProps>()
 
   useEffect(()=>{
     restGet('user-contents', { id: row.id })
     .then(res=>{
+      //console.log(res)
       switch(res.status){
         case 200:
           setLine(res.data[0])

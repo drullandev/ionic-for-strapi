@@ -30,11 +30,15 @@ export const APP_ICON = '/add-user-data'
 export const TUTORIAL = '/tutorial'
 export const LOGIN = '/login'
 
-export const Timeout = {
+export const timeout = {
   'buttonSpinner' : 123,
   'loadingPopup' : 123,
   'redirect' : 123,
-  
+  'refresh' : 1000  
+}
+
+export const paginator = {
+  'size' : 10
 }
 
 

@@ -3,11 +3,13 @@ import * as AppConst from '../../../static/constants'
 import React, { useState, useEffect, useRef } from 'react'
 import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonLabel, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 
-import { options, search } from 'ionicons/icons'
-import { restGet } from '../../../data/rest/rest.utils'
+//import { options, search } from 'ionicons/icons'
+import { restGet, getGQL } from '../../../data/rest/rest.utils'
 import { setSearchText } from '../../../data/sessions/sessions.actions'
 
 import MainList from './MainList2'
+
+import Icon from './Icon'
 import MainListFilter from './MainList2Filter'
 import { connect } from '../../../data/connect'
 
@@ -15,8 +17,9 @@ import { connect } from '../../../data/connect'
 interface OwnProps { }
 
 interface StateProps {
-  mode: 'ios' | 'md',
+  mode: 'ios' | 'md'
   userId: string
+  userJwt: string
 }
 
 interface DispatchProps {
@@ -28,45 +31,40 @@ type MainProps = OwnProps & StateProps & DispatchProps
 const Main: React.FC<MainProps> = ({
   setSearchText,
   mode,
-  userId
+  userId,
+  userJwt
 }) => {
 
   const ios = ( mode === 'ios' )
-  const model = 'user-contents'
-  const dataCall = { user : userId, _limit: 10 }
+
+  const [page, setPage] = useState(0)
+
+  const dataCall = {
+    model: 'userContents',
+    filter : {
+      limit: AppConst.paginator.size,
+      start: AppConst.paginator.size*page
+    },
+    struct: {
+      id: null
+    }
+  }
 
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
-  const [showCompleteToast, setShowCompleteToast] = useState(false)
   
   const [data, setData]= useState({})
-  const [count, setCount] = useState(0)
+  const [timestamp, setTimestamp] = useState(Date.now())
 
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
   const pageRef = useRef<HTMLElement>(null)
 
-  const doRefresh = () => {
+  const refreshList = (event: CustomEvent<RefresherEventDetail>) => {
+    setTimestamp(Date.now())
     setTimeout(() => {
       ionRefresherRef.current!.complete()
-      //setShowCompleteToast(true)
-    }, 2500)
+    }, AppConst.timeout.refresh)
   }
-
-  // count
-  useEffect(()=>{
-    restGet(model+'/count')
-    .then(res=>{
-      setCount(res.data)
-    })
-  },[])
-
-  // list data
-  useEffect(()=>{
-    restGet(model, dataCall)
-    .then(res=>{
-      setData(res.data)
-    })
-  },[])
 
   return <>
 
@@ -92,12 +90,12 @@ const Main: React.FC<MainProps> = ({
         <IonButtons slot='end'>
 
           {!showSearchbar && !ios && <IonButton onClick={() => setShowSearchbar(true)}>
-              <IonIcon slot='icon-only' icon={search}></IonIcon>
+              <Icon slot='icon-only' name='search' />
             </IonButton>
           }
 
           <IonButton onClick={() => setShowFilterModal(true)}>
-            <IonIcon icon={options} slot='icon-only' />
+            <Icon slot='icon-only' name='options' />
           </IonButton>
 
         </IonButtons>
@@ -108,8 +106,6 @@ const Main: React.FC<MainProps> = ({
 
     <IonContent>
 
-      <IonLabel></IonLabel>
-
       <IonHeader collapse='condense'>
         {/*<IonToolbar>
           <IonTitle size='large'>Home</IonTitle>
@@ -119,11 +115,11 @@ const Main: React.FC<MainProps> = ({
         </IonToolbar>
       </IonHeader>
 
-      <IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={doRefresh}>
+      <IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={refreshList}>
         <IonRefresherContent />
       </IonRefresher>
 
-      <MainList data={data}/>
+      <MainList timestamp={timestamp}/>
 
     </IonContent>
 
@@ -143,12 +139,12 @@ const Main: React.FC<MainProps> = ({
   
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
+export default connect<MainProps>({
 
   mapStateToProps: (state) => ({
-    mode: getConfig()!.get('mode'),
-    userId: 1
-    /*schedule: selectors.getSearchedHome(state),
+    /*mode: getConfig()!.get('mode'),
+    userId: state.user.userId
+    schedule: selectors.getSearchedHome(state),
     favoritesHome: selectors.getGroupedFavorites(state),*/
   }),
 
