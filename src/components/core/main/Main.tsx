@@ -1,16 +1,17 @@
-import * as AppConst from '../../../static/constants'
+//import * as AppConst from '../../../static/constants'
 
-import React, { useState, useEffect, useRef } from 'react'
-import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonLabel, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
+import React, { useState, useRef } from 'react'
+import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonLabel, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 
 //import { options, search } from 'ionicons/icons'
-import { restGet, getGQL } from '../../../data/rest/rest.utils'
-import { setSearchText } from '../../../data/sessions/sessions.actions'
-
-import MainList from './MainList2'
+//import { restGet, getGQL } from '../../../data/rest/rest.utils'
+import { setSearchText, setSearchOrder } from '../../../data/sessions/sessions.actions'
 
 import Icon from './Icon'
+
+import MainList from './MainList2'
 import MainListFilter from './MainList2Filter'
+
 import { connect } from '../../../data/connect'
 
 
@@ -24,6 +25,7 @@ interface StateProps {
 
 interface DispatchProps {
   setSearchText: typeof setSearchText
+  setSearchOrder: typeof setSearchOrder
 }
 
 type MainProps = OwnProps & StateProps & DispatchProps
@@ -35,22 +37,26 @@ const Main: React.FC<MainProps> = ({
   userJwt
 }) => {
 
-  const ios = ( mode === 'ios' )
+  const ios = (mode === 'ios')
 
-  const [page, setPage] = useState(0)
+  const order = {
+    default: 'asc',
+    options: [{
+      label : 'Ascendente',
+      value: 'asc',
+    }, {
+      label : 'Descendente',
+      value: 'desc'
+    }]
+  }
+
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
-  const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
-  const [data, setData]= useState({})
-  const [timestamp, setTimestamp] = useState(Date.now())
+  const [selectedOrder, setSelectedOrder] = useState(order.default)
 
-  const pageRef = useRef<HTMLElement>(null)
+  return <IonContent>
 
-
-
-  return <>
-
-    <IonHeader translucent={true}>
+    <IonHeader>
 
       <IonToolbar>
 
@@ -58,20 +64,20 @@ const Main: React.FC<MainProps> = ({
           <IonMenuButton />
         </IonButtons>
 
-        {!ios && <IonTitle>Main friend</IonTitle> }
+        {!ios && <IonTitle>Main friend</IonTitle>}
 
         {showSearchbar &&
           <IonSearchbar
             showCancelButton='always'
             placeholder='Search'
             onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}
-            onIonCancel={() => setShowSearchbar(false)}>            
+            onIonCancel={() => setShowSearchbar(false)}>
           </IonSearchbar>
         }
 
         <IonButtons slot='end'>
 
-          {showSearchbar && !ios && 
+          {showSearchbar && !ios &&
             <IonButton onClick={() => setShowSearchbar(true)}>
               <Icon slot='icon-only' name='search' />
             </IonButton>
@@ -85,49 +91,51 @@ const Main: React.FC<MainProps> = ({
 
       </IonToolbar>
 
-    </IonHeader>
+      <IonToolbar>
+        <IonSearchbar
+          placeholder='Search'
+          onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}>
+        </IonSearchbar>
+      </IonToolbar>
 
+      {showFilterModal &&
+        <IonToolbar>
+          <IonSelect value={selectedOrder} onIonChange={e => setSelectedOrder(e.detail.value)}>
+            {order.options.map((option: any, index: number) => (
+              <IonSelectOption key={option.label} value={option.value}>
+                {option.label}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+          <IonLabel>direction</IonLabel>
+
+        </IonToolbar>
+      }
+
+    </IonHeader>
     <IonContent>
 
-      <IonHeader collapse='condense'>
-        <IonToolbar>
-          <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
-        </IonToolbar>
-      </IonHeader>
-
-
-
-      <MainList timestamp={timestamp}/>
+      <MainList />
 
     </IonContent>
-
-    {/*<IonModal
-      isOpen={showFilterModal}
-      onDidDismiss={() => setShowFilterModal(false)}
-      swipeToClose={true}
-      presentingElement={pageRef.current!}
-      cssClass='session-list-filter'
-    >
-      <MainListFilter onDismissModal={() => setShowFilterModal(false)}/>
-    </IonModal>*/}
-
     {/*<ShareSocialFab />*/}
 
-  </>
-  
+  </IonContent>
+
 }
 
 export default connect<MainProps>({
 
   mapStateToProps: (state) => ({
+    searchTest: state.user.userId
     /*mode: getConfig()!.get('mode'),
-    userId: state.user.userId
     schedule: selectors.getSearchedHome(state),
     favoritesHome: selectors.getGroupedFavorites(state),*/
   }),
 
   mapDispatchToProps: {
-    setSearchText
+    setSearchText,
+    setSearchOrder
   },
 
   component: Main

@@ -36,6 +36,10 @@ export const setSearchText = (searchText?: string) => {
   return ({ type: 'set-search-text', searchText } as const)
 }
 
+export const setSearchOrder = (orderId?: number) => {
+  return ({ type: 'set-search-order', orderId } as const)
+}
+
 export const addFavorite = (sessionId: number) => {
   return ({ type: 'add-favorite', sessionId } as const)
 }

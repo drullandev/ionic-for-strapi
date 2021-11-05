@@ -1,12 +1,11 @@
 import * as AppConst from '../../../static/constants'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSpinner, AlertButton, IonList, IonListHeader, IonSkeletonText, IonAvatar, IonThumbnail } from '@ionic/react'
+import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonTextarea, IonList, IonListHeader, IonSkeletonText, IonAvatar, IonThumbnail } from '@ionic/react'
 
-import { restGet } from '../../../data/rest/rest.utils';
+import { restGet } from '../../../data/rest/rest.utils'
 
-//import { Session } from '../../../models/Schedule'
-//import { ListRow } from '../../../models/Schedule'
+import Icon from './Icon'
 
 interface SessionListItemProps {
   row: ListRow;
@@ -25,14 +24,14 @@ interface LineProps {
 }
 
 const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
+  
+  const [line, setLine] = useState<LineProps>()
 
   const ionItemSlidingRef = useRef<HTMLIonItemSlidingElement>(null)
 
   const dismissAlert = () => {
     ionItemSlidingRef.current && ionItemSlidingRef.current.close()
   }
-
-  const [line, setLine] = useState<LineProps>()
 
   useEffect(()=>{
     restGet('user-contents', { id: row.id })
@@ -88,17 +87,29 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
   };
   */
 
+  const removeLine = () =>{
+    console.log('You pretend to remove this from the list or including from the database ^^')
+  }
+  
+  const putTimeline = (line:any) => {
+    return <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
+  }
+
+  const putContent = (line:any) => {
+    return <h3>{line.id+' - '+line.content}</h3>
+  }
+
   return line 
   ? <IonItemSliding ref={ionItemSlidingRef} class={'track-'+row.id} >    
       <IonItem routerLink={`/tabs/list/asdfasdfas/${line.id}`}>
         <IonLabel>
-          <h3>{line.content}</h3>
-          <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
+          {putContent(line)}
+          {putTimeline(line)}
         </IonLabel>
       </IonItem>
       <IonItemOptions>
-        <IonItemOption color="danger">Remove</IonItemOption>
-        <IonItemOption color="favorite">Favorite</IonItemOption>
+        <IonItemOption color="danger" onClick={((e:any)=>{console.log(e)})}><Icon slot='' name='trashoutline'/></IonItemOption>
+        <IonItemOption color="favorite" onClick={((e:any)=>{console.log(e)})}><Icon slot='' name='staroutline'/></IonItemOption>
       </IonItemOptions>
     </IonItemSliding>
   : <IonItem>
@@ -106,52 +117,11 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
         <IonSkeletonText animated />
       </IonThumbnail>
       <IonLabel>
-        <h3>
-          <IonSkeletonText animated style={{ width: '50%' }} />
-        </h3>
-        <p>
-          <IonSkeletonText animated style={{ width: '80%' }} />
-        </p>
-        <p>
-          <IonSkeletonText animated style={{ width: '60%' }} />
-        </p>
+        <h3><IonSkeletonText animated style={{ width: '50%' }} /></h3>
+        <p><IonSkeletonText animated style={{ width: '80%' }} /></p>
+        <p><IonSkeletonText animated style={{ width: '60%' }} /></p>
       </IonLabel>
     </IonItem>      
 }
 
 export default SessionListItem
-
-/*
-
-<IonItemSliding ref={ionItemSlidingRef} class={'track-' + session.tracks[0].toLowerCase()}>
-
-     <IonItem routerLink={`/tabs/home/${session.id}`}>
-
-        <IonLabel>
-          <h3>{session.name}</h3>
-          <p>
-            {session.timeStart}&mdash;&nbsp;
-            {session.timeStart}&mdash;&nbsp;
-            {session.location}
-          </p>
-        </IonLabel>
-
-      </IonItem>
-
-      <IonItemOptions>
-
-        listType === "favorites" ?
-          <IonItemOption color="danger" onClick={() => removeFavoriteSession()}>
-            Remove
-          </IonItemOption>
-          :
-          <IonItemOption color="favorite" onClick={addFavoriteSession}>
-            Favorite
-          </IonItemOption>
-        
-
-      </IonItemOptions>
-
-    </IonItemSliding>
-
-*/

@@ -8,10 +8,10 @@ import SessionListItem from './MainList2Item'
 
 import { connect } from '../../../data/connect'
 import { addFavorite, removeFavorite } from '../../../data/sessions/sessions.actions'
-import Spinner from './Spinner'
+
 
 interface OwnProps {
-  //timestamp: number
+  timestamp: number
 }
 
 interface StateProps {
@@ -23,7 +23,7 @@ interface DispatchProps {
   //removeFavorite: typeof removeFavorite
 }
 
-interface ListProps extends OwnProps, StateProps, DispatchProps { }
+interface ListProps extends OwnProps {}//, StateProps, DispatchProps { }
 
 const SessionList: React.FC<ListProps> = () => {
 
@@ -31,7 +31,7 @@ const SessionList: React.FC<ListProps> = () => {
   const [maxPage, setMaxPage] = useState(1)  
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
 
-  const [listData, setListData] = useState<[]>([])
+  const [data, setData] = useState<[]>([])
   const [isInfiniteDisabled, setInfiniteDisabled] = useState(false)
 
   // Form and window actions
@@ -43,7 +43,7 @@ const SessionList: React.FC<ListProps> = () => {
     slug: 'user-contents',
     filter : {
       limit: AppConst.paginator.size,
-      start: 0
+      start: AppConst.paginator.size*page
     },
     struct: {
       id: '',
@@ -52,7 +52,7 @@ const SessionList: React.FC<ListProps> = () => {
     },
     content: {
       spinner: 'dots',
-      content: 'Loading more listData...'
+      content: 'Loading more data...'
     }
   }
 
@@ -83,10 +83,40 @@ const SessionList: React.FC<ListProps> = () => {
   },[])
 
   useEffect(()=>{
-    pushPage(page)
-  },[page])
+    /*console.log('loading ', maxPage)
+    getGQL(dataCall.model, dataCall.filter, dataCall.struct)
+    .then(res=>{
+      switch(res.status){
+        case 200:
+          let data = res.data.data[Object.keys(res.data.data)[0]]
+          pushData(page)
+          setData({})
+        break
+        default:
+          launchToast('Opps!!', res.status.toString())
+          break
+      }
+    })
+    .catch((res: any)=>{
+      launchToast('Opps!!', res.response.data.errors[0].message)
+    })*/
+    pushData(1)
+  },[])
 
-  const pushPage = (page:number) => {
+  const pushNextPage = (ev: any) => {    
+    setTimeout(() => {
+      var newPage = page+1
+      if(newPage === maxPage){
+        setInfiniteDisabled(true)
+        return false
+      }else{
+        pushData(newPage)
+        ev.target.complete()
+      }
+    }, AppConst.timeout.refresh)
+  }  
+
+  const pushData = (page:number) => {
 
     dataCall.filter.start = AppConst.paginator.size * page
 
@@ -95,54 +125,11 @@ const SessionList: React.FC<ListProps> = () => {
       switch(res.status){
         case 200:          
           var resData = res.data.data[Object.keys(res.data.data)[0]]
-          const newData = listData
+          const newData = data
           for (let i = 0; i < AppConst.paginator.size; i++) {
             newData.push(resData[i])
           }
-          setListData(newData)
-          setPage(page)
-        break
-        default:
-          //console.log('Opps!!', dataCall, res)
-          launchToast('Oppps!!!','error')
-          break
-      }
-    })
-    .catch((res: any)=>{
-      //console.log('Opps!!', dataCall, res)
-      launchToast('Oppps!!!','error')
-    })
-
-  }
-  
-  const pushNextPage = (ev: any) => {    
-    setTimeout(() => {
-      var newPage = page+1
-      if(newPage === maxPage){
-        setInfiniteDisabled(true)
-        return false
-      }else{
-        pushPage(newPage)
-        ev.target.complete()
-      }
-    }, AppConst.timeout.refresh)
-  }  
-
-  /*
-  const pushPage = () => {
-
-    dataCall.filter.start = AppConst.paginator.size * page
-
-    getGQL(dataCall.model, dataCall.filter, dataCall.struct)
-    .then(res=>{
-      switch(res.status){
-        case 200:          
-          var resData = res.listData.listData[Object.keys(res.listData.listData)[0]]
-          const newData = listData
-          for (let i = 0; i < AppConst.paginator.size; i++) {
-            newData.push(resData[i])
-          }
-          setListData(newData)          
+          setData(newData)          
           setPage(page)
         break
         default:
@@ -154,20 +141,13 @@ const SessionList: React.FC<ListProps> = () => {
       console.log('Opps!!',res.response)
     })
 
-  }*/
-
-  /*useEffect(()=>{
-    pushPage(1)
-  },[])
-
-
-
+  }
 
   const reloadList = () => {
     setTimeout(() => {
       ionRefresherRef.current!.complete()
     }, AppConst.timeout.refresh)
-  }*/
+  }
 
   const putTimeBar = (date: string = '') =>{
     var now = new Date(date)
@@ -175,20 +155,21 @@ const SessionList: React.FC<ListProps> = () => {
     return <IonLabel>{current}</IonLabel>
   }
 
-  const putABar = (listData: any) => {
+  const putABar = (data: any) => {
     if(false){
-      return putTimeBar(listData.published_at)
+      return putTimeBar(data.published_at)
     }else{
-      return listData 
+      return data 
       ? 
-        <IonItem routerLink={`/tabs/list/asdfasdfas/${listData.id}`}>
-          <IonLabel>
-            {putContent(listData)}
-            {putTimeline(listData)}
-          </IonLabel>
-        </IonItem>
+          <IonItem routerLink={`/tabs/list/asdfasdfas/${data.id}`}>
+            <IonLabel>
+              {putContent(data)}
+              {putTimeline(data)}
+            </IonLabel>
+          </IonItem>
 
-      : <Spinner name='bubbles'/>
+      : <IonItem>
+        </IonItem>    
     }     
   }
 
@@ -203,14 +184,14 @@ const SessionList: React.FC<ListProps> = () => {
 
   return <>
 
-    {/*<IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={reloadList}>
+    <IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={reloadList}>
       <IonRefresherContent />
-    </IonRefresher>*/}
+    </IonRefresher>
 
     <IonList>
-      {Object.keys(listData).map((row:any, index: number)=>(
-        putABar(listData[index])  
-      ))}    
+      {Object.keys(data).map((row:any, index: number)=>{     
+        return putABar(data[index])  
+      })}    
     </IonList>
 
     <IonInfiniteScroll
@@ -223,8 +204,8 @@ const SessionList: React.FC<ListProps> = () => {
         loadingText={dataCall.content.content}
       ></IonInfiniteScrollContent>
     </IonInfiniteScroll>
-   {/* 
-    <IonButton  expand='block' onClick={(e: any)=>{reloadList(e)}}>Reload list</IonButton>
+    
+    {/*<IonButton  expand='block' onClick={(e: any)=>{reloadList(e)}}>Reload list</IonButton>
     <IonButton  expand='block' onClick={(e: any)=>{pushNextPage(e)}}>Call Next Page</IonButton>*/}
 
   </>
@@ -234,7 +215,7 @@ const SessionList: React.FC<ListProps> = () => {
 export default connect<OwnProps, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
-    //favoriteSessions: state.listData.favorites
+    //favoriteSessions: state.data.favorites
   }),
 
   mapDispatchToProps: ({

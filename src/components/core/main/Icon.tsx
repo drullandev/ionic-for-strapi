@@ -19,7 +19,9 @@ import {
   bug,
   mailUnread,
   search,
-  options
+  options,
+  starOutline,
+  trashOutline
 } from 'ionicons/icons'
 import { addIcons } from 'ionicons'
 
@@ -44,6 +46,8 @@ addIcons({
   'mailunread' : mailUnread,
   'search' : search,
   'options' : options,
+  'staroutline' : starOutline,
+  'trashoutline' : trashOutline
 })
 
 export interface IconProps {

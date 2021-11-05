@@ -32,7 +32,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
 
   // Set the data field to the desired component
   const setFieldData = () => {
-    if (!field) return
+    if (!field) return <IonSpinner name='dots' />
     switch (type) {
       case 'input':
         switch (field.type) {
