@@ -1,21 +1,12 @@
-import * as AppConst from '../../../static/constants'
+//import * as AppConst from '../../../static/constants'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonTextarea, IonList, IonListHeader, IonSkeletonText, IonAvatar, IonThumbnail } from '@ionic/react'
-
-import { restGet } from '../../../data/rest/rest.utils'
+import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react'
+import { connect } from '../../../data/connect'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import Icon from './Icon'
-
-interface SessionListItemProps {
-  row: ListRow;
-  /*listType: "all" | "favorites";
-  onAddFavorite: (id: number) => void;
-  onRemoveFavorite: (id: number) => void;
-  onShowAlert: (header: string, buttons: AlertButton[]) => void;
-  isFavorite: boolean;*/
-}
-
+ 
 interface LineProps {
   id: string,
   content: string,
@@ -23,7 +14,24 @@ interface LineProps {
   published_at: string,
 }
 
-const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
+interface OwnProps {
+  row: ListRow;
+  //timestamp: number
+}
+
+interface StateProps {
+  //favoriteSessions: number[]
+  searchText?: string
+}
+
+interface DispatchProps {
+  //addFavorite: typeof addFavorite
+  //removeFavorite: typeof removeFavorite
+}
+
+interface SessionListItemProps extends OwnProps, StateProps, DispatchProps { }
+
+const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchText }) => {
   
   const [line, setLine] = useState<LineProps>()
 
@@ -49,7 +57,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
       console.log(res)
     })
 
-  },[row.id])
+  },[row.id, searchText])
 
   /*
   const removeFavoriteSession = () => {
@@ -124,4 +132,19 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
     </IonItem>      
 }
 
-export default SessionListItem
+
+export default connect<OwnProps, StateProps, DispatchProps>({
+
+  mapStateToProps: (state) => ({
+    searchText: state.data.searchText
+    //favoriteSessions: state.listData.favorites
+  }),
+
+  mapDispatchToProps: ({
+    //addFavorite,
+    //removeFavorite
+  }),
+
+  component: SessionListItem
+  
+})

@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react'
-import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner, IonSkeletonText} from '@ionic/react'
+import React, { FC, useEffect, useState, useMemo } from 'react'
+import { IonItem, IonLabel, IonInput, IonCheckbox, IonTextarea, IonSpinner } from '@ionic/react'
 import { Controller } from 'react-hook-form'
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 import ContentCheck from '../../../components/core/forms/ContentCheck'
 
 import Error from './Error'
@@ -9,6 +9,11 @@ import Button from './Button'
 
 import { FieldProps } from './interfaces/FieldProps'
 
+/**
+ * This component allows me to generate fancy forms without efforts ^^
+ * @param name, slug, label, control, errors, required 
+ * @returns 
+ */
 const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required }) => {
 
   const [field, setField] = useState<any>()
@@ -124,4 +129,4 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
 
 }
 
-export default Field
+export default React.memo(Field)

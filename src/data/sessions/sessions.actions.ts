@@ -1,4 +1,4 @@
-import { getUserExtra, getApiValue } from '../dataApi'
+import { getUserExtra } from '../dataApi'
 import { ActionType } from '../../util/types'
 import { ConfState } from './conf.state'
 const testing = false

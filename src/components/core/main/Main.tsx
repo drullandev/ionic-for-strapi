@@ -1,19 +1,17 @@
 //import * as AppConst from '../../../static/constants'
 
-import React, { useState, useRef } from 'react'
-import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonLabel, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
+import React, { useState } from 'react'
+import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
 
-//import { options, search } from 'ionicons/icons'
 //import { restGet, getGQL } from '../../../data/rest/rest.utils'
 import { setSearchText, setSearchOrder } from '../../../data/sessions/sessions.actions'
+import { SessionState } from '../../../data/sessions/sessions.actions'
 
 import Icon from './Icon'
 
 import MainList from './MainList2'
-import MainListFilter from './MainList2Filter'
 
 import { connect } from '../../../data/connect'
-
 
 interface OwnProps { }
 
@@ -100,22 +98,20 @@ const Main: React.FC<MainProps> = ({
 
       {showFilterModal &&
         <IonToolbar>
-          <IonSelect value={selectedOrder} onIonChange={e => setSelectedOrder(e.detail.value)}>
+          <IonSelect value={selectedOrder} onIonChange={e => setSearchOrder(e.detail.value)}>
             {order.options.map((option: any, index: number) => (
               <IonSelectOption key={option.label} value={option.value}>
                 {option.label}
               </IonSelectOption>
             ))}
           </IonSelect>
-          <IonLabel>direction</IonLabel>
-
         </IonToolbar>
       }
 
     </IonHeader>
     <IonContent>
 
-      <MainList />
+      <MainList/>
 
     </IonContent>
     {/*<ShareSocialFab />*/}
@@ -127,10 +123,8 @@ const Main: React.FC<MainProps> = ({
 export default connect<MainProps>({
 
   mapStateToProps: (state) => ({
-    searchTest: state.user.userId
-    /*mode: getConfig()!.get('mode'),
-    schedule: selectors.getSearchedHome(state),
-    favoritesHome: selectors.getGroupedFavorites(state),*/
+    mode: getConfig()!.get('mode'),
+    searchText: state.data.searchText
   }),
 
   mapDispatchToProps: {
@@ -138,6 +132,6 @@ export default connect<MainProps>({
     setSearchOrder
   },
 
-  component: Main
+  component: React.memo(Main)
 
 })

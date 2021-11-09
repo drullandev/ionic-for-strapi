@@ -1,3 +1,4 @@
+import * as AppConst from '../../static/constants'
 import React, { useState, useRef } from 'react'
 
 import { IonToolbar, IonContent, IonButtons, IonTitle, IonMenuButton, IonSegment, IonSegmentButton, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
@@ -43,7 +44,7 @@ const Home: React.FC<HomeProps> = ({ favoritesHome, schedule, setSearchText, mod
     setTimeout(() => {
       ionRefresherRef.current!.complete()
       setShowCompleteToast(true)
-    }, 2500)
+    },  AppConst.timeout.redirect )
   }
 
   return <>

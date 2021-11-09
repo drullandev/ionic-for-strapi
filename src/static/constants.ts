@@ -34,7 +34,8 @@ export const timeout = {
   'buttonSpinner' : 123,
   'loadingPopup' : 123,
   'redirect' : 123,
-  'refresh' : 1000  
+  'refresh' : 1000,
+  'readToast' : 3000,
 }
 
 export const paginator = {

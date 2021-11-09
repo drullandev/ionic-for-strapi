@@ -1,3 +1,5 @@
+import * as AppConst from '../../../static/constants'
+
 import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig } from '@ionic/react'
 import React, { FC, useState, useEffect, useRef } from 'react'
 
@@ -6,8 +8,6 @@ import { connect } from '../../../data/connect'
 
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-
-import * as AppConst from '../../../static/constants'
 
 // ABOUT FORMS VALIDATION 
 import { useForm } from 'react-hook-form'
@@ -20,7 +20,7 @@ import FormRow from './FormRow'
 // FORM INTERFACES
 import { FormProps } from './interfaces/FormProps'
 
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // FORM STYLES
 import '../main/styles/Form.scss'
@@ -88,7 +88,12 @@ const Form: FC<MyFormProps> = ({
     setLoadingAlert({ message: t(message), duration: duration })
   }
 
-  const launchToast = (message: string, color: string = 'light', position: 'top' | 'bottom' | 'middle' = 'bottom', duration: number = 3000) => {
+  const launchToast = (
+    message: string,
+    color: string = 'light',
+    position: 'top' | 'bottom' | 'middle' = 'bottom',
+    duration: number =  AppConst.timeout.readToast
+  ) => {
     dismissToast()
     setToast({
       buttons: [{ text: 'x', handler: () => dismissToast() }],
@@ -100,7 +105,11 @@ const Form: FC<MyFormProps> = ({
     })
   }
 
-  const launchHistory = (uri: string, timeout: number = 3000, params: any = { direction: 'none' }) => {
+  const launchHistory = (
+    uri: string,
+    timeout: number = AppConst.timeout.redirect,
+    params: any = { direction: 'none' }
+  ) => {
     setTimeout(() => {
       history.push(uri, params)
     }, timeout)
@@ -173,7 +182,7 @@ const Form: FC<MyFormProps> = ({
 
   const onSubmit: SubmitHandler<any> = async (form: React.FormEvent<Element>) => {
 
-    launchLoading('Sending form...', 345)
+    launchLoading('Sending form...', AppConst.timeout)
 
     switch (slug) {
 

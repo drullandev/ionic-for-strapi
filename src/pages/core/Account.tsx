@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { restGet, setImage } from '../../data/rest/rest.utils'
-import { editUserValue } from '../../data/user/user.calls'
+import { restGet, setImage } from '../../data/utils/rest/rest.utils'
+//import { editUserValue } from '../../data/user/user.calls'
 import { IonContent, IonImg, IonList, IonItem, IonAlert, IonLabel } from '@ionic/react'
 
 import { setNickname, setUserEmail, } from '../../data/user/user.actions'
@@ -112,13 +112,13 @@ const Account: React.FC<AccountProps> = ({ setNickname, nickname, setUserEmail, 
   const setAction = (slug: string, param: any) => {
     switch (slug) {
       case 'change-nickname':
-        editUserValue(user_id, 'username', param)
+        //editUserValue(user_id, 'username', param)
         break;
       case 'change-email':
-        editUserValue(user_id, 'email', param)
+        //editUserValue(user_id, 'email', param)
         break;
       case 'change-password':
-        editUserValue(user_id, 'passsword', param)
+        //editUserValue(user_id, 'passsword', param)
         break;
     }
   }

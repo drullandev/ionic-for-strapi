@@ -5,7 +5,7 @@ import { Speaker } from '../models/Speaker'
 import { Location } from '../models/Location'
 
 import { getStorage, setStorage, removeStorage } from './utils/storage'
-import { restGet } from './rest/rest.utils'
+import { restGet } from './utils/rest/rest.utils'
 
 //----------------------------------------------------------------
 

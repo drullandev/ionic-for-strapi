@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router'
 import { IonPage, IonHeader, IonContent, IonFooter, IonSpinner } from '@ionic/react'
 import { useLocation } from 'react-router-dom'
 
-import { restGet } from '../../../data/strapi/strapi.calls'
+import { restGet } from '../../../data/utils/strapi/strapi.calls'
 
 import PageRow from './PageRow'
 

@@ -2,8 +2,9 @@ import { Location } from '../../models/Location'
 import { Speaker } from '../../models/Speaker'
 import { Home, Session } from '../../models/Schedule'
 export interface ConfState {
-  schedule: Home
+  appDarkMode?: string;
   sessions: Session[]
+  schedule: Home
   speakers: Speaker[]
   favorites: number[]
   locations: Location[]

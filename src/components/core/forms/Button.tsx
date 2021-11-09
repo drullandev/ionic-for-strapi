@@ -1,3 +1,5 @@
+import * as AppConst from '../../../static/constants'
+
 import React, { FC ,useState } from 'react'
 import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText } from '@ionic/react'
 import { ButtonProps } from './interfaces/ButtonProps'
@@ -13,12 +15,12 @@ const Button: FC<ButtonProps> = ({ label, button }) => {
 
   const [display, setDisplay] = useState<any>(spinner.display.false)
 
-  const setActive = async (timeout: number = 2000) => {
+  const setActive = async (timeout: number = AppConst.timeout.refresh) => {
     setDisplay(spinner.display.true)
     setInactive(timeout)
   }
 
-  const setInactive = (timeout: number) => {
+  const setInactive = async (timeout: number = AppConst.timeout.buttonSpinner) => {
     setTimeout(()=>{
       setDisplay(spinner.display.false)
     },timeout)

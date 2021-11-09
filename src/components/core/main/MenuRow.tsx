@@ -4,7 +4,7 @@ import { connect } from '../../../data/connect'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import { PathProps } from './interfaces/PathProps'
 import { MenuRowProps } from './interfaces/MenuRowProps'

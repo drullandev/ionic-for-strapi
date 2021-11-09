@@ -1,6 +1,6 @@
 import React from 'react'
 import { IonToolbar, IonButtons, IonMenuButton, IonTitle, IonProgressBar } from '@ionic/react'
-import { setLoading } from '../../../data/app/app.actions'
+import { setLoading } from '../../../data/sessions/sessions.actions'
 import { connect } from '../../../data/connect'
 
 import { HeaderProps } from './interfaces/HeaderProps'

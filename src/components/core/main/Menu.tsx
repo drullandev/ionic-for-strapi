@@ -8,7 +8,7 @@ import { moonOutline } from 'ionicons/icons'
 // Functions
 import { connect } from '../../../data/connect'
 import { setDarkMode } from '../../../data/user/user.actions'
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // Components
 import Header from './Header'

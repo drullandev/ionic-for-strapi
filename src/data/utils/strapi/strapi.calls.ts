@@ -1,4 +1,4 @@
-import * as AppConst from '../../static/constants'
+import * as AppConst from '../../../static/constants'
 import axios from 'axios'
 
 const testing = false

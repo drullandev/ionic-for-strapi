@@ -2,7 +2,7 @@ import * as AppConst from '../../../static/constants'
 
 import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonButton, IonContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonLoading, useIonToast,  useIonViewWillEnter } from '@ionic/react'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { restGet, getGQL } from '../../../data/rest/rest.utils'
+import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
 import { Home, Session } from '../../../models/Schedule'
 import SessionListItem from './MainList2Item'
 
