@@ -14,7 +14,11 @@ const getFilteredTracks = (state: AppState) => state.data.filteredTracks
 
 const getFavoriteIds = (state: AppState) => state.data.favorites
 
-const getSearchText = (state: AppState) => state.data.searchText
+const getSearchText = (state: AppState) => state.data.searchString
+
+const getSearchOrder = (state: AppState) => state.data.searchOrder
+
+const getOrderField = (state: AppState) => state.data.orderField
 
 export const getFilteredHome = createSelector(
 
@@ -50,14 +54,14 @@ export const getFilteredHome = createSelector(
 
 export const getSearchedHome = createSelector(
   getFilteredHome, getSearchText,
-  (schedule, searchText) => {
-    if (!searchText) {
+  (schedule, searchString) => {
+    if (!searchString) {
       return schedule
     }
     const groups: HomeGroup[] = []
     schedule.groups.forEach(group => {
 
-      const sessions = group.sessions.filter(s => s.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1)
+      const sessions = group.sessions.filter(s => s.name.toLowerCase().indexOf(searchString.toLowerCase()) > -1)
       if (sessions.length) {
         const groupToAdd: HomeGroup = {
           time: group.time,
@@ -98,7 +102,6 @@ export const getGroupedFavorites = createSelector(
     } as Home
   }
 )
-
 
 const getIdParam = (_state: AppState, props: any) => {
   return props.match.params['id']

@@ -1,10 +1,10 @@
-//import * as AppConst from '../../../static/constants'
+import * as AppConst from '../../../static/constants'
 
-import React, { useState } from 'react'
-import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
+import React, { useState, useEffect } from 'react'
+import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonGrid, IonCol, IonRow } from '@ionic/react'
 
 //import { restGet, getGQL } from '../../../data/rest/rest.utils'
-import { setSearchText, setSearchOrder } from '../../../data/sessions/sessions.actions'
+import { setSearchString, setSearchOrder, setOrderField } from '../../../data/sessions/sessions.actions'
 import { SessionState } from '../../../data/sessions/sessions.actions'
 
 import Icon from './Icon'
@@ -14,43 +14,31 @@ import MainList from './MainList2'
 import { connect } from '../../../data/connect'
 
 interface OwnProps { }
-
 interface StateProps {
   mode: 'ios' | 'md'
-  userId: string
-  userJwt: string
+  searchString: string
+  searchOrder: 'asc' | 'desc'
+  orderField: 'jkhkh' | string
 }
-
 interface DispatchProps {
-  setSearchText: typeof setSearchText
+  setSearchString: typeof setSearchString
   setSearchOrder: typeof setSearchOrder
+  setOrderField: typeof setOrderField
 }
 
-type MainProps = OwnProps & StateProps & DispatchProps
+type ThisProps = OwnProps & StateProps & DispatchProps
 
-const Main: React.FC<MainProps> = ({
-  setSearchText,
+const Main: React.FC<ThisProps> = ({
   mode,
-  userId,
-  userJwt
+  setSearchString,
+  setSearchOrder,
+  setOrderField,
 }) => {
 
   const ios = (mode === 'ios')
 
-  const order = {
-    default: 'asc',
-    options: [{
-      label : 'Ascendente',
-      value: 'asc',
-    }, {
-      label : 'Descendente',
-      value: 'desc'
-    }]
-  }
-
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
-  const [showFilterModal, setShowFilterModal] = useState(false)
-  const [selectedOrder, setSelectedOrder] = useState(order.default)
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(true)
 
   return <IonContent>
 
@@ -68,7 +56,7 @@ const Main: React.FC<MainProps> = ({
           <IonSearchbar
             showCancelButton='always'
             placeholder='Search'
-            onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}
+            onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}
             onIonCancel={() => setShowSearchbar(false)}>
           </IonSearchbar>
         }
@@ -92,26 +80,48 @@ const Main: React.FC<MainProps> = ({
       <IonToolbar>
         <IonSearchbar
           placeholder='Search'
-          onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}>
+          onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}>
         </IonSearchbar>
       </IonToolbar>
 
       {showFilterModal &&
         <IonToolbar>
-          <IonSelect value={selectedOrder} onIonChange={e => setSearchOrder(e.detail.value)}>
-            {order.options.map((option: any, index: number) => (
-              <IonSelectOption key={option.label} value={option.value}>
-                {option.label}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonSelect
+                  key='field'
+                  interface="popover"
+                  onIonChange={(e: CustomEvent) => setOrderField(e.detail.value)}>
+                  {AppConst.filter.fields.options.map((option: any, index: number) => (
+                    <IonSelectOption key={'field-'+index} value={option.value}>
+                      {option.label}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              </IonCol>
+              <IonCol>
+                <IonSelect
+                  key='order'
+                  interface="popover"
+                  onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}>
+                  {AppConst.filter.order.options.map((option: any, index: number) => (
+                    <IonSelectOption key={'order-'+index} value={option.value}>
+                      {option.label}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+
         </IonToolbar>
       }
 
     </IonHeader>
     <IonContent>
 
-      <MainList/>
+      <MainList />
 
     </IonContent>
     {/*<ShareSocialFab />*/}
@@ -120,16 +130,19 @@ const Main: React.FC<MainProps> = ({
 
 }
 
-export default connect<MainProps>({
+export default connect<ThisProps>({
 
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
-    searchText: state.data.searchText
+    searchString: state.data.searchString,
+    searchOrder: state.data.searchOrder,
+    orderField: state.data.orderField
   }),
 
   mapDispatchToProps: {
-    setSearchText,
-    setSearchOrder
+    setSearchString,
+    setSearchOrder,
+    setOrderField
   },
 
   component: React.memo(Main)

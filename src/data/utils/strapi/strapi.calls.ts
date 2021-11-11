@@ -11,10 +11,10 @@ const testing = false
  */
 export const restGet = async (model:string, params:object = {}) => {
   if(testing) console.log('app.calls.restGet::'+model)
-  const queryString = (params)
+  const searchString = (params)
     ? '?'+Object.keys(params).map(key => `${key}=${params[key]}`)
     : ''
-  return axios.get(AppConst.RestAPI+'/'+model+queryString)
+  return axios.get(AppConst.RestAPI+'/'+model+searchString)
 }
 
 export const restPost = async (model:string, body:any) => {

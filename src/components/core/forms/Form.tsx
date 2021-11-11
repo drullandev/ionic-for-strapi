@@ -24,6 +24,7 @@ import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // FORM STYLES
 import '../main/styles/Form.scss'
+import { ObjectShape } from 'yup/lib/object'
 
 const validation = true
 
@@ -56,18 +57,12 @@ interface MyFormProps extends FormProps, StateProps, DispatchProps { }
 
 const Form: FC<MyFormProps> = ({
   slug,
-  mode,
-  userJwt, setUserJwt,
-  setUserId,
+  setUserJwt,
   userDarkMode, setDarkMode,
-  userEmail, setUserEmail,
-  isLoggedIn, setIsLoggedIn,
-  loading, setLoading
-}) => {
+  setIsLoggedIn}) => {
 
   const history = useHistory()
   const { t } = useTranslation()
-  const animationRef = useRef()
 
   // Form Component settings...
   const [formTitle, setFormTitle] = useState([])
@@ -202,7 +197,7 @@ const Form: FC<MyFormProps> = ({
                     acceptedTerms: form.terms,
                     acceptedPrivacyPolicy: form.privacy,
                     userDarkMode: userDarkMode
-                  }).then(res=>{
+                  }).then(()=>{
             
                   })
                 launchToast('Welcome '+res.data.user.username+', you was logged!!!', 'success')
@@ -240,7 +235,7 @@ const Form: FC<MyFormProps> = ({
                     acceptedPrivacyPolicy: form.privacy,
                     userDarkMode: userDarkMode,
                     hasSeenTutorial: false,
-                  }).then(res=>{
+                  }).then(()=>{
             
                   })
                 launchToast('Welcome ${form.identifier}, you was registered!!!', 'success')

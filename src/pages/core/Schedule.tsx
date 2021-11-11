@@ -11,7 +11,7 @@ import ShareSocialFab from '../../components/extra/ShareSocialFab'
 
 import * as selectors from '../../data/selectors'
 import { connect } from '../../data/connect'
-import { setSearchText } from '../../data/sessions/sessions.actions'
+import { setSearchString } from '../../data/sessions/sessions.actions'
 import { Schedule } from '../../models/Schedule'
 
 interface OwnProps { }
@@ -23,12 +23,12 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setSearchText: typeof setSearchText
+  setSearchString: typeof setSearchString
 }
 
 type HomeProps = OwnProps & StateProps & DispatchProps
 
-const Home: React.FC<HomeProps> = ({ favoritesHome, schedule, setSearchText, mode }) => {
+const Home: React.FC<HomeProps> = ({ favoritesHome, schedule, setSearchString, mode }) => {
 
   const [segment, setSegment] = useState<'all' | 'favorites'>('all')
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
@@ -75,7 +75,7 @@ const Home: React.FC<HomeProps> = ({ favoritesHome, schedule, setSearchText, mod
         */}
 
         {showSearchbar &&
-          <IonSearchbar showCancelButton='always' placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
+          <IonSearchbar showCancelButton='always' placeholder='Search' onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
         }
 
         <IonButtons slot='end'>
@@ -117,7 +117,7 @@ const Home: React.FC<HomeProps> = ({ favoritesHome, schedule, setSearchText, mod
           <IonTitle size='large'>Home</IonTitle>
         </IonToolbar>*/}
         <IonToolbar>
-          <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
+          <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}></IonSearchbar>
         </IonToolbar>
       </IonHeader>
 
@@ -174,7 +174,7 @@ export default connect<OwnProps, StateProps, DispatchProps>({
   }),
 
   mapDispatchToProps: {
-    setSearchText
+    setSearchString
   },
 
   component: Home

@@ -1,6 +1,7 @@
 import { getUserExtra } from '../dataApi'
 import { ActionType } from '../../util/types'
 import { ConfState } from './conf.state'
+
 const testing = false
 
 export const loadConfData = () => async (dispatch: React.Dispatch<any>) => {
@@ -32,13 +33,19 @@ export const updateFilteredTracks = (filteredTracks: string[]) => {
   return ({ type: 'update-filtered-tracks', filteredTracks } as const)
 }
 
-export const setSearchText = (searchText?: string) => {
-  return ({ type: 'set-search-text', searchText } as const)
+export const setSearchString = (searchString?: string) => {
+  return ({ type: 'set-search-string', searchString } as const)
 }
 
-export const setSearchOrder = (orderId?: number) => {
-  return ({ type: 'set-search-order', orderId } as const)
+export const setSearchOrder = (searchOrder?: 'asc' | 'desc' | string) => {
+  return ({ type: 'set-search-order', searchOrder } as const)
 }
+
+export const setOrderField = (orderField?: string) => {
+  return ({ type: 'set-order-field', orderField } as const)
+}
+
+// EXTRA FEATURES... (OBSOLETE)
 
 export const addFavorite = (sessionId: number) => {
   return ({ type: 'add-favorite', sessionId } as const)
@@ -52,7 +59,9 @@ export type SessionsActions =
   | ActionType<typeof setLoading>
   | ActionType<typeof setData>
   | ActionType<typeof setMenuEnabled>  
+  | ActionType<typeof updateFilteredTracks>
+  | ActionType<typeof setSearchString>
+  | ActionType<typeof setSearchOrder>
+  | ActionType<typeof setOrderField>
   | ActionType<typeof addFavorite>
   | ActionType<typeof removeFavorite>
-  | ActionType<typeof updateFilteredTracks>
-  | ActionType<typeof setSearchText>

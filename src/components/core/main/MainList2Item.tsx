@@ -21,7 +21,7 @@ interface OwnProps {
 
 interface StateProps {
   //favoriteSessions: number[]
-  searchText?: string
+  searchString?: string
 }
 
 interface DispatchProps {
@@ -31,7 +31,7 @@ interface DispatchProps {
 
 interface SessionListItemProps extends OwnProps, StateProps, DispatchProps { }
 
-const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchText }) => {
+const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) => {
   
   const [line, setLine] = useState<LineProps>()
 
@@ -57,7 +57,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchText }) =>
       console.log(res)
     })
 
-  },[row.id, searchText])
+  },[row.id, searchString])
 
   /*
   const removeFavoriteSession = () => {
@@ -136,7 +136,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchText }) =>
 export default connect<OwnProps, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
-    searchText: state.data.searchText
+    searchString: state.data.searchString
     //favoriteSessions: state.listData.favorites
   }),
 

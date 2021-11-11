@@ -31,15 +31,41 @@ export const TUTORIAL = '/tutorial'
 export const LOGIN = '/login'
 
 export const timeout = {
-  'buttonSpinner' : 123,
-  'loadingPopup' : 123,
-  'redirect' : 123,
-  'refresh' : 1000,
-  'readToast' : 3000,
+  buttonSpinner : 123,
+  loadingPopup : 123,
+  redirect : 123,
+  refresh : 1000,
+  readToast : 3000,
 }
 
 export const paginator = {
   'size' : 8
+}
+
+export const filter = {
+  order : {
+    default: 'asc',
+    options: [{
+      label : 'Ascendente',
+      value: 'asc',
+    }, {
+      label : 'Descendente',
+      value: 'desc'
+    }]
+  },
+  fields: {
+    default: 'published_at',
+    options: [{
+      label : 'Publication',
+      value: 'published_at',
+    },{
+      label : 'Creation',
+      value: 'created_at',
+    }, {
+      label : 'Identifier',
+      value: 'id',
+    }]    
+  }
 }
 
 

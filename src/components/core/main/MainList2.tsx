@@ -1,33 +1,32 @@
 import * as AppConst from '../../../static/constants'
 
-import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonButton, IonContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonLoading, useIonToast,  useIonViewWillEnter } from '@ionic/react'
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { IonList, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonRefresher, IonRefresherContent, useIonToast } from '@ionic/react'
+import React, { useState, useEffect, useRef } from 'react'
 import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
-import { Home, Session } from '../../../models/Schedule'
-import SessionListItem from './MainList2Item'
 
 import { connect } from '../../../data/connect'
-import { addFavorite, removeFavorite, setSearchText } from '../../../data/sessions/sessions.actions';
+import { setSearchString, setSearchOrder, setOrderField } from '../../../data/sessions/sessions.actions';
 import Spinner from './Spinner'
 
-interface OwnProps { 
-  searchString?:string
-}
-
+interface OwnProps { }
 interface StateProps {
-  searchText?: string
-  searchOrder?: 'asc' | 'desc'
+  searchString?: string
+  searchOrder: 'asc' | 'desc'
+  orderField: 'published_at' | string
 }
-
 interface DispatchProps {
-  //addFavorite: typeof addFavorite
-  //removeFavorite: typeof removeFavorite
-  setSearchText: typeof setSearchText
+  setSearchString: typeof setSearchString
+  setSearchOrder: typeof setSearchOrder
+  setOrderField: typeof setOrderField
 }
 
-interface MainListProps extends OwnProps, StateProps, DispatchProps { }
+interface ThisProps extends OwnProps, StateProps, DispatchProps { }
 
-const SessionList: React.FC<MainListProps> = ({ searchString, searchText, setSearchText }) => {
+const MainList: React.FC<ThisProps> = ({
+  searchString,
+  searchOrder,
+  orderField
+}) => {
 
   const [page, setPage] = useState(0)  
   const [maxPage, setMaxPage] = useState(1)  
@@ -36,31 +35,76 @@ const SessionList: React.FC<MainListProps> = ({ searchString, searchText, setSea
   const [listData, setListData] = useState<[]>([])
   const [isInfiniteDisabled, setInfiniteDisabled] = useState(false)
 
-  // Form and window actions
-  const [setLoadingAlert, dismissLoadingAlert] = useIonLoading()
   const [setToast, dismissToast] = useIonToast()
 
-  const dataCall = {
-    model: 'userContents',
-    slug: 'user-contents',
-    filter : {
-      limit: AppConst.paginator.size,
-      start: 0
-    },
-    struct: {
-      id: '',
-      published_at: '',
-      content: ''
-    },
-    content: {
-      spinner: 'dots',
-      content: 'Loading more listData...'
-    }
+  const slug = 'user-contents'
+  const defaultSortDirection = 'asc'
+  const defaultSortField = 'published_at'
+  
+  const camelCased = (str: string) =>  {
+    return str.replace(/-([a-z])/g, function (g) { 
+      return g[1].toUpperCase()
+    })
   }
 
-  const launchLoading = (message: string, duration: number = 3000) => {
-    dismissLoadingAlert()
-    setLoadingAlert({ message: t(message), duration: duration })
+  const getDataToCall = () => {
+    return { 
+      model: camelCased(slug),
+      slug: slug,
+      paginator : {
+        limit: AppConst.paginator.size,
+        start: 0,
+      },
+      direction: 'asc',
+      where: [{
+        type: 'string',
+        key: 'content',
+        action: 'contains',
+        value: searchString
+      }],  
+      searchOrder: searchOrder ? searchOrder : defaultSortDirection,
+      orderField: orderField ? orderField : defaultSortField,  
+      filter: {//defaults
+        /*
+          where (object): Define the filters to apply in the query.
+  
+          <field>: Equals.
+          <field>_ne: Not equals.
+          <field>_lt: Lower than.
+          <field>_lte: Lower than or equal to.
+          <field>_gt: Greater than.
+          <field>_gte: Greater than or equal to.
+          <field>_contains: Contains.
+          <field>_containss: Contains sensitive.
+          <field>_ncontains: Doesn't contain.
+          <field>_ncontainss: Doesn't contain, case sensitive
+          <field>_in: Matches any value in the array of values.
+          <field>_nin: Doesn't match any value in the array of values.
+          <field>_null: Equals null/Not equals null
+          published_at_gt: "2018-03-19 16:21:07.161Z",
+          published_at_lt: "2018-03-19 16:21:07.161Z"
+        */
+      },
+      struct: {
+        id: '',
+        published_at: '',
+        content: '',
+        user : {
+          id : '', 
+          username: '',
+          role: {
+            id :''
+          },
+          avatar: {
+            id: ''
+          }
+        }
+      },
+      content: {
+        spinner: 'dots',
+        content: 'Loading more listData...'
+      }
+    }
   }
 
   const launchToast = (header:string, message: string, color: string = 'light', position: 'top' | 'bottom' | 'middle' = 'bottom', duration: number = 3000) => {
@@ -78,38 +122,37 @@ const SessionList: React.FC<MainListProps> = ({ searchString, searchText, setSea
 
   // Count max pages to avoid get out of range
   useEffect(()=>{
+    let dataCall = getDataToCall()
     restGet(dataCall.slug+'/count')
     .then(res=>{
       setMaxPage(Math.floor( res.data / AppConst.paginator.size ))
     })
   },[])
 
-
   // Push the selected page data set by pagenumber
   const pushPage = (page:number) => {
-    dataCall.filter.start = AppConst.paginator.size * page
-    getGQL(dataCall.model, dataCall.filter, dataCall.struct)
+
+    let dataCall = getDataToCall()
+    dataCall.paginator.start = AppConst.paginator.size * page
+
+    getGQL(dataCall)
     .then(res=>{
       switch(res.status){
         case 200:          
-          var resData = res.data.data[Object.keys(res.data.data)[0]]
-          const newData = listData
-          for (let i = 0; i < AppConst.paginator.size; i++) {
-            newData.push(resData[i])
-          }
-          setListData(newData)
+          appendData(listData, res.data.data)
           setPage(page)
         break
         default:
           //console.log('Opps!!', dataCall, res)
-          launchToast('Oppps!!!','error')
+          launchToast('Oppps!!!',JSON.stringify(res))
           break
       }
     })
     .catch((res: any)=>{
       //console.log('Opps!!', dataCall, res)
-      launchToast('Oppps!!!','error')
+      launchToast('Oppps!!!',JSON.stringify(res))
     })
+
   }
   
   // Push the selected page data set
@@ -123,8 +166,17 @@ const SessionList: React.FC<MainListProps> = ({ searchString, searchText, setSea
   
   // Push the selected page data set
   useEffect(()=>{
-    reloadData()
-  },[searchText])
+    pushPage(0)
+  },[searchString, searchOrder, orderField])
+
+  const appendData = (listData: any, data:any) =>{
+    var resData = data[Object.keys(data)[0]]
+    const newData = listData ? listData : []
+    for (let i = 0; i < AppConst.paginator.size; i++) {
+      newData.push(resData[i])
+    }
+    setListData(newData)
+  }
 
   const pushNextPage = (ev: any) => {    
     setTimeout(() => {
@@ -161,7 +213,6 @@ const SessionList: React.FC<MainListProps> = ({ searchString, searchText, setSea
       : <Spinner name='bubbles'/>
     }     
   }
-
     
   const putTimeline = (line:any) => {
     return <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
@@ -189,8 +240,8 @@ const SessionList: React.FC<MainListProps> = ({ searchString, searchText, setSea
       disabled={isInfiniteDisabled}
     >
       <IonInfiniteScrollContent
-        loadingSpinner={dataCall.content.spinner}
-        loadingText={dataCall.content.content}
+        loadingSpinner={getDataToCall().content.spinner}
+        loadingText={getDataToCall().content.content}
       ></IonInfiniteScrollContent>
     </IonInfiniteScroll>
    {/* 
@@ -202,19 +253,19 @@ const SessionList: React.FC<MainListProps> = ({ searchString, searchText, setSea
 
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
+export default connect<ThisProps>({
 
   mapStateToProps: (state) => ({
-    searchText: state.data.searchText
-    //favoriteSessions: state.listData.favorites
+    searchString: state.data.searchString,
+    searchOrder: state.data.searchOrder,
+    orderField: state.data.orderField
   }),
 
   mapDispatchToProps: ({
-    setSearchText    
-    //addFavorite,
-    //removeFavorite
+    setSearchString,
+    setSearchOrder
   }),
 
-  component: SessionList
+  component: MainList
   
 })
