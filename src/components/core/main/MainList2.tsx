@@ -5,19 +5,24 @@ import React, { useState, useEffect, useRef } from 'react'
 import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
 
 import { connect } from '../../../data/connect'
-import { setSearchString, setSearchOrder, setOrderField } from '../../../data/sessions/sessions.actions';
+
+import { camelCased } from '../../../data/utils/common'
+
+import { setSearchString, setSearchOrder, setOrderField, setFilterDate } from '../../../data/sessions/sessions.actions';
 import Spinner from './Spinner'
 
 interface OwnProps { }
 interface StateProps {
   searchString?: string
   searchOrder: 'asc' | 'desc'
-  orderField: 'published_at' | string
+  orderField: 'published_at' | string,
+  filterDate: string,
 }
 interface DispatchProps {
   setSearchString: typeof setSearchString
   setSearchOrder: typeof setSearchOrder
   setOrderField: typeof setOrderField
+  setFilterDate: typeof setFilterDate
 }
 
 interface ThisProps extends OwnProps, StateProps, DispatchProps { }
@@ -25,7 +30,8 @@ interface ThisProps extends OwnProps, StateProps, DispatchProps { }
 const MainList: React.FC<ThisProps> = ({
   searchString,
   searchOrder,
-  orderField
+  orderField,
+  setFilterDate, filterDate
 }) => {
 
   const [page, setPage] = useState(0)  
@@ -40,12 +46,6 @@ const MainList: React.FC<ThisProps> = ({
   const slug = 'user-contents'
   const defaultSortDirection = 'asc'
   const defaultSortField = 'published_at'
-  
-  const camelCased = (str: string) =>  {
-    return str.replace(/-([a-z])/g, function (g) { 
-      return g[1].toUpperCase()
-    })
-  }
 
   const getDataToCall = () => {
     return { 
@@ -61,42 +61,32 @@ const MainList: React.FC<ThisProps> = ({
         key: 'content',
         action: 'contains',
         value: searchString
+      },{
+        type: 'date',
+        key: orderField ? orderField : defaultSortField,
+        action: 'gt',
+        value: filterDate
+      },{
+        type: 'date',
+        key: orderField ? orderField : defaultSortField,
+        action: 'lt',
+        value: filterDate
       }],  
       searchOrder: searchOrder ? searchOrder : defaultSortDirection,
       orderField: orderField ? orderField : defaultSortField,  
-      filter: {//defaults
-        /*
-          where (object): Define the filters to apply in the query.
-  
-          <field>: Equals.
-          <field>_ne: Not equals.
-          <field>_lt: Lower than.
-          <field>_lte: Lower than or equal to.
-          <field>_gt: Greater than.
-          <field>_gte: Greater than or equal to.
-          <field>_contains: Contains.
-          <field>_containss: Contains sensitive.
-          <field>_ncontains: Doesn't contain.
-          <field>_ncontainss: Doesn't contain, case sensitive
-          <field>_in: Matches any value in the array of values.
-          <field>_nin: Doesn't match any value in the array of values.
-          <field>_null: Equals null/Not equals null
-          published_at_gt: "2018-03-19 16:21:07.161Z",
-          published_at_lt: "2018-03-19 16:21:07.161Z"
-        */
-      },
       struct: {
         id: '',
-        published_at: '',
-        content: '',
+        published_at: 'date',
+        created_at: 'date',
+        content: 'string',
         user : {
-          id : '', 
-          username: '',
+          id : 'number', 
+          username: 'string',
           role: {
-            id :''
+            id :'number'
           },
           avatar: {
-            id: ''
+            id: 'number'
           }
         }
       },
@@ -254,18 +244,17 @@ const MainList: React.FC<ThisProps> = ({
 }
 
 export default connect<ThisProps>({
-
   mapStateToProps: (state) => ({
     searchString: state.data.searchString,
     searchOrder: state.data.searchOrder,
-    orderField: state.data.orderField
+    orderField: state.data.orderField,
+    filterDate: state.data.filterDate
   }),
-
   mapDispatchToProps: ({
     setSearchString,
-    setSearchOrder
+    setSearchOrder,
+    setOrderField,
+    setFilterDate
   }),
-
-  component: MainList
-  
+  component: MainList  
 })

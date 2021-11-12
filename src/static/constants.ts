@@ -46,28 +46,93 @@ export const filter = {
   order : {
     default: 'asc',
     options: [{
-      label : 'Ascendente',
+      label: 'Ascendente',
       value: 'asc',
     }, {
-      label : 'Descendente',
+      label: 'Descendente',
       value: 'desc'
     }]
   },
   fields: {
     default: 'published_at',
     options: [{
-      label : 'Publication',
+      label: 'Publicated',
       value: 'published_at',
     },{
-      label : 'Creation',
+      label: 'Created',
       value: 'created_at',
+    },{
+      label: 'Updated',
+      value: 'updated_at',
     }, {
-      label : 'Identifier',
+      label: 'Identifier',
       value: 'id',
     }]    
+  },
+  conditions: {
+    default: 'contains',
+    options: [
+      {
+        label: 'Equals',
+        value: '',
+      },
+      {
+        label: 'Distinct',
+        value: 'ne',
+      },
+      {
+        label: 'Lower than',
+        value: 'lt',
+      },
+      {
+        label: 'Lower or equal',
+        value: 'lte',    
+      },
+      {
+        label: 'Greater than',
+        value: 'gt',
+      },
+      {
+        label: 'Greater or equal',
+        value: 'gte',    
+      },
+      {
+        label: 'Contains',
+        value: 'contains',
+      },
+      {
+        label: 'Contains sensitive',
+        value: 'containss',    
+      },
+      {
+        label: 'No Contains',
+        value: 'ncontains',
+      },
+      {
+        label: 'No Contains sensitive',
+        value: 'ncontainss',    
+      },
+      {
+        type: 'array',
+        label: 'In',
+        value: 'in',
+      },
+      {
+        type: 'array',
+        label: 'Not in',
+        value: 'nin',    
+      },
+      {
+        label: 'Equals null',
+        value: 'null',    
+      },
+      {
+        label: 'Not equals null',
+        value: 'nnull',    
+      }
+    ]    
   }
 }
-
 
 export const dataUrl           = '/assets/data/data.json'
 export const locationsUrl      = '/assets/data/locations.json'

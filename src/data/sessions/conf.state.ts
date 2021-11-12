@@ -5,15 +5,26 @@ export interface ConfState {
 
   // SEARCH OPTIONS
   searchString?: string
+
+  // - sort
   searchOrder?: string
   orderField?: string
+
+  // - filter
+  filterField?: string
+  filterCondition?:string
+
+  // - filter extra
+  filterDate?: string
+  filterString?: string
+  stringSensitive?: boolean
 
   // APP CHARACTERISTICS
   appDarkMode?: string;
   loading?: boolean
   menuEnabled: boolean
 
-  // OTHERS
+  // OTHERS (DEPRECATED)
   sessions: Session[]
   schedule: Home
   speakers: Speaker[]

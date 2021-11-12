@@ -45,6 +45,18 @@ export const setOrderField = (orderField?: string) => {
   return ({ type: 'set-order-field', orderField } as const)
 }
 
+export const setFilterField = (filterField?: string) => {
+  return ({ type: 'set-filter-field', filterField } as const)
+}
+
+export const setFilterCondition = (filterCondition?: string) => {
+  return ({ type: 'set-filter-condition', filterCondition } as const)
+}
+
+export const setFilterDate = (filterDate?: string) => {
+  return ({ type: 'set-filter-date', filterDate } as const)
+}
+
 // EXTRA FEATURES... (OBSOLETE)
 
 export const addFavorite = (sessionId: number) => {
@@ -63,5 +75,6 @@ export type SessionsActions =
   | ActionType<typeof setSearchString>
   | ActionType<typeof setSearchOrder>
   | ActionType<typeof setOrderField>
+  | ActionType<typeof setFilterDate>
   | ActionType<typeof addFavorite>
   | ActionType<typeof removeFavorite>

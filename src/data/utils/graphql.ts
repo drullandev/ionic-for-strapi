@@ -1,4 +1,5 @@
 import * as AppConst from '../../static/constants'
+import { isEmpty } from './common'
 
 export interface GqlModel {
   model: string
@@ -39,7 +40,16 @@ export const setGQLQuery = (params: GqlModel) =>{
   if(!isEmpty(params.where)){
     params.where.map((row:any)=>{
       if(row.value !== undefined){
-        where.push(row.key+'_'+row.action+' : ["'+row.value+'"]')
+        var whereType = row.value
+        switch(row.type){
+          case 'string':
+            whereType = '["'+whereType+'"]'
+            break;
+          case 'date':
+            whereType = '"'+whereType+'"'
+            break;
+        }
+        where.push(row.key+'_'+row.action+' : '+whereType)
       }
     })
   }
@@ -69,6 +79,7 @@ export const setGQLQuery = (params: GqlModel) =>{
 
   if (params.struct) {
     queryString += JSON.stringify(params.struct,null,'\t')
+      .replace(/number|string|date/g, '')
       .replace(/[":]/g, '')  
       .replace(',', ',')
   }
@@ -79,13 +90,4 @@ export const setGQLQuery = (params: GqlModel) =>{
 
   return queryString
 
-}
-
-function isEmpty(obj: any) {
-  for(var prop in obj) {
-      if(obj.hasOwnProperty(prop))
-          return false
-  }
-
-  return true
 }

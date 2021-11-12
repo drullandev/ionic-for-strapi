@@ -27,6 +27,15 @@ export const sessionsReducer = (state: ConfState, action: SessionsActions): Conf
     case 'set-order-field': {
       return { ...state, orderField: action.orderField }
     }
+    case 'set-filter-field': {
+      return { ...state, filterField: action.filterField }
+    }
+    case 'set-filter-condition': {
+      return { ...state, filterCondition: action.filterCondition }
+    }
+    case 'set-filter-date': {
+      return { ...state, filterDate: action.filterDate }
+    }
     case 'set-menu-enabled': {
       return { ...state, menuEnabled: action.menuEnabled }
     }
