@@ -1,5 +1,5 @@
 import * as AppConst from '../../static/constants'
-import { isEmpty } from './common'
+import { empty } from './common'
 
 export interface GqlModel {
   model: string
@@ -18,6 +18,8 @@ export interface GqlModel {
   sort: string
   orderField: string
   searchOrder: string
+  filterField: string
+  filterCondition: string
   direction: string
 }
 
@@ -37,40 +39,48 @@ export const setGQLQuery = (params: GqlModel) =>{
 
   // WHERE
   var where = []
-  if(!isEmpty(params.where)){
+  if(!empty(params.where)){
     params.where.map((row:any)=>{
-      if(row.value !== undefined){
+      if(row.value !== undefined && row.value !== ''){
         var whereType = row.value
         switch(row.type){
           case 'string':
-            whereType = '["'+whereType+'"]'
-            break;
-          case 'date':
-            whereType = '"'+whereType+'"'
-            break;
+            whereType = '["'+whereType+'"]';
+            where.push(row.key+'_'+row.action+' : '+whereType)
+          break;
+          case 'array':
+            const rowLen = whereType.length
+            var rows = []
+            var stringedWhere = whereType.map((row: any, index: number)=>{
+              rows.push(row)
+              if (rowLen === index + 1) {
+                // last one
+                stringedWhere = rows.join(',')
+              }
+            })
+            whereType = '["'+stringedWhere+'"]';
+            where.push(row.key+'_'+row.action+' : '+whereType)
+          break;
+          default:
+            whereType = '["'+whereType+'"]';
+            where.push(row.key+'_'+row.action+' : '+whereType)
+          break;
         }
-        where.push(row.key+'_'+row.action+' : '+whereType)
+
       }
     })
   }
 
-  // FILTER
+  console.log(params)
+
+  if(params.filterField !== undefined){
+    if(params.filterCondition !== undefined && typeof params.searchString !== undefined){
+      where.push(params.filterField+'_'+params.filterCondition+' : '+params.searchString)
+    }
+  }
+
   //https://strapi.io/documentation/developer-docs/latest/development/plugins/graphql.html#query-api
-  /*
-
-  if( filter.published_at_gt !== ''){
-    //query += 'published_at_gt: "'+filter.published_at_gt+'", '
-  } 
-
-  if( filter.published_at_lt !== ''){
-    //query += 'published_at_lt: "'+filter.published_at_lt+'", '
-  }
-
-  */
-
-  if(!isEmpty(where)){
-    queryString+=', where: { '+where.join(',')+' }'
-  }
+  if(!empty(where)) queryString+=', where: { '+where.join(',')+' }'
 
   //ORDER
   queryString += `, sort: "` + params.orderField + `:` + ( params.searchOrder ? params.searchOrder : params.direction ) + `"`
@@ -85,9 +95,7 @@ export const setGQLQuery = (params: GqlModel) =>{
   }
 
   queryString += `\n}`
-
-  console.log(queryString)
-
+console.log(queryString)
   return queryString
 
 }

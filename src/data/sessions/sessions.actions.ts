@@ -2,6 +2,8 @@ import { getUserExtra } from '../dataApi'
 import { ActionType } from '../../util/types'
 import { ConfState } from './conf.state'
 
+import { Filter } from '../../components/core/main/interfaces/Filter'
+
 const testing = false
 
 export const loadConfData = () => async (dispatch: React.Dispatch<any>) => {
@@ -45,12 +47,8 @@ export const setOrderField = (orderField?: string) => {
   return ({ type: 'set-order-field', orderField } as const)
 }
 
-export const setFilterField = (filterField?: string) => {
-  return ({ type: 'set-filter-field', filterField } as const)
-}
-
-export const setFilterCondition = (filterCondition?: string) => {
-  return ({ type: 'set-filter-condition', filterCondition } as const)
+export const setFilter = (filter: Filter) => {
+  return ({ type: 'set-filter', filter } as const)
 }
 
 export const setFilterDate = (filterDate?: string) => {
@@ -75,6 +73,7 @@ export type SessionsActions =
   | ActionType<typeof setSearchString>
   | ActionType<typeof setSearchOrder>
   | ActionType<typeof setOrderField>
-  | ActionType<typeof setFilterDate>
+  | ActionType<typeof setFilter>
+  | ActionType<typeof setFilterDate>  
   | ActionType<typeof addFavorite>
   | ActionType<typeof removeFavorite>

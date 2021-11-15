@@ -6,23 +6,23 @@ import { restGet, getGQL } from '../../../data/utils/rest/rest.utils'
 
 import { connect } from '../../../data/connect'
 
-import { camelCased } from '../../../data/utils/common'
+import { toCamelCase } from '../../../data/utils/common'
 
-import { setSearchString, setSearchOrder, setOrderField, setFilterDate } from '../../../data/sessions/sessions.actions';
+import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../data/sessions/sessions.actions';
 import Spinner from './Spinner'
 
 interface OwnProps { }
 interface StateProps {
   searchString?: string
   searchOrder: 'asc' | 'desc'
-  orderField: 'published_at' | string,
-  filterDate: string,
+  orderField: 'published_at' | string
+  filter: []
 }
 interface DispatchProps {
   setSearchString: typeof setSearchString
   setSearchOrder: typeof setSearchOrder
   setOrderField: typeof setOrderField
-  setFilterDate: typeof setFilterDate
+  setFilter: typeof setFilter
 }
 
 interface ThisProps extends OwnProps, StateProps, DispatchProps { }
@@ -31,9 +31,11 @@ const MainList: React.FC<ThisProps> = ({
   searchString,
   searchOrder,
   orderField,
-  setFilterDate, filterDate
+  setFilter, filter
 }) => {
 
+  // List params!!! TODO: Move to params jeje!!
+  const slug = 'user-contents'
   const [page, setPage] = useState(0)  
   const [maxPage, setMaxPage] = useState(1)  
   const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
@@ -43,37 +45,25 @@ const MainList: React.FC<ThisProps> = ({
 
   const [setToast, dismissToast] = useIonToast()
 
-  const slug = 'user-contents'
-  const defaultSortDirection = 'asc'
-  const defaultSortField = 'published_at'
-
   const getDataToCall = () => {
     return { 
-      model: camelCased(slug),
+      model: toCamelCase(slug),
       slug: slug,
       paginator : {
         limit: AppConst.paginator.size,
         start: 0,
       },
-      direction: 'asc',
+      direction: AppConst.filter.order.default,
       where: [{
         type: 'string',
         key: 'content',
         action: 'contains',
         value: searchString
-      },{
-        type: 'date',
-        key: orderField ? orderField : defaultSortField,
-        action: 'gt',
-        value: filterDate
-      },{
-        type: 'date',
-        key: orderField ? orderField : defaultSortField,
-        action: 'lt',
-        value: filterDate
-      }],  
-      searchOrder: searchOrder ? searchOrder : defaultSortDirection,
-      orderField: orderField ? orderField : defaultSortField,  
+      }],
+      searchString: searchString ? searchString : '', 
+      orderField: orderField ? orderField : AppConst.filter.fields.default,  
+      searchOrder: searchOrder ? searchOrder : AppConst.filter.order.default,
+      filter: [],
       struct: {
         id: '',
         published_at: 'date',
@@ -248,13 +238,13 @@ export default connect<ThisProps>({
     searchString: state.data.searchString,
     searchOrder: state.data.searchOrder,
     orderField: state.data.orderField,
-    filterDate: state.data.filterDate
+    filter: state.data.filter
   }),
   mapDispatchToProps: ({
     setSearchString,
     setSearchOrder,
     setOrderField,
-    setFilterDate
+    setFilter
   }),
   component: MainList  
 })

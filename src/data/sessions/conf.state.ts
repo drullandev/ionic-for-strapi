@@ -1,6 +1,8 @@
 import { Location } from '../../models/Location'
 import { Speaker } from '../../models/Speaker'
 import { Home, Session } from '../../models/Schedule'
+import { Filter } from '../../components/core/main/interfaces/Filter'
+
 export interface ConfState {
 
   // SEARCH OPTIONS
@@ -11,8 +13,7 @@ export interface ConfState {
   orderField?: string
 
   // - filter
-  filterField?: string
-  filterCondition?:string
+  filter: Filter[]
 
   // - filter extra
   filterDate?: string

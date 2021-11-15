@@ -4,14 +4,24 @@ import React, { useState, useEffect } from 'react'
 import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem } from '@ionic/react'
 
 //import { restGet, getGQL } from '../../../data/rest/rest.utils'
-import { setSearchString, setSearchOrder, setOrderField, setFilterField, setFilterCondition, setFilterDate } from '../../../data/sessions/sessions.actions'
+import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../data/sessions/sessions.actions'
 import { SessionState } from '../../../data/sessions/sessions.actions'
+import { empty } from '../../../data/utils/common'
 
 import Icon from './Icon'
+import FilterRow from './FilterRow'
 
 import MainList from './MainList2'
 
 import { connect } from '../../../data/connect'
+
+import { Filter } from './interfaces/Filter'
+
+export interface FilterModel {
+  filterField?: string
+  filterCondition?: string
+  filterDate?: string
+}
 
 interface OwnProps { }
 interface StateProps {
@@ -22,39 +32,54 @@ interface StateProps {
   filterDate: string,
   filterField: string,
   filterCondition: string,
-
+  filter: Filter[]
 }
 interface DispatchProps {
   setSearchString: typeof setSearchString
   setSearchOrder: typeof setSearchOrder
   setOrderField: typeof setOrderField
-  setFilterField: typeof setFilterField
-  setFilterCondition: typeof setFilterCondition
-  setFilterDate: typeof setFilterDate
+  setFilter: typeof setFilter
 }
 
 type ThisProps = OwnProps & StateProps & DispatchProps
 
 const Main: React.FC<ThisProps> = ({
   mode,
-  setSearchString,
-  setSearchOrder,
-  setOrderField, 
-  setFilterField, filterField,
-  setFilterDate, filterDate
+  setSearchString, searchString,
+  setSearchOrder, searchOrder,
+  setOrderField, orderField,
+  setFilter, filter
 }) => {
 
   const ios = (mode === 'ios')
+  const md = (mode === 'md')
 
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
   const [showFilterModal, setShowFilterModal] = useState<boolean>(true)
 
+  const [filterRows, setFilterRows] = useState<any>([])
+
+  useEffect(()=>{
+    setSearchString('')
+    setSearchOrder(AppConst.filter.order.default)
+    setOrderField(AppConst.filter.fields.default)
+    resetFilters()
+  },[])
+
   const resetFilters = () => {
-    setSearchString()
-    setSearchOrder('')
-    setOrderField()
-    setFilterField()
-    setFilterDate()
+    setFilter([])
+  }
+
+  const addFilter = () => {
+    let newFilter = filter      
+    newFilter.push({
+      key: Date.now(),
+      type: 'string',
+      field: AppConst.filter.fields.default,
+      action: 'eq',
+      value: ''
+    })
+    setFilterRows(newFilter)
   }
 
   return <IonContent>
@@ -97,6 +122,7 @@ const Main: React.FC<ThisProps> = ({
       <IonToolbar>
         <IonSearchbar
           placeholder='Search'
+          value={searchString}
           onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}>
         </IonSearchbar>
       </IonToolbar>
@@ -106,16 +132,15 @@ const Main: React.FC<ThisProps> = ({
 
             <IonGrid>
               <IonRow>
-                <IonLabel>Order</IonLabel>
-              </IonRow>
-              <IonRow>
                 <IonCol>
                   <IonSelect
                     key='field'
                     interface="popover"
+                    placeholder='Order Field'
+                    value={orderField}                  
                     onIonChange={(e: CustomEvent) => setOrderField(e.detail.value)}>
                     {AppConst.filter.fields.options.map((option: any, index: number) => (
-                      <IonSelectOption key={'field-'+index} value={option.value}>
+                      <IonSelectOption key={'order-field-'+index} value={option.value}>
                         {option.label}
                       </IonSelectOption>
                     ))}
@@ -123,8 +148,10 @@ const Main: React.FC<ThisProps> = ({
                 </IonCol>
                 <IonCol>
                   <IonSelect
-                    key='order'
+                    key='searchOrder'
                     interface="popover"
+                    placeholder='Direction'
+                    value={searchOrder}    
                     onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}>
                     {AppConst.filter.order.options.map((option: any, index: number) => (
                       <IonSelectOption key={'order-'+index} value={option.value}>
@@ -136,54 +163,15 @@ const Main: React.FC<ThisProps> = ({
               </IonRow>
             </IonGrid>
 
-            <IonGrid>              
+            <IonGrid>
+              {filter && filter.map((row: any, index: number)=>{
+                return <FilterRow key={index}/>
+              })}
               <IonRow>
-                <IonLabel>Filter</IonLabel>
-              </IonRow>
-              <IonRow>
                 <IonCol>
-                  <IonSelect
-                    key='filterField'
-                    interface="popover"
-                    onIonChange={(e: CustomEvent) => setFilterField(e.detail.value)}>
-                    {AppConst.filter.fields.options.map((option: any, index: number) => (
-                      <IonSelectOption key={'fields2-'+index} value={option.value}>
-                        {option.label}
-                      </IonSelectOption>
-                    ))}
-                  </IonSelect>
-                </IonCol>
-                <IonCol>
-                  <IonSelect
-                    key='order'
-                    interface="popover"
-                    onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}>
-                    {AppConst.filter.conditions.options.map((option: any, index: number) => (
-                      <IonSelectOption key={'condition-'+index} value={option.value}>
-                        {option.label}
-                      </IonSelectOption>
-                    ))}
-                  </IonSelect>
-                </IonCol>
-
-              </IonRow>
-              <IonRow style={{display: filterField ? 'in-line': 'n one'}}>
-                <IonCol>
-                  <IonItem>
-                    <IonTextarea
-                      placeholder={'Set extra filter...'}
-                      onIonChange={e => console.log(e.detail.value!)}>
-                    </IonTextarea>
-                  </IonItem>
-                  <IonDatetime
-                    displayFormat="MM DD YY HH MM"
-                    placeholder="Select Date"
-                    value={filterDate}
-                    onIonChange={e => setFilterDate(e.detail.value!)}>
-                  </IonDatetime>                    
+                  <IonButton expand='block' onClick={(e: any) => { addFilter() }}>Add filter</IonButton>
                 </IonCol>
               </IonRow>
-              <IonRow><IonButton expand='block' onClick={(e:any) =>{resetFilters()}}>Reset filter</IonButton></IonRow>
             </IonGrid>
 
         </IonToolbar>
@@ -202,26 +190,18 @@ const Main: React.FC<ThisProps> = ({
 }
 
 export default connect<ThisProps>({
-
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
     searchString: state.data.searchString,
     searchOrder: state.data.searchOrder,
     orderField: state.data.orderField,
-    filterField: state.data.filterField,
-    filterCondition: state.data.filterCondition,
-    filterDate:  state.data.filterDate,
+    filter: state.data.filter
   }),
-
   mapDispatchToProps: {
     setSearchString,
     setSearchOrder,
     setOrderField,
-    setFilterField,
-    setFilterCondition,
-    setFilterDate,
+    setFilter
   },
-
-  component: React.memo(Main)
-
+  component: Main
 })

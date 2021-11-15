@@ -44,93 +44,108 @@ export const paginator = {
 
 export const filter = {
   order : {
-    default: 'asc',
-    options: [{
-      label: 'Ascendente',
-      value: 'asc',
-    }, {
-      label: 'Descendente',
-      value: 'desc'
-    }]
+    default: 'desc',
+    options: [ 
+      {
+        label: 'Descendant',
+        value: 'desc'
+      },{
+        label: 'Ascendant',
+        value: 'asc',
+      }
+    ]
   },
   fields: {
     default: 'published_at',
-    options: [{
-      label: 'Publicated',
-      value: 'published_at',
-    },{
-      label: 'Created',
-      value: 'created_at',
-    },{
-      label: 'Updated',
-      value: 'updated_at',
-    }, {
-      label: 'Identifier',
-      value: 'id',
-    }]    
+    options: [
+      {
+        label: 'Published at',
+        value: 'published_at',
+        type: 'date'
+      },{
+        label: 'Created at',
+        value: 'created_at',
+        type: 'date'
+      },{
+        label: 'Updated at',
+        value: 'updated_at',
+        type: 'date'
+      },{
+        label: 'Content',
+        value: 'content',
+        type: 'string'
+      }
+    ]    
   },
   conditions: {
     default: 'contains',
     options: [
       {
-        label: 'Equals',
-        value: '',
-      },
-      {
         label: 'Distinct',
         value: 'ne',
+        families: ['all']
       },
       {
         label: 'Lower than',
         value: 'lt',
+        families: ['all']
       },
       {
         label: 'Lower or equal',
-        value: 'lte',    
+        value: 'lte',
+        families: ['all']
       },
       {
         label: 'Greater than',
         value: 'gt',
+        families: ['all']
       },
       {
         label: 'Greater or equal',
-        value: 'gte',    
+        value: 'gte',
+        families: ['all']
       },
       {
         label: 'Contains',
         value: 'contains',
+        families: ['all']
       },
       {
         label: 'Contains sensitive',
-        value: 'containss',    
+        value: 'containss',
+        families: ['all']
       },
       {
         label: 'No Contains',
         value: 'ncontains',
+        families: ['all']
       },
       {
         label: 'No Contains sensitive',
-        value: 'ncontainss',    
+        value: 'ncontainss',
+        families: ['all']
       },
       {
-        type: 'array',
         label: 'In',
         value: 'in',
+        families: ['array']
       },
       {
-        type: 'array',
         label: 'Not in',
-        value: 'nin',    
+        value: 'nin',
+        families: ['array'] 
       },
       {
         label: 'Equals null',
-        value: 'null',    
+        value: 'null',
+        families: []
       },
       {
         label: 'Not equals null',
-        value: 'nnull',    
+        value: 'nnull',
+        families: []
       }
-    ]    
+    ]
   }
 }
 
