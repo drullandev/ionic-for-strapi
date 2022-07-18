@@ -8,7 +8,7 @@ import { moonOutline } from 'ionicons/icons'
 // Functions
 import { connect } from '../../../data/connect'
 import { setDarkMode } from '../../../data/user/user.actions'
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // Components
 import Header from './Header'
@@ -57,12 +57,12 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isLoggedIn
   return (
     <IonMenu key={slug} type='overlay' disabled={!menuEnabled} contentId='main'>
 
-      {menu && <Header label={menu.title} />}
+      {menu && <Header label={menu.title} loading={false} setLoading={undefined} />}
 
       <IonContent forceOverscroll={false}>
 
         {menus.map((menu: any, i: number) => (
-          <SubMenu menu={menu} />
+          <SubMenu menu={menu} slug={''} rows={[]} title={''} />
         ))}
 
         <IonList lines='none' key='dark-mode'>

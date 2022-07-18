@@ -1,161 +1,207 @@
 import * as AppConst from '../../../static/constants'
 
-import React, { useState, useEffect, useRef } from 'react'
-import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonLabel, IonButton, IonIcon, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig } from '@ionic/react'
+import React, { useState, useEffect } from 'react'
+import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton, IonSelect, IonSelectOption, IonSearchbar, IonRefresher, IonRefresherContent, IonToast, IonModal, IonHeader, getConfig, IonGrid, IonCol, IonRow, IonDatetime, IonTextarea, IonLabel, IonItem } from '@ionic/react'
 
-import { options, search } from 'ionicons/icons'
-import { restGet } from '../../../data/rest/rest.utils'
-import { setSearchText } from '../../../data/sessions/sessions.actions'
+//import { restGet, getGQL } from '../../../data/rest/rest.utils'
+import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../data/sessions/sessions.actions'
+import { SessionState } from '../../../data/sessions/sessions.actions'
+import { empty } from '../../../data/utils/common'
+
+import Icon from './Icon'
+import FilterRow from './FilterRow'
 
 import MainList from './MainList2'
-import MainListFilter from './MainList2Filter'
+
 import { connect } from '../../../data/connect'
 
+import { Filter } from './interfaces/Filter'
+
+export interface FilterModel {
+  filterField?: string
+  filterCondition?: string
+  filterDate?: string
+}
 
 interface OwnProps { }
-
 interface StateProps {
-  mode: 'ios' | 'md',
-  userId: string
+  mode: 'ios' | 'md'
+  searchString: string
+  searchOrder: 'asc' | 'desc'
+  orderField: 'published_at' | string,
+  filterDate: string,
+  filterField: string,
+  filterCondition: string,
+  filter: Filter[]
 }
-
 interface DispatchProps {
-  setSearchText: typeof setSearchText
+  setSearchString: typeof setSearchString
+  setSearchOrder: typeof setSearchOrder
+  setOrderField: typeof setOrderField
+  setFilter: typeof setFilter
 }
 
-type MainProps = OwnProps & StateProps & DispatchProps
+type ThisProps = OwnProps & StateProps & DispatchProps
 
-const Main: React.FC<MainProps> = ({
-  setSearchText,
+const Main: React.FC<ThisProps> = ({
   mode,
-  userId
+  setSearchString, searchString,
+  setSearchOrder, searchOrder,
+  setOrderField, orderField,
+  setFilter, filter
 }) => {
 
-  const ios = ( mode === 'ios' )
-  const model = 'user-contents'
-  const dataCall = { user : userId, _limit: 10 }
+  const ios = (mode === 'ios')
+  const md = (mode === 'md')
 
   const [showSearchbar, setShowSearchbar] = useState<boolean>(false)
-  const [showFilterModal, setShowFilterModal] = useState(false)
-  const [showCompleteToast, setShowCompleteToast] = useState(false)
-  
-  const [data, setData]= useState({})
-  const [count, setCount] = useState(0)
+  const [showFilterModal, setShowFilterModal] = useState<boolean>(true)
 
-  const ionRefresherRef = useRef<HTMLIonRefresherElement>(null)
-  const pageRef = useRef<HTMLElement>(null)
+  const [filterRows, setFilterRows] = useState<any>([])
 
-  const doRefresh = () => {
-    setTimeout(() => {
-      ionRefresherRef.current!.complete()
-      //setShowCompleteToast(true)
-    }, 2500)
+  useEffect(()=>{
+    setSearchString('')
+    setSearchOrder(AppConst.filter.order.default)
+    setOrderField(AppConst.filter.fields.default)
+    resetFilters()
+  },[])
+
+  const resetFilters = () => {
+    setFilter([])
   }
 
-  // count
-  useEffect(()=>{
-    restGet(model+'/count')
-    .then(res=>{
-      setCount(res.data)
+  const addFilter = () => {
+    let newFilter = filter      
+    newFilter.push({
+      key: Date.now(),
+      type: 'string',
+      field: AppConst.filter.fields.default,
+      action: 'eq',
+      value: ''
     })
-  },[])
+    setFilterRows(newFilter)
+  }
 
-  // list data
-  useEffect(()=>{
-    restGet(model, dataCall)
-    .then(res=>{
-      setData(res.data)
-    })
-  },[])
+  return <IonContent>
 
-  return <>
-
-    <IonHeader translucent={true}>
+    <IonHeader>
 
       <IonToolbar>
 
         <IonButtons slot='start'>
           <IonMenuButton />
         </IonButtons>
- 
-        {!ios && !showSearchbar && <IonTitle>Home</IonTitle> }
+
+        {!ios && <IonTitle>Main friend</IonTitle>}
 
         {showSearchbar &&
           <IonSearchbar
             showCancelButton='always'
             placeholder='Search'
-            onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}
-            onIonCancel={() => setShowSearchbar(false)}>            
+            onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}
+            onIonCancel={() => setShowSearchbar(false)}>
           </IonSearchbar>
         }
 
         <IonButtons slot='end'>
 
-          {!showSearchbar && !ios && <IonButton onClick={() => setShowSearchbar(true)}>
-              <IonIcon slot='icon-only' icon={search}></IonIcon>
+          {showSearchbar && !ios &&
+            <IonButton onClick={() => setShowSearchbar(true)}>
+              <Icon slot='icon-only' name='search' />
             </IonButton>
           }
 
           <IonButton onClick={() => setShowFilterModal(true)}>
-            <IonIcon icon={options} slot='icon-only' />
+            <Icon slot='icon-only' name='options' />
           </IonButton>
 
         </IonButtons>
 
       </IonToolbar>
 
-    </IonHeader>
+      <IonToolbar>
+        <IonSearchbar
+          placeholder='Search'
+          value={searchString}
+          onIonChange={(e: CustomEvent) => setSearchString(e.detail.value)}>
+        </IonSearchbar>
+      </IonToolbar>
 
+      {showFilterModal &&
+        <IonToolbar>          
+
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonSelect
+                    key='field'
+                    interface="popover"
+                    placeholder='Order Field'
+                    value={orderField}                  
+                    onIonChange={(e: CustomEvent) => setOrderField(e.detail.value)}>
+                    {AppConst.filter.fields.options.map((option: any, index: number) => (
+                      <IonSelectOption key={'order-field-'+index} value={option.value}>
+                        {option.label}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </IonCol>
+                <IonCol>
+                  <IonSelect
+                    key='searchOrder'
+                    interface="popover"
+                    placeholder='Direction'
+                    value={searchOrder}    
+                    onIonChange={(e: CustomEvent) => setSearchOrder(e.detail.value)}>
+                    {AppConst.filter.order.options.map((option: any, index: number) => (
+                      <IonSelectOption key={'order-'+index} value={option.value}>
+                        {option.label}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+
+            <IonGrid>
+              {filter && filter.map((row: any, index: number)=>{
+                return <FilterRow key={index}/>
+              })}
+              <IonRow>
+                <IonCol>
+                  <IonButton expand='block' onClick={(e: any) => { addFilter() }}>Add filter</IonButton>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+
+        </IonToolbar>
+      }
+
+    </IonHeader>
     <IonContent>
 
-      <IonLabel></IonLabel>
-
-      <IonHeader collapse='condense'>
-        {/*<IonToolbar>
-          <IonTitle size='large'>Home</IonTitle>
-        </IonToolbar>*/}
-        <IonToolbar>
-          <IonSearchbar placeholder='Search' onIonChange={(e: CustomEvent) => setSearchText(e.detail.value)}></IonSearchbar>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonRefresher slot='fixed' ref={ionRefresherRef} onIonRefresh={doRefresh}>
-        <IonRefresherContent />
-      </IonRefresher>
-
-      <MainList data={data}/>
+      <MainList />
 
     </IonContent>
-
-    <IonModal
-      isOpen={showFilterModal}
-      onDidDismiss={() => setShowFilterModal(false)}
-      swipeToClose={true}
-      presentingElement={pageRef.current!}
-      cssClass='session-list-filter'
-    >
-      <MainListFilter onDismissModal={() => setShowFilterModal(false)}/>
-    </IonModal>
-
     {/*<ShareSocialFab />*/}
 
-  </>
-  
+  </IonContent>
+
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-
+export default connect<ThisProps>({
   mapStateToProps: (state) => ({
     mode: getConfig()!.get('mode'),
-    userId: 1
-    /*schedule: selectors.getSearchedHome(state),
-    favoritesHome: selectors.getGroupedFavorites(state),*/
+    searchString: state.data.searchString,
+    searchOrder: state.data.searchOrder,
+    orderField: state.data.orderField,
+    filter: state.data.filter
   }),
-
   mapDispatchToProps: {
-    setSearchText
+    setSearchString,
+    setSearchOrder,
+    setOrderField,
+    setFilter
   },
-
   component: Main
-
 })

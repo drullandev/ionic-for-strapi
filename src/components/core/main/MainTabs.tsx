@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { IonTabs, IonRouterOutlet, IonTabBar, IonTabButton, IonLabel } from '@ionic/react'
 
 import { Redirect, Route } from 'react-router'
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
 import MateDetail from '../../extra/MateDetail'
 import SessionDetail from '../../extra/SessionDetail'

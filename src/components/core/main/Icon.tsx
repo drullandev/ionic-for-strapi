@@ -17,7 +17,11 @@ import {
   home,
   homeOutline,
   bug,
-  mailUnread
+  mailUnread,
+  search,
+  options,
+  starOutline,
+  trashOutline
 } from 'ionicons/icons'
 import { addIcons } from 'ionicons'
 
@@ -40,6 +44,10 @@ addIcons({
   'informationcircleoutline': informationCircleOutline,
   'informationcircle': informationCircle,
   'mailunread' : mailUnread,
+  'search' : search,
+  'options' : options,
+  'staroutline' : starOutline,
+  'trashoutline' : trashOutline
 })
 
 export interface IconProps {

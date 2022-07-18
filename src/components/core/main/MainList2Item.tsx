@@ -1,22 +1,12 @@
-import * as AppConst from '../../../static/constants'
+//import * as AppConst from '../../../static/constants'
 
 import React, { useRef, useEffect, useState } from 'react'
-import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSpinner, AlertButton } from '@ionic/react'
+import { IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonSkeletonText, IonThumbnail } from '@ionic/react'
+import { connect } from '../../../data/connect'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
-import { restGet } from '../../../data/rest/rest.utils';
-
-//import { Session } from '../../../models/Schedule'
-//import { ListRow } from '../../../models/Schedule'
-
-interface SessionListItemProps {
-  row: ListRow;
-  /*listType: "all" | "favorites";
-  onAddFavorite: (id: number) => void;
-  onRemoveFavorite: (id: number) => void;
-  onShowAlert: (header: string, buttons: AlertButton[]) => void;
-  isFavorite: boolean;*/
-}
-
+import Icon from './Icon'
+ 
 interface LineProps {
   id: string,
   content: string,
@@ -24,19 +14,37 @@ interface LineProps {
   published_at: string,
 }
 
-const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
+interface OwnProps {
+  row: ListRow;
+  //timestamp: number
+}
+
+interface StateProps {
+  //favoriteSessions: number[]
+  searchString?: string
+}
+
+interface DispatchProps {
+  //addFavorite: typeof addFavorite
+  //removeFavorite: typeof removeFavorite
+}
+
+interface SessionListItemProps extends OwnProps, StateProps, DispatchProps { }
+
+const SessionListItem: React.FC<SessionListItemProps> = ({ row, searchString }) => {
+  
+  const [line, setLine] = useState<LineProps>()
 
   const ionItemSlidingRef = useRef<HTMLIonItemSlidingElement>(null)
 
   const dismissAlert = () => {
     ionItemSlidingRef.current && ionItemSlidingRef.current.close()
   }
-  //{id:'*', content:'', created_at:'', published_at:''}
-  const [line, setLine] = useState<LineProps>()
 
   useEffect(()=>{
     restGet('user-contents', { id: row.id })
     .then(res=>{
+      //console.log(res)
       switch(res.status){
         case 200:
           setLine(res.data[0])
@@ -49,7 +57,7 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
       console.log(res)
     })
 
-  },[row.id])
+  },[row.id, searchString])
 
   /*
   const removeFavoriteSession = () => {
@@ -87,56 +95,56 @@ const SessionListItem: React.FC<SessionListItemProps> = ({ row }) => {
   };
   */
 
-  return line 
-    ? <IonItemSliding ref={ionItemSlidingRef} class={'track-'+row.id} >    
-        <IonItem routerLink={`/tabs/list/asdfasdfas/${line.id}`}>
-          <IonLabel>
-            <h3>{line.content}</h3>
-            <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
-          </IonLabel>
-        </IonItem>
-        <IonItemOptions>
-          <IonItemOption color="danger">Remove</IonItemOption>
-          <IonItemOption color="favorite">Favorite</IonItemOption>
-        </IonItemOptions>
-      </IonItemSliding>
-    : <IonSpinner name='dots' />
+  const removeLine = () =>{
+    console.log('You pretend to remove this from the list or including from the database ^^')
+  }
+  
+  const putTimeline = (line:any) => {
+    return <p>{line.created_at}&mdash;&nbsp;{line.published_at}&mdash;&nbsp;{line.published_at}</p>
+  }
 
+  const putContent = (line:any) => {
+    return <h3>{line.id+' - '+line.content}</h3>
+  }
+
+  return line 
+  ? <IonItemSliding ref={ionItemSlidingRef} class={'track-'+row.id} >    
+      <IonItem routerLink={`/tabs/list/asdfasdfas/${line.id}`}>
+        <IonLabel>
+          {putContent(line)}
+          {putTimeline(line)}
+        </IonLabel>
+      </IonItem>
+      <IonItemOptions>
+        <IonItemOption color="danger" onClick={((e:any)=>{console.log(e)})}><Icon slot='' name='trashoutline'/></IonItemOption>
+        <IonItemOption color="favorite" onClick={((e:any)=>{console.log(e)})}><Icon slot='' name='staroutline'/></IonItemOption>
+      </IonItemOptions>
+    </IonItemSliding>
+  : <IonItem>
+      <IonThumbnail slot="start">
+        <IonSkeletonText animated />
+      </IonThumbnail>
+      <IonLabel>
+        <h3><IonSkeletonText animated style={{ width: '50%' }} /></h3>
+        <p><IonSkeletonText animated style={{ width: '80%' }} /></p>
+        <p><IonSkeletonText animated style={{ width: '60%' }} /></p>
+      </IonLabel>
+    </IonItem>      
 }
 
-export default SessionListItem
 
-/*
+export default connect<OwnProps, StateProps, DispatchProps>({
 
-<IonItemSliding ref={ionItemSlidingRef} class={'track-' + session.tracks[0].toLowerCase()}>
+  mapStateToProps: (state) => ({
+    searchString: state.data.searchString
+    //favoriteSessions: state.listData.favorites
+  }),
 
-     <IonItem routerLink={`/tabs/home/${session.id}`}>
+  mapDispatchToProps: ({
+    //addFavorite,
+    //removeFavorite
+  }),
 
-        <IonLabel>
-          <h3>{session.name}</h3>
-          <p>
-            {session.timeStart}&mdash;&nbsp;
-            {session.timeStart}&mdash;&nbsp;
-            {session.location}
-          </p>
-        </IonLabel>
-
-      </IonItem>
-
-      <IonItemOptions>
-
-        listType === "favorites" ?
-          <IonItemOption color="danger" onClick={() => removeFavoriteSession()}>
-            Remove
-          </IonItemOption>
-          :
-          <IonItemOption color="favorite" onClick={addFavoriteSession}>
-            Favorite
-          </IonItemOption>
-        
-
-      </IonItemOptions>
-
-    </IonItemSliding>
-
-*/
+  component: SessionListItem
+  
+})

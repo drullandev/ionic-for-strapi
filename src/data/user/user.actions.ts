@@ -110,7 +110,7 @@ export const setUserJwt = (userJwt?: string) => {
 }
 
 export const setUserId = (userId?: number) => {
-  return { type: 'set-userid', userId } as const
+  return { type: 'set-user-id', userId } as const
 }
 
 export const setUserAvatar = (avatar: any) => {

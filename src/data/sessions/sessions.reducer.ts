@@ -18,8 +18,20 @@ export const sessionsReducer = (state: ConfState, action: SessionsActions): Conf
     case 'update-filtered-tracks': {
       return { ...state, filteredTracks: action.filteredTracks }
     }
-    case 'set-search-text': {
-      return { ...state, searchText: action.searchText }
+    case 'set-search-string': {
+      return { ...state, searchString: action.searchString }
+    }
+    case 'set-search-order': {
+      return { ...state, searchOrder: action.searchOrder }
+    }
+    case 'set-order-field': {
+      return { ...state, orderField: action.orderField }
+    }
+    case 'set-filter': {
+      return { ...state, filter: action.filter }
+    }
+    case 'set-filter-date': {
+      return { ...state, filterDate: action.filterDate }
     }
     case 'set-menu-enabled': {
       return { ...state, menuEnabled: action.menuEnabled }

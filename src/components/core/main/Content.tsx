@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { IonContent, IonImg, IonLabel, IonTextarea } from '@ionic/react'
 
-import { restGet, setImage } from '../../../data/rest/rest.utils'
+import { restGet, setImage } from '../../../data/utils/rest/rest.utils'
 
 export interface ContentProps {
   row: {

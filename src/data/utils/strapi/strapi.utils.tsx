@@ -1,4 +1,4 @@
-import * as AppConst from '../../static/constants'
+/*import * as AppConst from '../../../static/constants'
 
 import {
   setIsLoggedIn,
@@ -7,7 +7,7 @@ import {
   setUserJwt,
   setUserId,
   logoutUser
-} from '../../data/user/user.actions'
+} from '../../user/user.actions'
 
 import axios from 'axios'
 
@@ -149,4 +149,4 @@ function recover(form: any) {//}, history: any){
       }
     })
   return dataPromise
-}
+}*/

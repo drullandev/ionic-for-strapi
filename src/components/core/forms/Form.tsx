@@ -1,3 +1,5 @@
+import * as AppConst from '../../../static/constants'
+
 import { CreateAnimation, IonText, IonGrid, useIonLoading, useIonToast, getConfig } from '@ionic/react'
 import React, { FC, useState, useEffect, useRef } from 'react'
 
@@ -6,8 +8,6 @@ import { connect } from '../../../data/connect'
 
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-
-import * as AppConst from '../../../static/constants'
 
 // ABOUT FORMS VALIDATION 
 import { useForm } from 'react-hook-form'
@@ -20,10 +20,11 @@ import FormRow from './FormRow'
 // FORM INTERFACES
 import { FormProps } from './interfaces/FormProps'
 
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 
 // FORM STYLES
 import '../main/styles/Form.scss'
+import { ObjectShape } from 'yup/lib/object'
 
 const validation = true
 
@@ -56,18 +57,12 @@ interface MyFormProps extends FormProps, StateProps, DispatchProps { }
 
 const Form: FC<MyFormProps> = ({
   slug,
-  mode,
-  userJwt, setUserJwt,
-  setUserId,
+  setUserJwt,
   userDarkMode, setDarkMode,
-  userEmail, setUserEmail,
-  isLoggedIn, setIsLoggedIn,
-  loading, setLoading
-}) => {
+  setIsLoggedIn}) => {
 
   const history = useHistory()
   const { t } = useTranslation()
-  const animationRef = useRef()
 
   // Form Component settings...
   const [formTitle, setFormTitle] = useState([])
@@ -88,7 +83,12 @@ const Form: FC<MyFormProps> = ({
     setLoadingAlert({ message: t(message), duration: duration })
   }
 
-  const launchToast = (message: string, color: string = 'light', position: 'top' | 'bottom' | 'middle' = 'bottom', duration: number = 3000) => {
+  const launchToast = (
+    message: string,
+    color: string = 'light',
+    position: 'top' | 'bottom' | 'middle' = 'bottom',
+    duration: number =  AppConst.timeout.readToast
+  ) => {
     dismissToast()
     setToast({
       buttons: [{ text: 'x', handler: () => dismissToast() }],
@@ -100,7 +100,11 @@ const Form: FC<MyFormProps> = ({
     })
   }
 
-  const launchHistory = (uri: string, timeout: number = 3000, params: any = { direction: 'none' }) => {
+  const launchHistory = (
+    uri: string,
+    timeout: number = AppConst.timeout.redirect,
+    params: any = { direction: 'none' }
+  ) => {
     setTimeout(() => {
       history.push(uri, params)
     }, timeout)
@@ -173,7 +177,7 @@ const Form: FC<MyFormProps> = ({
 
   const onSubmit: SubmitHandler<any> = async (form: React.FormEvent<Element>) => {
 
-    launchLoading('Sending form...', 345)
+    launchLoading('Sending form...', AppConst.timeout)
 
     switch (slug) {
 
@@ -193,7 +197,7 @@ const Form: FC<MyFormProps> = ({
                     acceptedTerms: form.terms,
                     acceptedPrivacyPolicy: form.privacy,
                     userDarkMode: userDarkMode
-                  }).then(res=>{
+                  }).then(()=>{
             
                   })
                 launchToast('Welcome '+res.data.user.username+', you was logged!!!', 'success')
@@ -231,7 +235,7 @@ const Form: FC<MyFormProps> = ({
                     acceptedPrivacyPolicy: form.privacy,
                     userDarkMode: userDarkMode,
                     hasSeenTutorial: false,
-                  }).then(res=>{
+                  }).then(()=>{
             
                   })
                 launchToast('Welcome ${form.identifier}, you was registered!!!', 'success')
@@ -419,6 +423,7 @@ const Form: FC<MyFormProps> = ({
       </form>
     </CreateAnimation>
   </div>
+  
 
 }
 

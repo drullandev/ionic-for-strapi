@@ -30,13 +30,124 @@ export const APP_ICON = '/add-user-data'
 export const TUTORIAL = '/tutorial'
 export const LOGIN = '/login'
 
-export const Timeout = {
-  'buttonSpinner' : 123,
-  'loadingPopup' : 123,
-  'redirect' : 123,
-  
+export const timeout = {
+  buttonSpinner : 123,
+  loadingPopup : 123,
+  redirect : 123,
+  refresh : 1000,
+  readToast : 3000,
 }
 
+export const paginator = {
+  'size' : 8
+}
+
+export const filter = {
+  order : {
+    default: 'desc',
+    options: [ 
+      {
+        label: 'Descendant',
+        value: 'desc'
+      },{
+        label: 'Ascendant',
+        value: 'asc',
+      }
+    ]
+  },
+  fields: {
+    default: 'published_at',
+    options: [
+      {
+        label: 'Published at',
+        value: 'published_at',
+        type: 'date'
+      },{
+        label: 'Created at',
+        value: 'created_at',
+        type: 'date'
+      },{
+        label: 'Updated at',
+        value: 'updated_at',
+        type: 'date'
+      },{
+        label: 'Content',
+        value: 'content',
+        type: 'string'
+      }
+    ]    
+  },
+  conditions: {
+    default: 'contains',
+    options: [
+      {
+        label: 'Distinct',
+        value: 'ne',
+        families: ['all']
+      },
+      {
+        label: 'Lower than',
+        value: 'lt',
+        families: ['all']
+      },
+      {
+        label: 'Lower or equal',
+        value: 'lte',
+        families: ['all']
+      },
+      {
+        label: 'Greater than',
+        value: 'gt',
+        families: ['all']
+      },
+      {
+        label: 'Greater or equal',
+        value: 'gte',
+        families: ['all']
+      },
+      {
+        label: 'Contains',
+        value: 'contains',
+        families: ['all']
+      },
+      {
+        label: 'Contains sensitive',
+        value: 'containss',
+        families: ['all']
+      },
+      {
+        label: 'No Contains',
+        value: 'ncontains',
+        families: ['all']
+      },
+      {
+        label: 'No Contains sensitive',
+        value: 'ncontainss',
+        families: ['all']
+      },
+      {
+        label: 'In',
+        value: 'in',
+        families: ['array']
+      },
+      {
+        label: 'Not in',
+        value: 'nin',
+        families: ['array'] 
+      },
+      {
+        label: 'Equals null',
+        value: 'null',
+        families: []
+      },
+      {
+        label: 'Not equals null',
+        value: 'nnull',
+        families: []
+      }
+    ]
+  }
+}
 
 export const dataUrl           = '/assets/data/data.json'
 export const locationsUrl      = '/assets/data/locations.json'

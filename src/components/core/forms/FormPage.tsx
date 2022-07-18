@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { IonContent, IonFooter, IonSpinner, getConfig } from '@ionic/react'
 import { useLocation, useHistory } from 'react-router-dom'
 //import { RouteComponentProps } from 'react-router'
-import { restGet } from '../../../data/rest/rest.utils'
+import { restGet } from '../../../data/utils/rest/rest.utils'
 import { connect } from '../../../data/connect'
 import PageRow from '../main/PageRow'
 

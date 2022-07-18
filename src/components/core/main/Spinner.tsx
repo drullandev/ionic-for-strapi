@@ -1,15 +1,13 @@
 import * as AppConst from '../../../static/constants'
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
 import { IonSpinner } from '@ionic/react'
 
-import { Location } from '../../../models/Location'
-
-interface MapProps {
-  name: 'dots' | 'bubbles' | 'circles' | 'circular'
+interface Spinner {
+  name: "bubbles" | "circles" | "circular" | "crescent" | "dots" | "lines" | "lines-small"
 }
 
-const Map: React.FC<MapProps> = ({ name = 'dots' }) => (
+const Spinner: React.FC<SpinnerProps> = ({ name = 'circular' }) => (
   <IonSpinner name={name}/>
 )
 
-export default Map
+export default Spinner

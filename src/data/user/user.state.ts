@@ -1,4 +1,5 @@
 export interface UserState {
+  userId?: number
   nickname?: string
   useremail?: string
   userJwt?: string

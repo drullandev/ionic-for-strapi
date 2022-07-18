@@ -16,6 +16,7 @@ export const initialState: AppState = {
     loading: false,
   },
   user: {
+    id: 0,
     useremail: '',
     userDarkMode: false,
     isLoggedIn: false,
