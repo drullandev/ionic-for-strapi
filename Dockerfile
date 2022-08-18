@@ -2,23 +2,28 @@ FROM node:14.16
 
 COPY . /www/app
 
+# ADD . $app_port
+# ARG app_port
+# ENV APP_PORT=$app_port
+
 ARG ssh_prv_key
 ARG ssh_pub_key
 
-RUN npm install -g cordova ionic
+RUN npm install -g cordova @ionic/cli  @ionic/cli @ionic-native/core @ionic-native/geolocation @awesome-cordova-plugins/core @awesome-cordova-plugins/core
 RUN npm install -g bower
 RUN npm install -g gulp
 
-# Setup for ssh onto github
-RUN mkdir -p /root/.ssh
-ADD id_rsa /root/.ssh/id_rsa
-RUN chmod 700 /root/.ssh/id_rsa
-RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
-
 WORKDIR /www/app
-RUN npm install
 
-EXPOSE 8100 443
+# Install dependencies, fund and fix
+RUN npm install --force
+RUN npm fund
+RUN npm audit fix
 
+RUN npm i serve -g
+ENV NODE_ENV production
+RUN ionic build --prod
+
+EXPOSE 3000
 ENTRYPOINT ["ionic"]
-CMD ["serve", "poll", "1000", "8100", "--address", "0.0.0.0"]
+CMD ["serve", "-s", "build", "-p", "3000"]
