@@ -25,5 +25,5 @@ ENV NODE_ENV production
 RUN ionic build --prod
 
 EXPOSE 3000
-ENTRYPOINT ["ionic"]
+
 CMD ["serve", "-s", "build", "-p", "3000"]
