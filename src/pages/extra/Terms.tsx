@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+©©import React, { useState } from 'react'
 import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover } from '@ionic/react'
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
@@ -48,7 +48,7 @@ const About: React.FC<AboutProps> = () => {
   return (
     <IonPage id='about-page'>
 
-      <Header label={'About'} />
+      <Header label={'About'} loading={false} />
 
       <IonContent>
         <IonHeader className='ion-no-border'>
