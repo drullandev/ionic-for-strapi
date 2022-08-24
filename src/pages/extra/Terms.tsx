@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import './About.scss'
 
-import Popover from '../../components/core/Popover'
+import Popover from '../../components/extra/Popover'
 import Header from '../../components/core/main/ToolBar'
 
 interface AboutProps { }
@@ -24,7 +24,7 @@ const About: React.FC<AboutProps> = () => {
   }
 
   const presentPopover = (e: React.MouseEvent) => {
-    setPopoverEvent(e.nativeEvent)
+    //setPopoverEvent(e.nativeEvent)
     setShowPopover(true)
   }
 

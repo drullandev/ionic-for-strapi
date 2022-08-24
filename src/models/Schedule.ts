@@ -1,3 +1,8 @@
+export interface Schedule {
+  date: string
+  groups: HomeGroup[]
+}
+
 export interface Home {
   date: string
   groups: HomeGroup[]

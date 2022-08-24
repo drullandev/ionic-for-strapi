@@ -5,7 +5,7 @@ import { IonToolbar, IonContent, IonButtons, IonMenuButton, IonTitle, IonButton,
 
 //import { restGet, getGQL } from '../../../data/rest/rest.utils'
 import { setSearchString, setSearchOrder, setOrderField, setFilter } from '../../../data/sessions/sessions.actions'
-import { SessionState } from '../../../data/sessions/sessions.actions'
+//import { SessionState } from '../../../data/sessions/sessions.actions'
 import { empty } from '../../../data/utils/common'
 
 import Icon from './Icon'
@@ -34,6 +34,7 @@ interface StateProps {
   filterCondition: string,
   filter: Filter[]
 }
+
 interface DispatchProps {
   setSearchString: typeof setSearchString
   setSearchOrder: typeof setSearchOrder
@@ -165,7 +166,7 @@ const Main: React.FC<ThisProps> = ({
 
             <IonGrid>
               {filter && filter.map((row: any, index: number)=>{
-                return <FilterRow key={index}/>
+                return <FilterRow key={index} filter={[]} setFilter={setFilter}/>
               })}
               <IonRow>
                 <IonCol>
@@ -180,7 +181,7 @@ const Main: React.FC<ThisProps> = ({
     </IonHeader>
     <IonContent>
 
-      <MainList />
+      <MainList searchOrder={searchOrder} orderField={'asc'} filter={[]} setSearchString={setSearchString} setSearchOrder={setSearchOrder} setOrderField={setOrderField} setFilter={setFilter} />
 
     </IonContent>
     {/*<ShareSocialFab />*/}

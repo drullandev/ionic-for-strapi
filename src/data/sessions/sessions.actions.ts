@@ -47,7 +47,7 @@ export const setOrderField = (orderField?: string) => {
   return ({ type: 'set-order-field', orderField } as const)
 }
 
-export const setFilter = (filter: Filter) => {
+export const setFilter = (filter: Filter[]) => {
   return ({ type: 'set-filter', filter } as const)
 }
 
