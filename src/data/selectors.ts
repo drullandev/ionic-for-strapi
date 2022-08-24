@@ -26,10 +26,10 @@ export const getFilteredHome = createSelector(
 
   (schedule, filteredTracks) => {
     const groups: HomeGroup[] = []
-    schedule.groups.forEach(group => {
+    schedule.groups.forEach((group:any) => {
       const sessions: Session[] = []
-      group.sessions.forEach(session => {
-        session.tracks.forEach(track => {
+      group.sessions.forEach((session:any) => {
+        session.tracks.forEach((track:any) => {
           if (filteredTracks.indexOf(track) > -1) {
             sessions.push(session)
           }
@@ -59,9 +59,9 @@ export const getSearchedHome = createSelector(
       return schedule
     }
     const groups: HomeGroup[] = []
-    schedule.groups.forEach(group => {
+    schedule.groups.forEach((group:any) => {
 
-      const sessions = group.sessions.filter(s => s.name.toLowerCase().indexOf(searchString.toLowerCase()) > -1)
+      const sessions = group.sessions.filter((s:any) => s.name.toLowerCase().indexOf(searchString.toLowerCase()) > -1)
       if (sessions.length) {
         const groupToAdd: HomeGroup = {
           time: group.time,
@@ -86,8 +86,8 @@ export const getGroupedFavorites = createSelector(
   getHomeList, getFavoriteIds,
   (schedule, favoriteIds) => {
     const groups: HomeGroup[] = []
-    schedule.groups.forEach(group => {
-      const sessions = group.sessions.filter(s => favoriteIds.indexOf(s.id) > -1)
+    schedule.groups.forEach((group:any) => {
+      const sessions = group.sessions.filter((s:any) => favoriteIds.indexOf(s.id) > -1)
       if (sessions.length) {
         const groupToAdd: HomeGroup = {
           time: group.time,
