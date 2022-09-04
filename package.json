@@ -24,7 +24,7 @@
     "i18next": "^20.3.2",
     "i18next-browser-languagedetector": "^6.1.2",
     "ionicons": "^5.0.1",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.1",
     "object-types": "^1.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -71,11 +71,11 @@
     "@storybook/addon-essentials": "^6.1.21",
     "@storybook/addon-links": "^6.2.9",
     "@storybook/node-logger": "^6.2.9",
-    "@storybook/preset-create-react-app": "^1.2.0",
+    "@storybook/preset-create-react-app": "^4.1.2",
     "@storybook/react": "^6.3.7",
     "@testing-library/react": "^9.3.1",
     "@types/googlemaps": "^3.38.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "remote-redux-devtools": "^0.5.16",
     "typescript": "3.6.3"
   }

@@ -38,7 +38,7 @@ import Menu from './components/core/main/Menu'
 import RedirectToLogin from './pages/core/RedirectToLogin'
 
 /* Pages models */
-import { Schedule } from './models/Schedule'
+//import { Schedule } from './models/Schedule'
 
 const App: React.FC = () => {
   return (
@@ -50,7 +50,7 @@ const App: React.FC = () => {
 
 interface StateProps {
   userDarkMode: boolean
-  schedule: Schedule
+  //schedule: Schedule
 }
 
 interface DispatchProps {

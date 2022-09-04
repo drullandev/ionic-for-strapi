@@ -57,7 +57,7 @@ const Menu: React.FC<MenuProps> = ({ slug, menuEnabled, userDarkMode, isLoggedIn
   return (
     <IonMenu key={slug} type='overlay' disabled={!menuEnabled} contentId='main'>
 
-      {menu && <Header label={menu.title} loading={false} setLoading={undefined} />}
+      {/*menu && <Header label={menu.title} loading={false} setLoading={true} />*/}
 
       <IonContent forceOverscroll={false}>
 
