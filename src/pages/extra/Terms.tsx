@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+©©import React, { useState } from 'react'
 import { IonHeader, IonToolbar, IonContent, IonPage, IonButtons, IonMenuButton, IonButton, IonIcon, IonDatetime, IonSelectOption, IonList, IonItem, IonLabel, IonSelect, IonPopover } from '@ionic/react'
 import { ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons'
 import { useTranslation } from 'react-i18next'
 
 import './About.scss'
 
+<<<<<<< HEAD
 //import Popover from '../../components/core/Popover'
+=======
+import Popover from '../../components/extra/Popover'
+>>>>>>> c96758e2c14e22409f1326e92055411ad96f87fe
 import Header from '../../components/core/main/ToolBar'
 
 interface AboutProps { }
@@ -48,7 +52,11 @@ const About: React.FC<AboutProps> = () => {
   return (
     <IonPage id='about-page'>
 
+<<<<<<< HEAD
      {/*<Header label={'About'} />*/}
+=======
+      <Header label={'About'} loading={false} />
+>>>>>>> c96758e2c14e22409f1326e92055411ad96f87fe
 
       <IonContent>
         <IonHeader className='ion-no-border'>

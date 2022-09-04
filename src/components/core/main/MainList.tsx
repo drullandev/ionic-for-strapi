@@ -3,14 +3,14 @@ import * as AppConst from '../../../static/constants'
 import { IonItemDivider, IonItemGroup, IonLabel, IonList, IonListHeader, IonAlert, AlertButton } from '@ionic/react'
 import React, { useState, useCallback } from 'react'
 
-import { Home, Session } from '../../models/Schedule'
+import { Schedule, Session } from '../../../models/Schedule'
 import SessionListItem from './MainListItem'
 
 import { connect } from '../../../data/connect'
 import { addFavorite, removeFavorite } from '../../../data/sessions/sessions.actions'
 
 interface OwnProps {
-  schedule: Home
+  schedule: Schedule
   listType: 'all' | 'favorites'
   hide: boolean
 }

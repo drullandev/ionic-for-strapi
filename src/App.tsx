@@ -49,8 +49,13 @@ const App: React.FC = () => {
 }
 
 interface StateProps {
+<<<<<<< HEAD
   userDarkMode: boolean
   //schedule: Schedule
+=======
+  userDarkMode: boolean 
+  schedule: Schedule
+>>>>>>> c96758e2c14e22409f1326e92055411ad96f87fe
 }
 
 interface DispatchProps {
@@ -96,12 +101,12 @@ const IonicApp: React.FC<IonicAppProps> = ({
       <IonReactRouter>
         <IonSplitPane contentId='main'>
   
-          <Menu key='mainMenu' slug={'sidenav'} />
+          {/*<Menu key='mainMenu' slug={'sidenav'} />*/}
   
           <IonRouterOutlet id='main'>
             {/* TODO: Revisistate this case :: We use IonRoute here to keep the tabs state intact, which makes transitions between tabs and non tab pages smooth */}
             <Redirect path='/' to={'/home'} />
-            <Route path='/list' render={() => <Main />} />
+            {/*<Route path='/list' render={() => <Main />} />*/}
             <Route path='/tabs' render={() => <MainTabs />} />
             <Route path='/:slug' component={Page} />
             <Route path='/tabs/home/:id' render={() => <MainTabs />} />
@@ -127,7 +132,7 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
 
   mapStateToProps: (state) => ({
     userDarkMode: state.user.userDarkMode,
-    //schedule: state.data.schedule
+    schedule: state.data.schedule
   }),
 
   mapDispatchToProps: {

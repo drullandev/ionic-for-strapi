@@ -71,8 +71,13 @@
     "@storybook/addon-essentials": "^6.1.21",
     "@storybook/addon-links": "^6.2.9",
     "@storybook/node-logger": "^6.2.9",
+<<<<<<< HEAD
     "@storybook/preset-create-react-app": "^4.1.2",
     "@storybook/react": "^6.3.7",
+=======
+    "@storybook/preset-create-react-app": "^1.2.0",
+    "@storybook/react": "^6.1.21",
+>>>>>>> c96758e2c14e22409f1326e92055411ad96f87fe
     "@testing-library/react": "^9.3.1",
     "@types/googlemaps": "^3.38.0",
     "react-scripts": "^5.0.1",

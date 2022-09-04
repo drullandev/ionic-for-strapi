@@ -2,21 +2,21 @@ FROM node:14.16
 
 COPY . /www/app
 
-ARG ssh_prv_key
-ARG ssh_pub_key
+#ARG ssh_prv_key
+#ARG ssh_pub_key
 
 RUN npm install -g cordova ionic
 RUN npm install -g bower
-RUN npm install -g gulp
+#RUN npm install -g gulp
 
 # Setup for ssh onto github
-RUN mkdir -p /root/.ssh
-ADD id_rsa /root/.ssh/id_rsa
-RUN chmod 700 /root/.ssh/id_rsa
-RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
+#RUN mkdir -p /root/.ssh
+#ADD id_rsa /root/.ssh/id_rsa
+#RUN chmod 700 /root/.ssh/id_rsa
+#RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
 WORKDIR /www/app
-RUN npm install
+RUN npm i npm-install-peers -D
 
 EXPOSE 8100 443
 
