@@ -16,7 +16,7 @@ RUN npm install -g bower
 #RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
 WORKDIR /www/app
-RUN npm i npm-install-peers -D
+RUN npm i --force
 
 EXPOSE 8100 443
 

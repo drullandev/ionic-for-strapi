@@ -49,13 +49,8 @@ const App: React.FC = () => {
 }
 
 interface StateProps {
-<<<<<<< HEAD
   userDarkMode: boolean
   //schedule: Schedule
-=======
-  userDarkMode: boolean 
-  schedule: Schedule
->>>>>>> c96758e2c14e22409f1326e92055411ad96f87fe
 }
 
 interface DispatchProps {

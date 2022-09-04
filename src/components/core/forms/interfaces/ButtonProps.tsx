@@ -10,3 +10,9 @@ export interface ButtonProps {
     //onClick?: SubmitHandler
   }
 }
+
+export type SpinnerProps = {
+  type: string
+  position: string
+  display: boolean
+}

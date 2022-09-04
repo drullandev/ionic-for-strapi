@@ -5,13 +5,18 @@ import { IonLabel, IonButton, IonSpinner, IonItem, IonSkeletonText } from '@ioni
 import { ButtonProps } from './interfaces/ButtonProps'
 
 const style = { marginTop: '20px' }
-const spinner = {
-  type: 'lines-small',
-  position: 'left', //Now only left ^^
-  display: { true: 'inline', false: 'none' }
-}
 
-const Button: FC<ButtonProps> = ({ label, button }) => {
+
+
+
+
+const Button: FC<ButtonProps> = ({  label, button }) => {
+
+  const spinner = {
+    type: 'lines-small',
+    position: 'left', //Now only left ^^
+    display: { true: 'inline', false: 'none' }
+  }
 
   const [display, setDisplay] = useState<any>(spinner.display.false)
 
@@ -26,8 +31,13 @@ const Button: FC<ButtonProps> = ({ label, button }) => {
     },timeout)
   }
 
-  const buttonContent = (label: string) => (
-    <><IonSpinner style={{display: display}} name={spinner.type} /><IonLabel>{label}</IonLabel></>
+  const buttonContent = (label: string, spinner: any) => (
+    <>
+      <IonSpinner style={{display: display}}
+        name={spinner.type}
+      />
+      <IonLabel>{label}</IonLabel>
+    </>
   )
 
   return button
@@ -35,11 +45,11 @@ const Button: FC<ButtonProps> = ({ label, button }) => {
   ? button.type === 'submit'
 
     ? <IonButton style={style} expand='block' color={button.color} type={button.type} onClick={(e)=>{setActive(1000)}}>
-        {buttonContent(label)}
+        {buttonContent(label, spinner)}
       </IonButton>
 
     : <IonButton style={style} expand='block' color={button.color} routerDirection={'root'} routerLink={button.routerLink} onClick={(e)=>{setActive(10000)}}>
-        {buttonContent(label)}
+        {buttonContent(label, spinner)}
       </IonButton>
 
   : <IonItem lines='none'>

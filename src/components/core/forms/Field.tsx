@@ -88,7 +88,7 @@ const Field: FC<FieldProps> = ({ name, slug, label, control, errors, required })
 
   const renderConditionsCheckbox = () => (
     <IonItem style={{ paddingTop: '25px' }}>
-      <ContentCheck name={field.label} label={label} slug={field.slug} />
+      {/*<ContentCheck name={field.label} label={label} slug={field.slug} />*/}
       <Controller
         as={(
           <IonCheckbox slot='end' name={field.label} />

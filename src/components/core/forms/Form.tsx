@@ -132,7 +132,7 @@ const Form: FC<MyFormProps> = ({
   }, [slug])
 
   const setValidations = async (rows: any) => {
-    var rules = []
+    let rules : Array<any> = []
     for (let i = 0; i < rows.length; i++) {
       var columns = rows[i].columns
       for (var ii = 0; ii < columns.length; ii++) {
@@ -148,15 +148,15 @@ const Form: FC<MyFormProps> = ({
           }
 
           if (row.field.regexp) {
-            rule = rule.matches(row.field.regexp, row.field.regexp_message)
+            //rule = rule.matches(row.field.regexp, row.field.regexp_message)
           }
 
           if (row.required === true) {
             rule = rule.required()
           }
 
-          if (row.field.min) rule = rule.min(parseInt(row.field.min))
-          if (row.field.max) rule = rule.max(parseInt(row.field.max))
+          //if (row.field.min) rule = rule.min(parseInt(row.field.min))
+          //if (row.field.max) rule = rule.max(parseInt(row.field.max))
 
           rules[row.field.slug] = rule
 
@@ -175,7 +175,7 @@ const Form: FC<MyFormProps> = ({
               type === 'number' ? yup.number() : yup.string()
   }
 
-  const onSubmit: SubmitHandler<any> = async (form: React.FormEvent<Element>) => {
+  const onSubmit: SubmitHandler<any> = async (form: any) => {
 
     launchLoading('Sending form...', AppConst.timeout)
 
